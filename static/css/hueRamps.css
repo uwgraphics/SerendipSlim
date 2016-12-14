@@ -1,0 +1,102 @@
+/*
+    These ramps are all taken from the first 5 colors of the 8-class single hue color ramps from ColorBrewer.
+*/
+
+.searchMatch { background-color: #ffffb3 !important; }
+
+.noramp_6baed6 { background-color: #6baed6 !important; }
+.noramp_74c476 { background-color: #74c476 !important; }
+.noramp_fd8d3c { background-color: #fd8d3c !important; }
+.noramp_9e9ac8 { background-color: #9e9ac8 !important; }
+.noramp_fb6a4a { background-color: #fb6a4a !important; }
+
+.sal1.sal6baed6 { background-color: #6baed6; }
+.sal2.sal6baed6 { background-color: #9ecae1; }
+.sal3.sal6baed6 { background-color: #c6dbef; }
+.sal4.sal6baed6 { background-color: #deebf7; }
+.sal5.sal6baed6 { background-color: #f7fbff; }
+
+.sal1.sal74c476 { background-color: #74c476; }
+.sal2.sal74c476 { background-color: #a1d99b; }
+.sal3.sal74c476 { background-color: #c7e9c0; }
+.sal4.sal74c476 { background-color: #e5f5e0; }
+.sal5.sal74c476 { background-color: #f7fcf5; }
+
+.sal1.salfd8d3c { background-color: #fd8d3c; }
+.sal2.salfd8d3c { background-color: #fdae6b; }
+.sal3.salfd8d3c { background-color: #fdd0a2; }
+.sal4.salfd8d3c { background-color: #fee6ce; }
+.sal5.salfd8d3c { background-color: #fff5eb; }
+
+.sal1.sal9e9ac8 { background-color: #9e9ac8; }
+.sal2.sal9e9ac8 { background-color: #bcbddc; }
+.sal3.sal9e9ac8 { background-color: #dadaeb; }
+.sal4.sal9e9ac8 { background-color: #efedf5; }
+.sal5.sal9e9ac8 { background-color: #fcfbfd; }
+
+.sal1.salfb6a4a { background-color: #fb6a4a; }
+.sal2.salfb6a4a { background-color: #fc9272; }
+.sal3.salfb6a4a { background-color: #fcbba1; }
+.sal4.salfb6a4a { background-color: #fee0d2; }
+.sal5.salfb6a4a { background-color: #fff5f0; }
+
+.freq1.freq6baed6 { background-color: #6baed6; }
+.freq2.freq6baed6 { background-color: #9ecae1; }
+.freq3.freq6baed6 { background-color: #c6dbef; }
+.freq4.freq6baed6 { background-color: #deebf7; }
+.freq5.freq6baed6 { background-color: #f7fbff; }
+
+.freq1.freq74c476 { background-color: #74c476; }
+.freq2.freq74c476 { background-color: #a1d99b; }
+.freq3.freq74c476 { background-color: #c7e9c0; }
+.freq4.freq74c476 { background-color: #e5f5e0; }
+.freq5.freq74c476 { background-color: #f7fcf5; }
+
+.freq1.freqfd8d3c { background-color: #fd8d3c; }
+.freq2.freqfd8d3c { background-color: #fdae6b; }
+.freq3.freqfd8d3c { background-color: #fdd0a2; }
+.freq4.freqfd8d3c { background-color: #fee6ce; }
+.freq5.freqfd8d3c { background-color: #fff5eb; }
+
+.freq1.freq9e9ac8 { background-color: #9e9ac8; }
+.freq2.freq9e9ac8 { background-color: #bcbddc; }
+.freq3.freq9e9ac8 { background-color: #dadaeb; }
+.freq4.freq9e9ac8 { background-color: #efedf5; }
+.freq5.freq9e9ac8 { background-color: #fcfbfd; }
+
+.freq1.freqfb6a4a { background-color: #fb6a4a; }
+.freq2.freqfb6a4a { background-color: #fc9272; }
+.freq3.freqfb6a4a { background-color: #fcbba1; }
+.freq4.freqfb6a4a { background-color: #fee0d2; }
+.freq5.freqfb6a4a { background-color: #fff5f0; }
+
+.ig1.ig6baed6 { background-color: #6baed6; }
+.ig2.ig6baed6 { background-color: #9ecae1; }
+.ig3.ig6baed6 { background-color: #c6dbef; }
+.ig4.ig6baed6 { background-color: #deebf7; }
+.ig5.ig6baed6 { background-color: #f7fbff; }
+
+.ig1.ig74c476 { background-color: #74c476; }
+.ig2.ig74c476 { background-color: #a1d99b; }
+.ig3.ig74c476 { background-color: #c7e9c0; }
+.ig4.ig74c476 { background-color: #e5f5e0; }
+.ig5.ig74c476 { background-color: #f7fcf5; }
+
+.ig1.igfd8d3c { background-color: #fd8d3c; }
+.ig2.igfd8d3c { background-color: #fdae6b; }
+.ig3.igfd8d3c { background-color: #fdd0a2; }
+.ig4.igfd8d3c { background-color: #fee6ce; }
+.ig5.igfd8d3c { background-color: #fff5eb; }
+
+.ig1.ig9e9ac8 { background-color: #9e9ac8; }
+.ig2.ig9e9ac8 { background-color: #bcbddc; }
+.ig3.ig9e9ac8 { background-color: #dadaeb; }
+.ig4.ig9e9ac8 { background-color: #efedf5; }
+.ig5.ig9e9ac8 { background-color: #fcfbfd; }
+
+.ig1.igfb6a4a { background-color: #fb6a4a; }
+.ig2.igfb6a4a { background-color: #fc9272; }
+.ig3.igfb6a4a { background-color: #fcbba1; }
+.ig4.igfb6a4a { background-color: #fee0d2; }
+.ig5.igfb6a4a { background-color: #fff5f0; }
+

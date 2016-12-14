@@ -1,0 +1,38 @@
+id,filename,Author,Year,Genre,Title
+int,str,str,int,cat,str
+0,1KINGHENRYIV.txt,William Shakespeare,1597,history,King Henry IV Part 1
+1,1KINGHENRYVI.txt,William Shakespeare,1591,history,King Henry VI Part 1
+2,2KINGHENRYIV.txt,William Shakespeare,1597,history,King Henry IV Part 2
+3,2KINGHENRYVI.txt,William Shakespeare,1591,history,King Henry VI Part 2
+4,3KINGHENRYVI.txt,William Shakespeare,1591,history,King Henry VI Part 3
+5,All'sWellthatEndsWell.txt,William Shakespeare,1607,comedy,All's Well that Ends Well
+6,AMidsummerNight'sDream.txt,William Shakespeare,1595,comedy,A Midsummer Night's Dream
+7,AntonyAndCleopatra.txt,William Shakespeare,1606,tragedy,Antony and Cleopatra
+8,AsYouLikeIt.txt,William Shakespeare,1600,comedy,As You Like It
+9,ComedyofErrors.txt,William Shakespeare,1594,comedy,Comedy of Errors
+10,Coriolanus.txt,William Shakespeare,1608,tragedy,Coriolanus
+11,Cymbeline.txt,William Shakespeare,1611,romance,Cymbeline
+12,Hamlet.txt,William Shakespeare,1601,tragedy,Hamlet
+13,JuliusCaesar.txt,William Shakespeare,1599,tragedy,Julius Caesar
+14,KINGHENRYV.txt,William Shakespeare,1599,history,King Henry V
+15,KINGHENRYVIII.txt,William Shakespeare,1613,history,King Henry VIII
+16,KINGJOHN.txt,William Shakespeare,1600,history,King John
+17,KingLear.txt,William Shakespeare,1606,tragedy,King Lear
+18,KINGRICHARDII.txt,William Shakespeare,1595,history,King Richard II
+19,KINGRICHARDIII.txt,William Shakespeare,1593,history,King Richard III
+20,Love'sLaboursLost.txt,William Shakespeare,1595,comedy,Love's Labours Lost
+21,Macbeth.txt,William Shakespeare,1606,tragedy,Macbeth
+22,MeasureForMeasure.txt,William Shakespeare,1604,comedy,Measure For Measure
+23,MerchantofVenice.txt,William Shakespeare,1596,comedy,Merchant of Venice
+24,MerryWivesOfWindsor.txt,William Shakespeare,1598,comedy,Merry Wives of Windsor
+25,MuchAdoAboutNothing.txt,William Shakespeare,1599,comedy,Much Ado About Nothing
+26,Othello.txt,William Shakespeare,1604,tragedy,Othello
+27,RomeoandJuliet.txt,William Shakespeare,1595,tragedy,Romeo and Juliet
+28,TamingoftheShrew.txt,William Shakespeare,1594,comedy,Taming of the Shrew
+29,Tempest.txt,William Shakespeare,1611,romance,Tempest
+30,TimonOfAthens.txt,William Shakespeare,1606,tragedy,Timon of Athens
+31,TitusAndronicus.txt,William Shakespeare,1592,tragedy,Titus Andronicus
+32,TroilusandCressida.txt,William Shakespeare,1602,tragedy,Troilus and Cressida
+33,TwelfthNight.txt,William Shakespeare,1601,comedy,Twelfth Night
+34,TwoGentlemenofVerona.txt,William Shakespeare,1591,comedy,Two Gentlement of Verona
+35,Winter'sTale.txt,William Shakespeare,1610,romance,Winter's Tale

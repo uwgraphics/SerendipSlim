@@ -1,0 +1,9 @@
+.innerShape {
+    fill-opacity: .6;
+    stroke: Black;
+}
+
+.aggShape {
+    fill-opacity: .2;
+    stroke: DimGrey;
+}

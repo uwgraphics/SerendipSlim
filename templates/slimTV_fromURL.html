@@ -1,0 +1,30 @@
+{% extends "slimTV_single.html" %}
+
+{% block title_block %}
+
+{% endblock %}
+
+{% block definition_script %}
+    <script type="text/javascript" src="{{ url_for("static", filename="js/singleTV.js") }}"></script>
+    <script type="text/javascript">
+        var model_type = 'singleText';
+        var waitToRun = true;
+        var $LG_WORKER_URL = "{{ url_for('static', filename='js/W_lineGraph.js') }}";
+        var tokens_url = "{{ tokens_url }}";
+        tokens_url = tokens_url.replace('http:/v', 'http://v');
+
+        $('#fileLoadModal').modal('hide');
+
+        //var tokens = d3.csv(csv_url, getRul)
+        $.get(decodeURIComponent(tokens_url), function(tokenCSVstr) {
+            tokens = d3.csv.parseRows(tokenCSVstr);
+            main();
+            // TODO: This is a cheap hack, defaulting to 'count' with the single-view ones
+            // Make it winner-takes-all tagging
+            setTimeout(function() {
+                changeRankingType('count');
+                $('#textViewOptions').remove();
+            }, 4000);
+        });
+    </script>
+{% endblock %}

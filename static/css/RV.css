@@ -1,0 +1,29 @@
+.wordLine.highlight {
+    fill: yellow !important;
+}
+
+.wordLabel.highlight {
+    /*text-shadow: -2px 2px yellow;*/
+    font-weight: bold;
+}
+.wordLabel.sortingBy {
+    text-decoration: underline;
+}
+
+.topicLabel.highlight {
+    /*text-shadow: -2px 2px yellow;*/
+    font-weight: bold;
+}
+
+.topicBar.highlight {
+    stroke: black;
+    stroke-width: 1px;
+}
+
+.container {
+    margin-left: 0px;
+}
+
+body {
+    padding-top: 0px;
+}

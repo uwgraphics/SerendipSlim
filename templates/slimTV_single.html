@@ -1,0 +1,138 @@
+{% extends "slimTV.html" %}
+
+{% block title_block %} &mdash; Single Text: {{ text_name }}{% endblock %}
+
+{% block nav_btn_group %}
+    <!--<span class="brand">-->
+        <button id="newInstanceBtn" class="btn btn-small" title="Open new instance of SlimTV to look at new document"><i class="fa fa-folder-open"></i> Open New Document</button>
+        <button id="instructionsBtn" class="btn btn-small" data-toggle="modal" data-target="#instructionsModal" title="View instructions on using SlimTV"><i class="fa fa-question-circle"></i> How To Use</button>
+    <!--</span>--><!--style="margin-top: 0px;"-->
+
+{% endblock %}
+
+{% block extra_modals %}
+
+<div id="instructionsModal" class="modal hide fade" style="width: 40%; margin-left: -20%;" tabindex="-1" role="dialog" aria-labelledby="instructionsModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
+        <span id="instructionsModalLabel" style="font-size:20px;">SlimTV: How To Use</span>
+    </div>
+    <div class="modal-body">
+        <p>
+            <strong>SlimTV</strong> (short for Slim TextViewer) is a tool for reading and exploring documents of tagged text. It can be used in conjunction with other <a href="http://graphics.cs.wisc.edu/WP/vep/">VEP</a> tools like <a href="http://vep.cs.wisc.edu/ubiq/">Ubiq</a> and <a href="http://vep.cs.wisc.edu/serendip/">Serendip</a>, or as a standalone tool for creating and applying custom tagging schemes to individual documents.
+        </p>
+        <img src="{{ url_for("static", filename="img/screenshot_rev68.png") }}" style="width: 50%; margin-left: 25%;" />
+        <h3>Tag list</h3>
+        <p>
+            The list of tags on the left displays their proportions within the document by the size of the horizontal bar within each button. These buttons can be used to toggle each tag on and off, which will cause that tag's words to be highlighted in the passage view and its line to be highlighted in the document overview.
+        </p>
+        <p>
+            A visualization of a tag's distribution throughout the document can be viewed using the <i class="fa fa-bar-chart rotateClockwise"></i><i class="fa fa-cloud"></i> button for each tag. This can be toggled from bar charts to word clouds.
+        </p>
+        <h3>Passage view</h3>
+        <p>
+            This portion shows individual passages of the document, using colored highlighting to display any tags that are currently toggled on. Clicking a word will toggle it's tag, if it is tagged. Readers can scroll up and down in this view through the entire document, or else navigate using the document overview.
+        </p>
+        <h3>Document overview</h3>
+        <p>
+            On the right, a line graph shows the varying density of each tag within the document. The vertical axis corresponds to position within the document (with the beginning at the top and the end at the bottom) while the horizontal axis corresponds to the density of a tag at a window centered at that position. Clicking on a line within this graph will toggle that tag on or off, while clicking on the background of the overview will navigate the passage view to the corresponding position within the text
+        </p>
+        <p>
+            The slider on the top of the overview controls the smoothing factor of the line graph.
+        </p>
+        <h3>Other features</h3>
+        <ul>
+            <li><strong>Downloading data:</strong> Through buttons showing the <i class="fa fa-download"></i> icon, users can download different aspects of the tagged document data, including a file representing the tagged tokens, the untagged text as displayed, the overall distribution of tags throughout the document, or the distribution of words within a given tag. The CSV or TXT files from these downloads can be used with other analysis tools and methods.</li>
+            <li><strong>Search:</strong> By hitting <code>Ctrl-F</code> or typing in the search box in the upper right, users can find instances of individual phrases within the document. Search phrases are tokenized using the same algorithm as the built-in tagger, and are then matched token-by-token to the full text of the document. Hitting Enter or Submit repeatedly will scroll through each match of the search sequentially. Matches are also represented in the overview as yellow bars on the left side of the line graph visualization, and highlighted in yellow within the text.</li>
+        </ul>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-small" data-dismiss="modal" aria-hidden="true">OK</button>
+    </div>
+</div>
+
+
+<div id="fileLoadModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="fileLoadModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
+    <h3 id="fileLoadModalLabel">Select text to upload</h3>
+  </div>
+  <div class="modal-body">
+
+      <p>
+          <strong>Serendip SlimTV</strong> (short for Slim TextViewer) is a tool for reading and navigating tagged documents. You can either import a pre-tagged tokens file, or upload a new text document and a set of tagging rules.
+      </p>
+
+    <div class="accordion" id="inputFileAccordion">
+      <div class="accordion-group">
+        <div class="accordion-heading">
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#inputFileAccordion" href="#tokensCollapse">
+            Upload tokens CSV
+          </a>
+        </div>
+        <div id="tokensCollapse" class="accordion-body collapse in">
+          <div class="accordion-inner">
+              <p>
+                  If you have a CSV tokens file representing a tagged document, upload it here.
+              </p>
+              <div class="alert alert-info">
+                  <strong>Note:</strong> If you are opening a document tagged with Ubiq, you will want to use the following file dialog box to open the corresponding file in the <code>token_csv</code> directory.
+              </div>
+            <input type="file" id="tokensFileInput" name="files[]" />
+          </div>
+        </div>
+      </div>
+      <div class="accordion-group">
+        <div class="accordion-heading">
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#inputFileAccordion" href="#textCollapse">
+            Upload text file and rules
+          </a>
+        </div>
+        <div id="textCollapse" class="accordion-body collapse">
+          <div class="accordion-inner">
+              <h5>Text file</h5>
+              <input type="file" id="textFileInput" name="files[]" />
+
+              <h5>Rules type</h5>
+              <div class="radio">
+                  <label onclick='$("#writeRulesDiv").hide(); $("#rulesFileInput").show();'>
+                      <input type="radio" name="RulesChoice" id="rulesChoice_file" value="option1" checked>
+                      Import rules CSV file
+                  </label>
+                  <input type="file" id="rulesFileInput" name="files[]" />
+              </div>
+              <div class="radio">
+                  <label onclick='$("#writeRulesDiv").show(); $("#rulesFileInput").hide();'>
+                      <input type="radio" name="RulesChoice" id="rulesChoice_write" value="option2">
+                      Write rules from scratch
+                  </label>
+                  <div id="writeRulesDiv" style="display: none">
+                      Each line should contain a rule of the form <code>phrase, ruleName</code>.
+                      <textarea id="rulesTextArea" rows="3"></textarea>
+                  </div>
+
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!--<input type="file" id="files" name="files[]" />-->
+  </div>
+  <div class="modal-footer">
+    <!--<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>-->
+    <button id="loadFilesBtn" class="btn btn-primary disabled">Load tokens</button>
+  </div>
+</div>
+{% endblock %}
+
+{% block definition_script %}
+    <script type="text/javascript" src="{{ url_for("static", filename="js/singleTV.js") }}"></script>
+    <script type="text/javascript">
+        var model_type = 'singleText';
+        var waitToRun = true;
+        var $LG_WORKER_URL = "{{ url_for('static', filename='js/W_lineGraph.js') }}";
+    </script>
+{% endblock %}

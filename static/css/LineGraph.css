@@ -1,0 +1,56 @@
+
+/* CSS for lines in line graph */
+.tagLine
+{
+    opacity: 0.25;
+    cursor: pointer;
+}
+
+.tagLine, .line
+{
+    stroke: #666;
+    fill: none;
+    stroke-opacity: 1.0;
+    stroke-width: 2;
+}
+
+.tagLine, .lineShadow
+{
+    stroke: #666;
+    fill: none;
+    stroke-opacity: 0.10;
+    stroke-width: 8;
+}
+
+g rect
+{
+    pointer-events: none;
+}
+
+g:hover,
+g.active,
+g.highlight
+{
+    opacity: 0.5;
+}
+
+g.highlight .lineShadow
+{
+    stroke-opacity: 0.5;
+}
+
+g.highlight .line
+{
+    stroke: #ffff00;
+}
+
+/*g.highlight use.polyline_shadow
+{
+    stroke: #66;
+}*/
+
+g.highlight-red use.polyline,
+g.highlight-red use.polyline_shadow
+{
+    stroke: #ff0000;
+}

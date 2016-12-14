@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SerendipSlim RV{% block title_block %} &mdash; {{ model_name }}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/bootstrap-additions.css") }}" />
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/RV.css") }}" />
+    <script type="text/javascript" src="{{ url_for("static", filename="js/d3/d3.v3.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/jquery/jquery-1.9.1.js") }}"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{ url_for("flask_util_js") }}"></script>
+
+    <script type="text/javascript" src="{{ url_for("static", filename="js/Utils.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/Representations.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/SlimRV.js") }}"></script>
+</head>
+<body>
+    <div id='titleBar' class='container'>
+        <h2>SerendipSlim <small>RankViewer</small></h2>
+        <form id='addWordsForm' class='form-inline' role='form'>
+          <div class='form-group col-sm-5'>
+            <label for="addWordsInput" class='sr-only control-label'>Add word(s)</label>
+            <input type="text" id="addWordsInput" class='form-control' placeholder="Enter words separated by a space">
+          </div>
+          <div class='form-group'>
+            <label for='colorSelect' class='sr-only control-label'>Color</label>
+            <select id='colorSelect' class='form-control'>
+                <option>red</option>
+                <option>blue</option>
+                <option>green</option>
+                <option>purple</option>
+                <option>orange</option>
+                <option>pink</option>
+            </select>
+          </div>
+          <div class='form-group'>
+            <button type="submit" class="btn btn-default">Add</button>
+          </div>
+        </form>
+        </div>
+    <table>
+        <tr><td valign="top"><div id='rankingsDiv'></div></td><td valign="top"><div id='topicView'></div></td></tr>
+    </table>
+    <!--<div id='rankingsDiv'>
+
+    </div>-->
+    <div id='bottomBar' class='container'>
+    </div>
+    <script type="text/javascript">
+        var model_name = "{{ model_name|safe }}";
+        var rankingType = "{{ rankingType|safe }}";
+        var r = {{ rankingsObject|tojson|safe }};
+        var topicNamesURL = "{{ url_for('utils_get_topic_names', model_name=model_name) }}";
+        initWordRankings('#rankingsDiv', model_name, r.words, r.colors, r.wordsPerTopic, r.maxWordsPerTopic, r.rankings);
+        initForms();
+    </script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+#tagRepContainer svg {
+    display: block;
+    margin: auto;
+}
+
+/* CSS for toggler buttons */
+.fill_bar
+{
+    height: 60%;
+    top: 20%;
+    bottom: auto;
+}
+
+
+/* CSS from html_formatter styles.css */
+.html_formatter
+{
+    font-size: 16px;
+    line-height: 24px;
+    /* Someday the above sizing hacks won't be necessary:
+       http://dev.w3.org/csswg/css4-text/#white-space-collapsing
+     */
+    /* white-space-collapse: discard; */
+    padding: 20px;
+}
+
+.html_formatter .line > span
+{
+    font-size: 16px;
+    line-height: 24px;
+    white-space: pre-wrap;
+    cursor: pointer;
+    border-radius: 2px;
+    /*border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;*/
+}
+
+/*.html_formatter .line > span:not(data-key~="!UNTAGGED"]) {*/
+    /*cursor: not-allowed !important;*/
+    /*background: red !important;*/
+/*}*/
+
+.html_formatter .line > span {
+    border-radius: 4px;
+    border: 1px solid transparent;
+    margin: -1px;
+}
+
+.html_formatter .line > span:hover,
+.html_formatter .line > span.active,
+.html_formatter .line > span.highlight,
+.html_formatter .line > span.highlight-red
+{
+    border-color: #a6a6a6;
+    background-color: #d9d9d9;
+    /*box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 0 0 4px rgba(0, 0, 0, 0.15) !important;*/
+    /*text-shadow: 0 1px 0 rgba(255,255,255,0.15), 0 -1px 0 rgba(255,255,255,0.15), -1px 0 0 rgba(255,255,255,0.15), 1px 0 0 rgba(255,255,255,0.15), 0 1px 2px rgba(255,255,255,0.35) !important;*/
+    /*position: relative;*/
+    /*z-index: 2;*/
+}
+
+/*.html_formatter .line > span:hover,
+.html_formatter .line > span.active
+{
+    background-color: #808080;
+    background-color: rgba(128,128,128,0.35);
+}*/
+
+.html_formatter .line > span.active
+{
+    /*box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 0 0 4px rgba(0, 0, 0, 0.35) !important;*/
+}
+
+.html_formatter .line > span.highlight
+{
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 0 0 4px rgba(255, 255, 0, 0.65) !important;
+}
+
+.html_formatter .line > span.highlight-red
+{
+/*    -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 0 4px 2px rgba(255, 0, 0, 0.35) !important;
+    -moz-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 0 4px 2px rgba(255, 0, 0, 0.35) !important;*/
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 0 4px 2px rgba(255, 0, 0, 0.35) !important;
+}
+
+.html_formatter .line > span[data-active-tag~='!MULTIPLE'],
+.html_formatter .line > span[data-active-tag~='!MULTIPLE_1']
+{
+    background-color: #969696 !important;
+}
+
+.html_formatter .line > span[data-active-tag~='!MULTIPLE_0']
+{
+    background-color: #D9D9D9 !important;
+}
+
+.html_formatter .line > span[data-active-tag~='!MULTIPLE_2']
+{
+    background-color: #525252 !important;
+}
+
+/*.html_formatter .line > span.highlight >span.tag-class
+{
+    display: none;
+}*/
+
+.html_formatter .line > span.highlight-red
+{
+    border: 3px solid #ff0000;
+    margin: -3px;
+}
+
+/*.tags .line > span.tagged-token {*/
+    /*background: green;*/
+/*}*/
+
+body.debug.testing .html_formatter .line > span.tag {
+    outline: 1px solid green;
+}
+
+body.debug.testing .html_formatter .line > span.token {
+    outline: 1px solid yellow;
+}
+
+body.debug.testing .html_formatter .line > span.str {
+    outline: 1px solid red;
+}
+
+/*.html_formatter .line > span
+{
+    display: inline-block;
+    line-height: 18px;
+    margin: 1px 0;
+}*/
+
+/*.html_formatter .line > span .line > span.tag-class
+{
+    position: absolute;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+.html_formatter .line > span .line > span.tag-class[class$="_4"]
+{
+    z-index: 4;
+}
+
+.html_formatter .line > span .line > span.tag-class[class$="_3"]
+{
+    z-index: 3;
+}
+
+.html_formatter .line > span .line > span.tag-class[class$="_2"]
+{
+    z-index: 2;
+}
+
+.html_formatter .line > span .line > span.tag-class[class$="_1"]
+{
+    z-index: 1;
+}
+
+.html_formatter .line > span .line > span.tag-class[class$="_0"]
+{
+    z-index: 1;
+}
+
+.html_formatter .line > span .line > span:not(.tag-class)
+{
+    position: relative;
+    z-index: 5;
+}
+
+.html_formatter .line > span .line > span.tag-class
+{
+    display: none;
+}
+*/
+
+.btn-group.tags_top_only .btn,
+.btn-group.color_ramps .btn
+{
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto 100%;
+    width: 265px;
+    height: 172px;
+}
+
+.btn-group.tags_top_only .btn.btn-tags_top_only_off
+{
+    background-image: url('/static/img/tags_top_only_off_color_ramps_off.png');
+    background-image: -webkit-image-set(url('/static/img/tags_top_only_off_color_ramps_off.png') 1x, url('/static/img/tags_top_only_off_color_ramps_off@2x.png') 2x);
+}
+
+.btn-group.tags_top_only .btn.btn-tags_top_only_on
+{
+    background-image: url('/static/img/tags_top_only_on_color_ramps_off.png');
+    background-image: -webkit-image-set(url('/static/img/tags_top_only_on_color_ramps_off.png') 1x, url('/static/img/tags_top_only_on_color_ramps_off@2x.png') 2x);
+}
+
+.btn-group.tags_top_only .btn.btn-tags_top_only_on.color_ramps_on
+{
+    background-image: url('/static/img/tags_top_only_on_color_ramps_on.png');
+    background-image: -webkit-image-set(url('/static/img/tags_top_only_on_color_ramps_on.png') 1x, url('/static/img/tags_top_only_on_color_ramps_on@2x.png') 2x);
+}
+
+.btn-group.tags_top_only .btn.btn-tags_top_only_off.color_ramps_on
+{
+    background-image: url('/static/img/tags_top_only_off_color_ramps_on.png');
+    background-image: -webkit-image-set(url('/static/img/tags_top_only_off_color_ramps_on.png') 1x, url('/static/img/tags_top_only_off_color_ramps_on@2x.png') 2x);
+}
+
+.btn-group.color_ramps .btn
+{
+    height: 96px;
+}
+
+.btn-group.color_ramps .btn.color_ramps_off
+{
+    background-image: url('/static/img/color_ramps_off_tags_top_only_off.png');
+    background-image: -webkit-image-set(url('/static/img/color_ramps_off_tags_top_only_off.png') 1x, url('/static/img/color_ramps_off_tags_top_only_off@2x.png') 2x);
+}
+
+.btn-group.color_ramps .btn.color_ramps_on
+{
+    background-image: url('/static/img/color_ramps_on_tags_top_only_off.png');
+    background-image: -webkit-image-set(url('/static/img/color_ramps_on_tags_top_only_off.png') 1x, url('/static/img/color_ramps_on_tags_top_only_off@2x.png') 2x);
+}
+
+.btn-group.color_ramps .btn.color_ramps_off.tags_top_only_on
+{
+    background-image: url('/static/img/color_ramps_off_tags_top_only_on.png');
+    background-image: -webkit-image-set(url('/static/img/color_ramps_off_tags_top_only_on.png') 1x, url('/static/img/color_ramps_off_tags_top_only_on@2x.png') 2x);
+}
+
+.btn-group.color_ramps .btn.color_ramps_on.tags_top_only_on
+{
+    background-image: url('/static/img/color_ramps_on_tags_top_only_on.png');
+    background-image: -webkit-image-set(url('/static/img/color_ramps_on_tags_top_only_on.png') 1x, url('/static/img/color_ramps_on_tags_top_only_on@2x.png') 2x);
+}

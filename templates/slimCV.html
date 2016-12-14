@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+
+{# Thanks to http://stackoverflow.com/a/7027035/1991086 #}
+
+{% if not ui_size %}
+    {% set ui_size="small" %}
+{% endif %}
+
+{% if not ui_color %}
+    {% set ui_color="" %}
+{% endif %}
+
+{% set body_class="" %}
+{% if config.DEBUG == True %}
+    {% set body_class = body_class + " " + "debug" %}
+{% endif %}
+{% if config.TESTING == True %}
+    {% set body_class = body_class + " " + "testing" %}
+{% endif %}
+{% if ui_color and ui_color !="" %}
+    {% set body_class = body_class + " " + "body-" + ui_color %}
+{% endif %}
+
+{% set navbar_class="navbar" %}
+{% set navbar_size_class=navbar_class %}
+{% set navbar_color_class=navbar_class %}
+{% set navbar_size_class="" %}
+{% set navbar_color_class="" %}
+{% if ui_size and ui_size !="" %}
+    {% set navbar_size_class="navbar navbar-" + ui_size %}
+    {% set navbar_class = navbar_class + " " + navbar_size_class %}
+{% endif %}
+{% if ui_color and ui_color !="" %}
+    {% set navbar_color_class="navbar navbar-" + ui_color %}
+    {% set navbar_class = navbar_class + " " + navbar_color_class %}
+{% endif %}
+
+{% set btn_class="btn" %}
+{% set btn_size_class=btn_class %}
+{% set btn_color_class=btn_class %}
+{% if ui_size and ui_size !="" %}
+    {% set btn_size_class="btn btn-" + ui_size %}
+    {% set btn_class = btn_class + " " + btn_size_class %}
+{% endif %}
+{% if ui_color and ui_color !="" %}
+    {% set btn_color_class="btn btn-" + ui_color %}
+    {% set btn_class = btn_class + " " + btn_color_class %}
+{% endif %}
+
+{% if not main_content_class %}
+    {% set main_content_class = "withLoadingIndicator" %}
+{% endif %}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>SerendipSlim CV &mdash; {{ model_name }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.6.1/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-additions.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/btn-group-tag.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hueRamps.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/LineGraph.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/CV.css') }}">
+    {# <link rel="stylesheet" href="{{ url_for('get_html_formatter_css') }}">
+    <link rel="stylesheet" href="{{ url_for('get_line_graph_formatter_css') }}"> #}
+
+    {% if css %}
+    <style type="text/css">
+{{ css|safe }}
+    </style>
+    {% endif %}
+
+    {% block head %}{% endblock %}
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+</head>
+<body class="{{ body_class }}">
+
+    {% block floating_divs %}
+        <ul id="rowContextMenu" class="dropdown-menu contextmenu" role="menu" aria-labelledby="dropdownMenu">
+            <li><a id="sortByRow" tabindex="-1">Sort by this row</a></li>
+            <li><a id="sortByDistFromRow" tabindex="-1">Sort rows by distance from this</a></li>
+            <li class="dropdown-submenu">
+                <a id="colorRow" tabindex="-1">Color this row</a>
+                <ul id="rowColorDropdown" class="dropdown-menu">
+                </ul>
+            </li>
+            <li class="divider"></li>
+            <li class="deprecated"><a id="hideRow" tabindex="-1">Hide this row</a></li>
+            <li class="forRowAgg disabled"><a id="openGroup" tabindex="-1">Open group</a></li>
+            <li class="forRowAgg deprecated"><a id="openGroupInMeso" tabindex="-1">Open group in MesoViewer</a> </li>
+            <li class="nonRowAgg"><a id="openInTextViewer" tabindex="-1">Open in TextViewer</a></li>
+        </ul>
+        <ul id="colContextMenu" class="dropdown-menu contextmenu" role="menu" aria-labelledby="dropdownMenu">
+            <li><a id="sortByCol" tabindex="-1">Sort by this column</a></li>
+            <li><a id="sortByDistFromCol" tabindex="-1">Sort cols by distance from this</a></li>
+            <li class="dropdown-submenu">
+                <a id="colorCol" tabindex="-1">Color this column</a>
+                <ul id="colColorDropdown" class="dropdown-menu">
+                </ul>
+            </li>
+            <li class="divider"></li>
+            <li class="deprecated"><a id="hideCol" tabindex="-1">Hide this column</a></li>
+            <li><a id="renameCol" tabindex="-1" href="#renameTopicModal" data-toggle="modal">Rename this column</a></li>
+        </ul>
+    {% endblock %}
+
+    <div class="navbar {{ navbar_color_class }} navbar-fixed-top">
+        <div class="navbar-inner">
+                <a class="brand" href="{{ url_for('index') }}">SerendipSlim</a>
+                <div class="nav">
+                {% block nav %}
+                    <div class="btn-group">
+                        <a href="{{ url_for("cv_view_by_name", model_name=model_name) }}" class="btn btn-primary" type="button">
+                            {{ model_name }}
+                        </a>
+                        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret" style="border-top-color: #fff; border-bottom-color: #fff;"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                        {% for model in models|sort %}
+                            <li{% if model == model_name %} class="disabled"{% endif %}>
+                                <a tabindex="-1" href="{{ url_for("cv_view_by_name", model_name=model) }}">{{ model }}</a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                {% endblock %}
+                </div>
+                {% block nav_extra %}
+                    <a id="settings" href="#settingsModal" data-toggle="modal" class="btn pull-right">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+                    <a id="openRankViewer" class="btn pull-right">RankViewer</a>
+                    <!-- Actual modal div located at top of sidebar_content block -->
+                {% endblock %}
+        </div>
+    </div>
+
+    {% block body %}
+        <div class="container-absolute">
+            <div class="row-fluid spanv10">
+
+                {% block sidebar %}
+
+                    {% block left_sidebar_top %}
+                        <div id="left_sidebar_top" class="span2 spanv4">
+                            {% block left_sidebar_top_inner %}
+                                <div id="left_sidebar_top_navbar" class="{{ navbar_class }}">
+                                    <div class="navbar-inner">
+                                        {% block left_sidebar_top_navbar %}
+                                            <span class="brand">Topic controls</span>
+                                            <div class="btn-group pull-right" data-toggle="buttons-radio">
+                                                <button id="toggleColorByColBtn" class="{{ btn_class }}" type="button"><i class="fa fa-magic"></i></button>
+                                            </div>
+                                        {% endblock %}
+                                    </div>
+                                </div>
+                                <div id="left_sidebar_top_content" class="span12 spanv10">
+                                    {% block left_sidebar_top_content %}
+                                        <div class="accordion" id="topicAccordion">
+                                            <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="topicAccordion" href="#topicSortCollapse">
+                                                        Sorting
+                                                    </a>
+                                                </div>
+                                                <div id="topicSortCollapse" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <select id="topicSortSelect" class="input-small">
+                                                            <option>None</option>
+                                                        </select>
+                                                        <br />
+                                                        <p>
+                                                        <a id="topicCustomOrder" class="btn {{ btn_size_class }} deprecated" href="#topicCustomOrderModal" data-toggle="modal">Custom Order</a>
+                                                        </p>
+                                                        <div id="topicCustomOrderModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="topicCustomOrderModalLabel" aria-hidden="true">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                <h3 id="topicCustomOrderModalLabel">Custom topic ordering</h3>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Input comma-delimited order:</p>
+                                                                <form>
+                                                                    <input id="topicCustomOrderInput" type="text" class="input-big">
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn {{ btn_size_class }}" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                                                <button id="topicCustomOrderSubmit" class="btn btn-primary">Order</button>
+                                                            </div>
+                                                        </div>
+                                                        <p>
+                                                        <a id="anovaOrder" class="btn {{ btn_size_class }} deprecated" href="#anovaOrderModal" data-toggle="modal">Order by ANOVA</a>
+                                                        </p>
+                                                        <div id="anovaOrderModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="anovaOrderModalLabel" aria-hidden="true">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                <h3 id="anovaOrderModalLabel">Order by ANOVA</h3>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Select metadata field to use for ANOVA ordering:</p>
+                                                                <select id="anovaOrderSelect" class="input-small">
+                                                                </select>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn {{ btn_size_class }}" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                                                <button id="anovaOrderSubmit" class="btn btn-primary">Order</button>
+                                                            </div>
+                                                        </div>
+                                                        <p>
+                                                        <a id="contrastOrder" class="btn {{ btn_size_class }} deprecated" href="#contrastOrderModal" data-toggle="modal">Order by Contrast</a>
+                                                        </p>
+                                                        <div id="contrastOrderModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="contrastOrderModalLabel" aria-hidden="true">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                <h3 id="contrastOrderModalLabel">Order by contrast between categories</h3>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Select metadata field to use for contrast ordering:</p>
+                                                                <select id="contrastOrderSelect" class="input-small">
+                                                                </select>
+                                                                <p>Select categories to be contrasted:</p>
+                                                                <select id="contrastGroup1Select" class="contrastGroup input-small">
+                                                                </select>
+                                                                <select id="contrastGroup2Select" class="contrastGroup input-small">
+                                                                </select>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn {{ btn_size_class }}" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                                                <button id="contrastOrderSubmit" class="btn btn-primary">Order</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="docAccordion" href="#topicSelectCollapse">
+                                                        Selection
+                                                    </a>
+                                                </div>
+                                                <div id="topicSelectCollapse" class="accordion-body collapse in">
+                                                    <div class="accordion-inner">
+                                                        <div id="topicAdvancedSelectModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="topicAdvancedSelectModalLabel" aria-hidden="true">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                <h3 id="topicAdvancedSelectModalLabel">Advanced Select</h3>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Select topics with these properties:</p>
+                                                                <form id="topicAdvancedSelectBody">
+
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn {{ btn_size_class }}" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                                                <button id="topicAdvancedSelectSubmit" class="btn btn-primary">Select</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="btn-group">
+                                                            <a id="topicAdvancedSelect" class="btn {{ btn_size_class }} btn-primary disabled deprecated" href="#topicAdvancedSelectModal" data-toggle="modal">Advanced Select</a>
+                                                            <a id="loadTopicSelection" class="btn {{ btn_size_class }} deprecated"><i class="fa fa-arrow-circle-down"></i></a>
+                                                            <a id="saveTopicSelection" class="btn {{ btn_size_class }} deprecated   "><i class="fa fa-floppy-o"></i></a>
+                                                        </div>
+                                                        <pre id="selectedCols" class="pre-scrollable" style="max-height: 200px;">No topics selected</pre>
+                                                        <div class="btn-group">
+                                                            <a id="clearColSelection" class="btn {{ btn_size_class }}"><i class="fa fa-times"></i></a>
+                                                            <a id="topicColorSelection" class="btn {{ btn_size_class }} btn-info" data-toggle="popover"><i class="fa fa-th-large"></i></a>
+                                                            <a id="sortDocsBySelection" class="btn {{ btn_size_class }}"><i class="fa fa-sort"></i></a>
+                                                            <a id="moveSelectionToLeft" class="btn {{ btn_size_class }}"><div class="rotate"><i class="fa fa-sort-asc"></i></div></a>
+                                                            <a id="sortTopicsByDist" class="btn {{ btn_size_class }}"><div class="rotate"><i class="fa fa-sort"></i></div></a>
+                                                            <a id="hideTopicSelection" class="btn {{ btn_size_class }} deprecated"><i class="fa fa-eye-slash"></i></a>
+                                                            <a id="hideAllTopicsButSelection" class="btn {{ btn_size_class }} deprecated"><i class="fa fa-search-plus"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endblock %}
+                                </div>
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+
+                    {% block left_sidebar_bottom %}
+                        <div id="left_sidebar_bottom" class="span2 spanv6 alpha-vertical-left">
+                            {% block left_sidebar_bottom_inner %}
+                                <div id="left_sidebar_bottom_navbar" class="{{ navbar_class }}">
+                                    <div class="navbar-inner">
+                                        {% block left_sidebar_bottom_navbar %}
+                                            <span class="brand">Document controls</span>
+                                            <div class="btn-group pull-right" data-toggle="buttons-radio">
+                                                <button id="toggleColorByRowBtn" class="{{ btn_class }} active" type="button" data-toggle="buttons-radio"><i class="fa fa-magic"></i></button>
+                                            </div>
+                                        {% endblock %}
+                                    </div>
+                                </div>
+                                <div id="left_sidebar_bottom_content" class="span12 spanv10">
+                                    {% block left_sidebar_bottom_content %}
+                                        <!-- This modal isn't actually in the sidebar, but it needed the sidebar's CSS to show up over the fade -->
+                                        <div id="settingsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h3 id="settingsModalLabel">Settings</h3>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h4>Glyph Threshold</h4>
+                                                <p>Data values falling below the given threshold will not be shown in the matrix. Adjusting this value can help improve performance within dense matrices.</p>
+                                                <p><input id="dataThresholdInput" type="text">
+                                                <div id="ranking_type_radio_div">
+                                                    <h4>Topic Representation</h4>
+                                                    <!--<p>Number of words to display:</p>
+                                                    <p><input id="numWordsInput" type="text"></p>-->
+                                                    <p>Methods for ranking words within topic distributions:</p>
+                                                    <p>
+                                                        <div class="radio" id="rankingTypeRadioGroup">
+                                                            <label class="radio">
+                                                                <input type="radio" name="rankingType" id="freq">
+                                                                Rank by frequency
+                                                            </label>
+                                                            <label class="radio">
+                                                                <input type="radio" name="rankingType" id="sal" checked>
+                                                                Rank by saliency
+                                                            </label>
+                                                            <label class="radio">
+                                                                <input type="radio" name="rankingType" id="ig">
+                                                                Rank by information gain
+                                                            </label>
+                                                        </div>
+                                                    </p>
+                                                </div>
+                                                <!--<h4>Aggregation glyphs</h4>
+                                                <p>Scale factor for aggregate glyphs (must be between 1 and 5):</p>
+                                                <p><input id="aggSizeFactorInput" type="text"></p>-->
+                                            </div>
+                                        </div>
+                                        <!-- Now beginning actual sidebar content. -->
+                                        <div class="accordion" id="docAccordion">
+                                            <div class="accordion-group nonRowAgg">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="docAccordion" href="#docLabelCollapse">
+                                                        Labeling by metadata
+                                                    </a>
+                                                </div>
+                                                <div id="docLabelCollapse" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <label class="radio">
+                                                            <input type="radio" name="docLabelsRadios" id="autoDocLabels" value="option1" checked>
+                                                            Auto-generate labels
+                                                        </label>
+                                                        <label class="radio">
+                                                            <input type="radio" name="docLabelsRadios" id="metadataDocLabels" value="option2">
+                                                            Label with metadata
+                                                        </label>
+                                                        <select id="metadataDocLabelSelect" class="input-small">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="docAccordion" href="#sortCollapse">
+                                                        Sorting
+                                                    </a>
+                                                </div>
+                                                <div id="sortCollapse" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <h6 class="nonRowAgg">By metadata</h6>
+                                                        <select id="sortSelect" class="input-small nonRowAgg">
+                                                            <option value='None'>None</option>
+                                                        </select>
+                                                        <h6>By nth topic size</h6>
+                                                        <select id="sortByNthTopicSelect" class="input-small">
+                                                            <option value="-1">None</option>
+                                                            <option value="0">First</option>
+                                                            <option value="1">Second</option>
+                                                            <option value="2">Third</option>
+                                                            <option value="3">Fourth</option>
+                                                            <option value="4">Fifth</option>
+                                                        </select>
+                                                        <br />
+                                                        <a id="docCustomOrder" class="btn {{ btn_size_class }} nonRowAgg deprecated " href="#docCustomOrderModal" data-toggle="modal">Custom Order</a>
+                                                        <div id="docCustomOrderModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="docCustomOrderModalLabel" aria-hidden="true">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                <h3 id="docCustomOrderModalLabel">Custom document ordering</h3>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Input comma-delimited order:</p>
+                                                                <form>
+                                                                    <input id="docCustomOrderInput" type="text" class="input-big">
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn {{ btn_size_class }}" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                                                <button id="docCustomOrderSubmit" class="btn btn-primary">Order</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="docAccordion" href="#aggCollapse">
+                                                        Aggregation
+                                                    </a>
+                                                </div>
+                                                <div id="aggCollapse" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <select id="aggregateSelect" class="input-small">
+                                                            <option>None</option>
+                                                        </select>
+                                                        <div id="clearAggDiv" class="forRowAgg"><a id="clearAggregation" class="btn {{ btn_size_class }}">Unaggregate</a></div>
+                                                    </div>
+                                                    <div id="aggIntModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labeledby="aggIntModalLabel" aria-hidden="true">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                            <h3 id="aggIntModalLabel">Aggregate by numerical metadata</h3>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Aggregate in chunks of <input id="aggChunkSize" type="text" class="input-small"> starting from <input id="aggStartingFrom" type="text" class="input-small">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn {{ btn_size_class }}" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                                            <button id="aggIntSubmit" class="btn {{ btn_size_class }} btn-primary">Aggregate</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-group nonRowAgg deprecated">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="docAccordion" href="#filterCollapse">
+                                                        Filtering
+                                                    </a>
+                                                </div>
+                                                <div id="filterCollapse" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <a id="addFilter" href="#addFilterModal" data-toggle="modal" class="btn {{ btn_size_class }}btn-primary"><!--<i class="icon-plus icon-white"></i>-->+ Add</a>
+                                                        <div id="addFilterModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                <h3 id="myModalLabel">Add filter</h3>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Filter documents with these properties:</p>
+                                                                <form id="addFilterBody">
+
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn {{ btn_size_class }}" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                                                <button id="addFilterSubmit" class="btn {{ btn_size_class }} btn-primary">Add</button>
+                                                            </div>
+                                                        </div>
+                                                        <div id="filterWell" class="well well-small">
+                                                            <!--No active filters-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="docAccordion" href="#selectCollapse">
+                                                        Selection
+                                                    </a>
+                                                </div>
+                                                <div id="selectCollapse" class="accordion-body collapse in">
+                                                    <div class="accordion-inner">
+                                                        <div id="advancedSelectModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="advancedSelectModalLabel" aria-hidden="true">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                <h3 id="advancedSelectModalLabel">Advanced Select</h3>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Select documents with these properties:</p>
+                                                                <form id="advancedSelectBody">
+
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn {{ btn_size_class }}" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                                                <button id="advancedSelectSubmit" class="btn btn-primary">Select</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="btn-group">
+                                                            <a id="advancedSelect" class="btn {{ btn_size_class }} btn-primary" href="#advancedSelectModal" data-toggle="modal">Advanced Select</a>
+                                                            <a id="loadSelection" class="btn {{ btn_size_class }} deprecated"><i class="fa fa-arrow-circle-down"></i></a>
+                                                            <a id="saveSelection" class="btn {{ btn_size_class }} deprecated"><i class="fa fa-floppy-o"></i></a>
+                                                        </div>
+                                                        <pre id="selectedRows" class="pre-scrollable" style="max-height: 200px;">No documents selected</pre>
+                                                        <div class="btn-group">
+                                                            <a id="clearRowSelection" class="btn {{ btn_size_class }}"><i class="fa fa-times"></i></a>
+                                                            <a id="colorSelection" class="btn {{ btn_size_class }} btn-info" data-toggle="popover"><i class="fa fa-th-large"></i></a>
+                                                            <a id="sortBySelection" class="btn {{ btn_size_class }}"><div class="rotate"><i class="fa fa-sort"></i></div></a>
+                                                            <a id="moveSelectionToTop" class="btn {{ btn_size_class }}"><i class="fa fa-sort-asc"></i></a>
+                                                            <a id="sortDocsByDist" class="btn {{ btn_size_class }}"><i class="fa fa-sort"></i></a>
+                                                            <a id="hideSelection" class="btn {{ btn_size_class }} deprecated"><i class="fa fa-eye-slash"></i></a>
+                                                            <a id="hideAllButSelection" class="btn {{ btn_size_class }} deprecated"><i class="fa fa-search-plus"></i></a>
+                                                            <!--<a id="openSelectionInMeso" class="btn {{ btn_size_class }}"><i class="fa fa-folder-open-o"></i></a>-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-group nonRowAgg">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="docAccordion" href="#colorCollapse">
+                                                        Coloring by metadata
+                                                    </a>
+                                                </div>
+                                                <div id="colorCollapse" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <select id="colorByMetadataSelect" class="input-small">
+                                                            <option>None</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endblock %}
+                                </div>
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+
+                {% endblock %}
+
+                {% block main %}
+                    <div id="main" class="span8 spanv10">
+                        {% block main_inner %}
+                            <div id="main_navbar" class="{{ navbar_class }}">
+                                <div class="navbar-inner">
+                                {% block main_navbar %}
+                                    <span class="brand" id="matrixViewBreadcrumbs">
+                                        <!--<a href="#">Model</a> / <a href="#">Aggregating by: Genre</a> / Genre: Argumentation-->
+                                        Model
+                                    </span>
+                                    <div class="btn-group pull-right">
+                                        <button id="hideEmptyTopics" class="{{ btn_class }} deprecated" type="button">Hide Empty Topics</button>
+                                        <button id="resetColors" class="{{ btn_class }}" type="button">Reset Colors</button>
+                                        <button id="resetOrders" class="{{ btn_class }}" type="button">Reset Data</button>
+                                    </div>
+                                {% endblock %}
+                                </div>
+                            </div>
+                            {% block main_post_navbar %}{% endblock %}
+                            <div id="main_content" class="span12 spanv10 {{ main_content_class }}">
+                                {% block main_content %}
+                                    <div id="renameTopicModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="renameTopicModalLabel" aria-hidden="true">
+                                        <div class="modal-header">
+                                            <button id="renameTopicDismiss" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h3 id="renameTopicModalLabel">Rename Topic</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>New name:</p>
+                                            <p><input id="newTopicName" type="text"></p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" id="renameTopicCancel" class="btn {{ btn_size_class }}" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                            <button type="button" id="renameTopicSubmit" class="btn {{ btn_size_class }} btn-primary">Rename</button>
+                                        </div>
+                                    </div>
+                                    <div id="nameGroupModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="nameGroupModalLabel" aria-hidden="true">
+                                        <div class="modal-header">
+                                            <button id="nameGroupDismiss" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h3 id="nameGroupModalLabel">Name group</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Name:</p>
+                                            <p><input id="groupName" type="text"></p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="nameGroupCancel" class="btn {{ btn_size_class }}" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                            <button id="nameGroupSubmit" class="btn {{ btn_size_class }} btn-primary">Name</button>
+                                        </div>
+                                    </div>
+                                    <div id="loadGroupModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="loadGroupModalLabel" aria-hidden="true">
+                                        <div class="modal-header">
+                                            <button id="loadGroupDismiss" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h3 id="loadGroupModalLabel">Name group</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Group to load:</p>
+                                            <p><select id="loadGroupSelect"></select></p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="loadGroupCancel" class="btn {{ btn_size_class }}" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                            <button id="loadGroupSubmit" class="btn {{ btn_size_class }} btn-primary">Load</button>
+                                        </div>
+                                    </div>
+                                    <div id="matrixView">
+                                        Corpus matrix here
+                                    </div>
+                                {% endblock %}
+                            </div>
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+
+                {% block right_sidebar %}
+
+                    {% block right_sidebar_top %}
+                        <div id="right_sidebar_top" class="span2 spanv5 omega">
+                            {% block right_sidebar_top_inner %}
+                                <div id="right_sidebar_top_navbar" class="{{ navbar_class }}">
+                                    <div class="navbar-inner">
+                                        {% block right_sidebar_top_navbar %}
+                                            <span class="brand" id="topicViewTitle">Topic <span id="selectedTopicNum"></span></span>
+                                            <a id="hideSelectedTopic" class="pull-right close deprecated">&times;</a>
+                                            <ul class="nav pull-right">
+                                                <li><a id="topicMetadataTabBtn" href="#topicMetadataTab" data-toggle="tab"><i class="fa fa-percent"></i></a></li>
+                                                <li class="active"><a id="topicViewBtn" href="#topicView" data-toggle="tab"><div class="rotateClockwise"><i class="fa fa-bar-chart"></i></div></a></li>
+                                                <li><a id="topicCloudViewBtn" href="#topicCloudView" data-toggle="tab"><i class="fa fa-cloud"></i></a></li>
+                                            </ul>
+                                        {% endblock %}
+                                    </div>
+                                </div>
+                                <div id="right_sidebar_top_content" class="span12 spanv10">
+                                    {% block right_sidebar_top_content %}
+                                        <div class="tab-content">
+                                            <div class="tab-pane" id="topicMetadataTab">
+                                                No topic selected.
+                                            </div>
+                                            <div class="tab-pane active" id="topicView">
+                                                No topic selected.
+                                            </div>
+                                            <div class="tab-pane" id="topicCloudView">
+                                                No topic selected.
+                                            </div>
+                                        </div>
+                                    {% endblock %}
+                                </div>
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+
+                    {% block right_sidebar_bottom %}
+                        <div id="right_sidebar_bottom" class="span2 spanv5 omega-vertical-right">
+                            {% block right_sidebar_bottom_inner %}
+                                <div id="right_sidebar_bottom_navbar" class="{{ navbar_class }}">
+                                    <div class="navbar-inner">
+                                        {% block right_sidebar_bottom_navbar %}
+                                            <span class="brand" id="docViewTitle"><span id="docViewTypeLabel">Document</span> <span id="selectedDocNum"></span></span>
+                                            <a id="hideSelectedDoc" class="pull-right close deprecated">&times;</a>
+                                            <ul class="nav pull-right">
+                                                <li id="docMetadataLI" class="active"><a id="docMetadataBtn" href="#docMetadataTab" data-toggle="tab"><i class="fa fa-book"></i></a></li>
+                                                <li id="aggregateListLI" style="display: none;"><a id="aggregateListBtn" href="#aggregateListTab" data-toggle="tab"><i class="fa fa-list"></i></a></li>
+                                                <li id="docTopicLayoutLI" class="nonRowAgg"><a id="docTopicLayoutBtn" href="#docTopicLayoutTab" data-toggle="tab"><div class="rotateClockwise"><i class="fa fa-line-chart"></i></div></a></li>
+                                                <li id="topicCountsLI"><a id="docTopicCountsBtn" href="#topicCountsTab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+                                            </ul>
+                                        {% endblock %}
+                                    </div>
+                                </div>
+                                <div id="right_sidebar_bottom_content" class="span12 spanv10">
+                                    {% block right_sidebar_bottom_content %}
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="docMetadataTab">
+                                                No document selected.
+                                            </div>
+                                            <div class="tab-pane" id="aggregateListTab">
+                                                No documents selected.
+                                            </div>
+                                            <div class="tab-pane" id="docTopicLayoutTab">
+                                                No document selected.
+                                            </div>
+                                            <div class="tab-pane" id="topicCountsTab">
+                                                No document selected.
+                                            </div>
+                                        </div>
+                                    {% endblock %}
+                                </div>
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+
+                {% endblock %}
+
+            </div>
+        </div>
+    {% endblock %}
+
+
+    <!-- JavaScript -->
+    <script type="text/javascript" src="{{ url_for("static", filename="js/jquery/jquery-1.9.1.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="bootstrap/js/bootstrap.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/d3/d3.v3.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/d3.layout.cloud.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("flask_util_js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/app_colors.json") }}"></script>
+
+{% block scripts %}
+    <script type="text/javascript">
+        $METADATA_URL = "{{ url_for('cv_get_metadata', model_name=model_name) }}";
+        $THETA_URL = "{{ url_for('cv_get_theta', model_name=model_name) }}";
+        model_name = "{{ model_name|safe }}";
+        $LG_WORKER_URL = "{{ url_for('static', filename='js/W_lineGraph.js') }}";
+    </script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/Utils.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/Representations.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/SlimCV_Model.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/SlimCV_MatrixView.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/SlimCV_RowView.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/SlimCV_ColView.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/SlimCV_Controller.js") }}"></script>
+    <script type="text/javascript">
+        // TODO: fix the topic/document specific references here
+        cv_model.load(function() { // TODO: doing everything in the fetchMetadata callback, but that probably isn't good
+            // Initialize MVC
+            cv_matrixView.init(cv_model, cv_controller,
+                    {
+                        'parentContainer': 'main_content',
+                        'matrixContainer': 'matrixView',
+                        'rowContextMenu': 'rowContextMenu',
+                        'colContextMenu': 'colContextMenu',
+                        'cm_sortByRow': 'sortByRow',
+                        'cm_sortByCol': 'sortByCol',
+                        'cm_sortByDistFromRow': 'sortByDistFromRow',
+                        'cm_sortByDistFromCol': 'sortByDistFromCol',
+                        //'cm_hideRow': 'hideRow',
+                        //'cm_hideCol': 'hideCol'
+                        'cm_rowColorDropdown': 'rowColorDropdown',
+                        'cm_colColorDropdown': 'colColorDropdown',
+                        //'cm_openGroup': 'openGroup',
+                        //'cm_openGroupInMeso': 'openGroupInMeso',
+                        'cm_openInTV': 'openInTextViewer',
+                        'cm_renameCol': 'renameCol'
+                    });
+            cv_rowView.init(cv_model, cv_controller,
+                    {
+                        'parentContainer': 'right_sidebar_bottom_content',
+                        'selectedRow': 'selectedDocNum',
+                        'titleDiv': 'docViewTitle',
+                        'colCountsContainer': 'topicCountsTab',
+                        'metadataContainer': 'docMetadataTab',
+                        'rowRepresentationContainer': 'docTopicLayoutTab',
+                        'rowRepresentationLI': 'docTopicLayoutLI'
+                    });
+            cv_colView.init(cv_model, cv_controller,
+                    {
+                        'parentContainer': 'right_sidebar_top_content',
+                        'selectedCol': 'selectedTopicNum',
+                        'titleDiv': 'topicViewTitle',
+                        'metadataContainer': 'topicMetadataTab',
+                        'barRepContainer': 'topicView',
+                        'cloudRepContainer': 'topicCloudView',
+                        'renameModal': 'renameTopicModal',
+                        'renameInput': 'newTopicName'
+                    });
+            cv_controller.init(cv_model, {
+                'matrix': cv_matrixView,
+                'row': cv_rowView,
+                'col': cv_colView
+            });
+
+            // Build them all
+            cv_controller.updateViews();
+
+            d3.select('#main_content').classed('withLoadingIndicator', false);
+        })
+    </script>
+{% endblock %}
+</body>
+</html>

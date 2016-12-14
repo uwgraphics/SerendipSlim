@@ -1,0 +1,526 @@
+body {
+    padding-top: 40px;
+    background: #ccc;
+    color: #333;
+}
+
+body.body-inverse {
+    background: #333;
+    color: #ccc;
+}
+
+body.body-inverse .popover-title {
+    color: #000;
+}
+
+.navbar-fixed-top,
+.container-absolute .row-fluid > *[class*="span"],
+.withLoadingIndicator:after,
+.meso_container .meso_view {
+    box-shadow: 0 0 0 1px rgba(128,128,128,0.35), 0 2px 4px rgba(128,128,128,0.35);
+}
+
+.navbar .navbar-inner .brand {
+    padding-left: 32px;
+}
+
+.navbar a.brand:hover,
+.navbar a.brand:focus {
+    color: #000;
+}
+
+.navbar.navbar-inverse a.brand:hover,
+.navbar.navbar-inverse a.brand:focus {
+    color: #fff;
+}
+
+.container-absolute {
+    position: absolute;
+    margin: 0;
+    left: 0;
+    right: 0;
+    top: 40px;
+    bottom: 0;
+    min-width: 640px;
+    min-height: 576px;
+    padding: 12px;
+}
+
+/* Prevent rubber-band scrolling on the body in Safari on OS X 10.7.x and higher */
+/*@media screen and (min-width: 640px) and (min-height: 576px) {*/
+    /*body {*/
+        /*overflow: hidden;*/
+    /*}*/
+/*}*/
+
+/* Support for Bootstrap fluid grid system within a .container-absolute */
+.container-absolute .row-fluid {
+    position: relative;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+}
+
+/*.container-absolute .row-fluid > *:not(:first-child):last-child {*/
+    /*float: right;*/
+/*}*/
+
+.container-absolute .row-fluid > [class*="span"] {
+    position: relative;
+    /*overflow: hidden;*/
+    /*border-radius: 5px;*/
+}
+
+/* ":not(.navbar)" is a fix for dropdowns in navbars */
+.container-absolute .row-fluid > [class*="span"] > *:not(.navbar) {
+    overflow: auto;
+}
+
+/*.container-absolute .row-fluid > [class*="span"] > .navbar {*/
+    /*white-space: nowrap;*/
+/*}*/
+
+.container-absolute > * {
+    position: relative;
+}
+
+.container-absolute .row-fluid > *[class*="span"] {
+    background-color: #fff;
+}
+
+body.body-inverse .container-absolute .row-fluid > *[class*="span"] {
+    background: #1a1a1a;
+    /*color: #ccc;*/
+}
+
+body.body-inverse .container-absolute .row-fluid > *[class*="span"] {
+    border-color: #666;
+}
+
+.container-absolute .row-fluid *[class*="span"] > *[class*="span"] {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.container-absolute .row-fluid > *[class*="span"].omega {
+    float: right;
+}
+
+.container-absolute .row-fluid > *[class*="span"].omega-vertical {
+    margin-bottom: 0;
+}
+
+.container-absolute .row-fluid > *[class*="span"].omega-vertical-right {
+    position: absolute;
+    margin-bottom: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.container-absolute .row-fluid > *[class*="span"].alpha {
+    float: left;
+}
+
+.container-absolute .row-fluid > *[class*="span"].alpha-vertical-left {
+    position: absolute;
+    margin-left: 0;
+    margin-bottom: 0;
+    left: 0;
+    bottom: 0;
+}
+
+/* Vertical Grid */
+.spanv1 {
+    height: 9%;
+}
+.spanv2 {
+    height: 19%;
+}
+.spanv3 {
+    height: 29%;
+}
+.spanv4 {
+    height: 39%;
+}
+.spanv5 {
+    height: 49%;
+}
+.spanv6 {
+    height: 59%;
+}
+.spanv7 {
+    height: 69%;
+}
+.spanv8 {
+    height: 79%;
+}
+.spanv9 {
+    height: 89%;
+}
+.spanv10 {
+    height: 100%;
+}
+.spanv1,
+.spanv2,
+.spanv3,
+.spanv4,
+.spanv5,
+.spanv6,
+.spanv7,
+.spanv8,
+.spanv9 {
+    margin-bottom: 1%;
+}
+
+.span12.spanv10,
+.container-absolute .row-fluid > .span12.spanv10 {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: auto;
+}
+
+.navbar .navbar-inner {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.container-absolute [class*="span"] .navbar {
+    margin: 0;
+}
+
+.container-absolute [class*="span"] .navbar .navbar-inner {
+    min-height: 40px;
+    height: 40px;
+    white-space: nowrap;
+    /* Commented out to fix dropdowns in navbars */
+    /*overflow-y: hidden;*/
+    /*overflow-x: auto;*/
+}
+
+/* Fix for nav bars in toolbars */
+.container-absolute [class*="span"] .navbar.navbar-small .nav > li > a {
+    font-size: 12px;
+    padding: 8px 12px 7px;
+}
+
+.container-absolute [class*="span"] .navbar.navbar-mini .nav > li > a {
+    padding: 7px 10px 7px;
+}
+
+.container-absolute [class*="span"] .navbar .navbar-inner .brand {
+    position: absolute;
+    left: 0;
+    top: 0;
+    /*right: 0;*/
+    /*overflow: hidden;*/
+}
+
+.container-absolute [class*="span"] .navbar .nav {
+    background: inherit;
+    white-space: nowrap;
+}
+
+.container-absolute [class*="span"] .navbar.navbar-small .navbar-inner {
+    min-height: 35px;
+    height: 35px;
+}
+
+.container-absolute [class*="span"] .navbar.navbar-mini .navbar-inner {
+    min-height: 31px;
+    height: 31px;
+}
+
+.container-absolute [class*="span"] .navbar .navbar-inner {
+    border-radius: 0;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+    box-shadow: none;
+}
+
+.container-absolute [class*="span"] .navbar.navbar-inverse .navbar-inner {
+    border-bottom: 1px solid #000;
+}
+
+/* Normal navbar preceding a full-width / full-height fluid grid element. */
+.container-absolute [class*="span"] .navbar ~ .span12.spanv10 {
+    top: 40px;
+}
+
+.container-absolute [class*="span"] .navbar.navbar-small ~ .span12.spanv10 {
+    top: 36px;
+}
+
+.container-absolute [class*="span"] .navbar.navbar-small .brand {
+    font-size: 18px;
+    padding: 8px 18px 8px 32px;
+}
+
+.container-absolute [class*="span"] .navbar.navbar-mini ~ .span12.spanv10 {
+    top: 32px;
+}
+
+.container-absolute [class*="span"] .custom-pager-wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    /*left: 0;*/
+    right: 0;
+    margin: 0;
+    z-index: 3;
+    border-left: 1px solid #ccc;
+    line-height: 20px;
+    width: 40px;
+    padding-right: 15px;
+}
+
+.container-absolute [class*="span"] .navbar ~ .custom-pager-wrapper {
+    top: 40px;
+}
+
+.container-absolute [class*="span"] .navbar-small ~ .custom-pager-wrapper {
+    top: 36px;
+
+}
+
+.container-absolute [class*="span"] .custom-pager-wrapper > .custom-pager > .page-buttons {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    background: #fff;
+}
+
+.container-absolute [class*="span"] .custom-pager-wrapper > .custom-pager > .page-buttons > .btn {
+    border-radius: 0;
+    width: 40px;
+    padding: 0;
+    height: 40px;
+    line-height: 40px;
+    border-left: 0;
+    /*border-right: 0;*/
+    border-top: 0;
+}
+
+.container-absolute [class*="span"] .custom-pager-wrapper > .custom-pager > .page-buttons > .btn.disabled,
+#main_content a.prev.disabled,
+#main_content a.next.disabled {
+    cursor: not-allowed;
+}
+
+.container-absolute [class*="span"] .custom-pager-wrapper > .custom-pager > .custom-pager-pages {
+    position: absolute;
+    top: 0;
+    /*display: none;*/
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    margin: 0 0 0;
+    text-align: right;
+    padding: 80px 15px 0 0;
+    background-color: #fff;
+    background-image: -webkit-gradient(linear, left center, right center, from(#ffffff), to(#cccccc));
+    background-image: -webkit-linear-gradient(left, #ffffff, #cccccc);
+    background-image: -moz-linear-gradient(left, #ffffff, #cccccc);
+    background-image: -o-linear-gradient(left, #ffffff, #cccccc);
+    background-image: -ms-linear-gradient(left, #ffffff, #cccccc);
+    background-image: linear-gradient(left, #ffffff, #cccccc);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=1,StartColorStr='#ffffff', EndColorStr='#cccccc');
+
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-size: 15px 100%;
+}
+
+.container-absolute [class*="span"] .custom-pager-wrapper > .custom-pager > .custom-pager-pages > li {
+    display: block;
+    list-style: none;
+}
+
+.container-absolute [class*="span"] .custom-pager-wrapper > .custom-pager > .custom-pager-pages > li > a {
+    display: block;
+    width: 32px;
+    padding: 4px;
+    color: #333;
+    /*background: #ccc;*/
+    /*height: 40px;*/
+    /*background: blue;*/
+}
+
+.container-absolute [class*="span"] .custom-pager-wrapper > .custom-pager > .custom-pager-pages > li > a:hover {
+    background: #ccc;
+}
+
+.container-absolute [class*="span"] .custom-pager-wrapper > .custom-pager > .custom-pager-pages > li.current > a {
+    background: #0044cc;
+    outline: 1px solid rgba(0,0,0,0.35);
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.35);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.35);
+    cursor: not-allowed;
+}
+
+.container-absolute [class*="span"] .custom-pager-wrapper ~ .span12.spanv10 {
+    right: 56px;
+}
+
+.container-absolute [class*="span"] .navbar.navbar-mini.brand {
+    font-size: 16px;
+    padding: 7px 16px 7px 32px;
+}
+
+.navbar .navbar-inner .text {
+    position: relative;
+    top: 8px;
+    padding: 0 5px;
+    font-size: 20px;
+    font-weight: 200;
+    color: #777777;
+    text-shadow: 0 1px 0 #ffffff;
+}
+
+.navbar.navbar-inverse .navbar-inner .text {
+    color: #999;
+    text-shadow: 0 -1px 0;
+}
+
+.hero-unit {
+    background: 0;
+}
+
+
+/* line 106, ../sass/awesome.scss */
+.withLoadingIndicator {
+    position: relative;
+    pointer-events: none;
+}
+
+.withLoadingIndicator:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 48px;
+  height: 48px;
+  background-color: #fff;
+  background-image: url("/static/img/ajax_loader_gray_64.gif");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 32px 32px;
+  border-radius: 5px;
+}
+
+
+.span12.spanv10 > svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.popover {
+    max-width: 100% !important;
+}
+
+.popover .popover-content {
+    overflow: auto;
+}
+
+.popover .popover-content .barGraphContainer svg {
+    height: 84px;
+}
+
+/* Mesoscale views */
+
+.meso_container .meso_view.span {
+    width: 23%;
+    height: 98%;
+    float: left;
+    margin: 1% !important;
+}
+
+/* Width tweaks for responsive containers */
+
+@media screen and (min-width: 1440px) {
+    .meso_container .meso_view.span {
+        width: 14.6666667%;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .meso_container .meso_view.span {
+        width: 10.5%;
+    }
+}
+
+/* Class for rotating icons */
+.rotate    {
+    -webkit-transform:rotate(-90deg);
+    -moz-transform:rotate(-90deg);
+    -o-transform:rotate(-90deg);
+    -ms-transform:rotate(-90deg);
+}
+.rotateClockwise    {
+    -webkit-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+    -o-transform:rotate(90deg);
+    -ms-transform:rotate(90deg);
+}
+
+#main_content a.prev,
+#main_content a.next {
+    text-align: center;
+    display: block;
+    line-height: 40px;
+    font-size: 16px;
+    width: 100%;
+    color: #fff;
+    font-weight: bold;
+    background: #0088cc;
+}
+
+#main_content a.prev:hover,
+#main_content a.next:hover {
+    background: #005580;
+}
+
+#main_content a.prev.disabled,
+#main_content a.next.disabled,
+#main_content a.prev.disabled:hover,
+#main_content a.next.disabled:hover,
+#main_content a.prev.disabled:active,
+#main_content a.next.disabled:active {
+    background: #ccc;
+    color: #999;
+    text-decoration: none !important;
+}
+
+.tag_map_locator rect {
+    fill-opacity: 0;
+}
+
+#right_sidebar_content .tag_map_locator.current rect {
+    fill: #0000ff;
+    fill-opacity: 0.25;
+}
+
+#right_sidebar_content .tag_map_locator:hover rect {
+    fill: #ffff00;
+    fill-opacity: 0.65;
+}
+
+.page_locator rect {
+    fill-opacity: 0;
+}
+
+/*.page_locator.current rect {*/
+    /*fill: #0000ff;*/
+    /*fill-opacity: 0.5;*/
+/*}*/

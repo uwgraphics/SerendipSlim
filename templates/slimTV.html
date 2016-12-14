@@ -1,0 +1,214 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>SerendipSlim TV{% block title_block %} &mdash; {{ model_name }}/{{ text_name }}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Styles -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.6.1/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-additions.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/btn-group-tag.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hueRamps.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/TV.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/LineGraph.css') }}">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <a class="brand" href="http://vep.cs.wisc.edu/serendip">SerendipSlim</a>
+            <div class="nav">
+                {% block nav_btn_group %}
+                <div class="btn-group">
+                    <a href="{{ url_for("cv_view_by_name", model_name=model_name) }}" class="btn">
+                        {{ model_name }}
+                    </a>
+                </div>
+                {% endblock %}
+            </div>
+            <div class="nav pull-right">
+                <form class="form-inline brand" id="tokenSearcher" style="margin: 0 0 0;">
+                  <input type="text" class="input-medium search-query">
+                  <button type="submit" class="btn btn-small" style="margin-top: 0px;" title="Search for phrase within document">
+                      <i class="fa fa-search"></i>
+                  </button>
+                  <button id="searchClear" class="btn btn-small" style="margin-top: 0px;" title="Clear search phrase">
+                      <i class="fa fa-times"></i>
+                  </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-absolute">
+        <div class="row-fluid spanv10">
+
+            <div id="sidebar" class="span2 spanv10">
+                <div id="sidebar_navbar" class="navbar navbar-small">
+                    <div class="navbar-inner">
+                        <span class="brand">Tags</span>
+                        <div class="pull-right btn-group">
+                            <a id="downloadTagDistBtn" class="btn btn-small" download="tagDist.csv" title="Download document tag distribution as CSV"><i class="fa fa-download"></i> Distribution</a>
+                            <a id="clear_all_tags" class="btn btn-small" title="Untoggle all tags">Clear All</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sidebar_content" class="span12 spanv10">
+                    <div id="tag_buttons" class="btn-group-tag btn-group btn-group-vertical span12">
+                    </div>
+                </div>
+            </div>
+
+            <div id="main" class="span7 spanv10">
+                <div id="main_navbar" class="navbar navbar-small">
+                    <div class="navbar-inner">
+                        <span class="brand">Text: {{ text_name }}</span>
+                        <div class="pull-right">
+                            <div class="btn-group">
+                                <a id="downloadTokensBtn" class="btn btn-small" download="tokens.csv" title="Download tokens as CSV"><i class="fa fa-download"></i> Tokens</a>
+                                <a id="downloadRulesBtn" class="btn btn-small" download="rules.csv" title="Download rules as CSV"><i class="fa fa-download"></i> Rules</a>
+                                <a id="downloadTextBtn" class="btn btn-small" download="rawText.txt" title="Download text as TXT"><i class="fa fa-download"></i> Text</a>
+                                <a href="#textViewOptions" id="text_view_options" class="btn btn-small" data-toggle="modal"><i class="fa fa-wrench"></i> Options</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="main_content" class="span12 spanv10">
+                    {% block extra_modals %} {% endblock %}
+                    <div id="wordDistModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="wordDistModalLabel" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3 id="wordDistModalLabel">Word Distribution</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div id="wordDist">
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-small" data-dismiss="modal" aria-hidden="true">OK</button>
+                        </div>
+                    </div>
+                    <div id="tagRepModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="tagRepModalLabel" aria-hidden="true">
+                        <div class="modal-header">
+                            <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
+                            <span id="tagRepModalLabel" style="font-size:20px;">Tag: <span id="tagRep_name"></span></span>
+                            <div class="btn-toolbar pull-right" style="margin-top:0px; margin-bottom:0px;">
+                                <div id="tagRepScope_grp" class="btn-group" data-toggle="buttons-radio">
+                                  <button id="tagRepScope_doc" type="button" class="tagRepScopeToggle btn" title="Build representation on single document distribution"><i class="fa fa-file-o"></i></button>
+                                  <button id="tagRepScope_corpus" type="button" class="tagRepScopeToggle btn" title="Build representation on full corpus distribution"><i class="fa fa-files-o"></i></button>
+                                </div>
+                                <div class="btn-group" data-toggle="buttons-radio">
+                                  <button id="tagRep_bar" type="button" class="tagRepToggle btn" title="Show bar chart representation"><div class="rotateClockwise"><i class="fa fa-bar-chart"></i></div></button>
+                                  <button id="tagRep_cloud" type="button" class="tagRepToggle btn" title="Show word cloud representation"><i class="fa fa-cloud"></i></button>
+                                </div>
+                                <a id="downloadWordDistBtn" type="button" class="btn" title="Download tag word distribution"><i class="fa fa-download"></i></a>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div id="tagRepContainer">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-small" data-dismiss="modal" aria-hidden="true">OK</button>
+                        </div>
+                    </div>
+                    <div id="textViewOptions" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="textViewOptions" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3>Text View Options</h3>
+                        </div>
+                        <div class="modal-body" style="padding-top: 0; max-height: 480px;">
+                            <h4>Ranking type</h4>
+                            <div class="radio" id="rankingTypeRadioGroup">
+                                <label>
+                                    <input type="radio" name="rankingType" id="freq"> Frequency
+                                </label>
+                                <label>
+                                    <input type="radio" name="rankingType" id="sal"> Saliency
+                                </label>
+                                <label>
+                                    <input type="radio" name="rankingType" id="ig"> Information Gain
+                                </label>
+                                <label>
+                                    <input type="radio" name="rankingType" id="count"> Count
+                                </label>
+                            </div>
+                            <!--<h4 style="clear: both;">Topic color ramping</h4>
+                            <div class="btn-group color_ramps">
+                                <button class="btn color_ramps_off" title="Color Ramps Off"></button>
+                                <button class="btn color_ramps_on btn-primary" title="Color Ramps On"></button>
+                            </div>
+                            <div class="btn-group-labels" style="text-align: center; width: 100%; float: left">
+                                <div style="width: 50%; float: left">
+                                    Uniform Color Tints
+                                </div>
+                                <div style="width: 50%; float: right">
+                                    Color-Ramped* Tints
+                                </div>
+                                <div style="clear: both">
+                                    <small><em>*Ramped from light tint to heavy tint by increasing ranking within topic.</em></small>
+                                </div>
+                            </div>-->
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">OK</button>
+                        </div>
+                    </div>
+                    {# text_html is already HTML, so it doesn't need to be escaped. #}
+                    <a class="prev disabled">Beginning of document</a>
+                    <div class="html_formatter">
+                    </div>
+                    <a class="next disabled">End of document</a>
+                </div>
+            </div>
+
+            <div id="right_sidebar" class="span3 spanv10">
+                <div id="right_sidebar_navbar" class="navbar navbar-small">
+                    <div class="navbar-inner">
+                        <span class="brand">Overview</span>
+                        <input title="Line graph smoothing" type="range" class="pull-right" id="windowSlider" min="1" max="100" value="50" style="width: 195.333px; padding: 8px 18px 8px 32px;">
+                    </div>
+                </div>
+                <div id="right_sidebar_content" class="span12 spanv10">
+                    <div class="tag_line_graph withLoadingIndicator span12 spanv10"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="text/javascript" src="{{ url_for("static", filename="js/jquery/jquery-1.9.1.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="bootstrap/js/bootstrap.js") }}"></script>
+    <!--<script type="text/javascript" src="{{ url_for("static", filename="js/d3/d3.v3.js") }}"></script>-->
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/d3.layout.cloud.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("flask_util_js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/app_colors.json") }}"></script>
+    {% block definition_script %}
+    <script type="text/javascript">
+        var model_name = "{{ model_name|safe }}";
+        var model_type = "topic";
+        //model_type = "singleText"; // TODO: BAD BAD BAD breaking topic modeling for short term
+        var text_name = "{{ text_name|safe }}";
+        var tokens = {{ tokens|safe }};
+        $GET_TAG_NAMES_URL = "{{ url_for('utils_get_topic_names', model_name=model_name) }}";
+        $LG_WORKER_URL = "{{ url_for('static', filename='js/W_lineGraph.js') }}";
+    </script>
+    {% endblock %}
+    <script type="text/javascript" src="{{ url_for("static", filename="js/Utils.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/Representations.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/SlimTV.js") }}"></script>
+</body>
+</html>
