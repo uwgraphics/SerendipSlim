@@ -6,7 +6,7 @@ import os
 class Config(object):
     DEBUG = False
     TESTING = False
-    DEFAULT_MODEL_NAME = "ShakeINF_ch50"
+    DEFAULT_MODEL_NAME = "Shake_50"
     NAME = u"Serendip[Slim]"
     WEB_ROOT = "/"
     SERENDIP_ROOT = os.path.abspath(os.path.dirname(__file__))
