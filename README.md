@@ -36,13 +36,13 @@ To be valid for Serendip, models have to be formatted in a very specific way, de
 ####Interacting with SerendipSlim
 Once the local server is running, researchers can view the corpus-level visualization by navigating to [localhost:5001](localhost:5001) within a web browser. From there, individual models can be selected from the dropdown menu in the top navigation bar, or controlled using the URL.
 
-##Example models
+
+<!--##Example models
 
 We have built a number of models on sample corpora curated by the [Visualizing English Print project](http://vep.cs.wisc.edu). Though they have better performance when being run from a local server, rather than using our server, they can be interacted with here:
-
-- [Shakespeare's First Folio](http://vep.cs.wisc.edu/serendipSlim/model:Shake_50/matrix) 
+ - [Shakespeare's First Folio](http://vep.cs.wisc.edu/serendipSlim/model:Shake_50/matrix) 
 - [Early Modern Drama](http://vep.cs.wisc.edu/serendipSlim/model:EMDrama_50_long_chunked/matrix) ([corpus](http://graphics.cs.wisc.edu/WP/vep/vep-early-modern-drama-collection/))
-- [Early Modern Science](http://vep.cs.wisc.edu/serendipSlim/model:EMScience_50_chunked/matrix) ([corpus](http://graphics.cs.wisc.edu/WP/vep/vep-early-modern-science-collection/))
+- [Early Modern Science](http://vep.cs.wisc.edu/serendipSlim/model:EMScience_50_chunked/matrix) ([corpus](http://graphics.cs.wisc.edu/WP/vep/vep-early-modern-science-collection/)) -->
 
 ##SlimCV
 
