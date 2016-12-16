@@ -40,7 +40,7 @@ Once the local server is running, researchers can view the corpus-level visualiz
 
 We have built a number of models on sample corpora curated by the [Visualizing English Print project](http://vep.cs.wisc.edu). Though they have better performance when being run from a local server, rather than using our server, they can be interacted with here:
 
-- [Shakespeare's First Folio](http://vep.cs.wisc.edu/serendipSlim/model:ShakeINF_ch50/matrix) 
+- [Shakespeare's First Folio](http://vep.cs.wisc.edu/serendipSlim/model:Shake_50/matrix) 
 - [Early Modern Drama](http://vep.cs.wisc.edu/serendipSlim/model:EMDrama_50_long_chunked/matrix) ([corpus](http://graphics.cs.wisc.edu/WP/vep/vep-early-modern-drama-collection/))
 - [Early Modern Science](http://vep.cs.wisc.edu/serendipSlim/model:EMScience_50_chunked/matrix) ([corpus](http://graphics.cs.wisc.edu/WP/vep/vep-early-modern-science-collection/))
 
