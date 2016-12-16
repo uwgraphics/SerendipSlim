@@ -38,11 +38,11 @@ Once the local server is running, researchers can view the corpus-level visualiz
 
 ##Example models
 
-We have built a number of models on sample corpora curated by the [Visualizing English Print project](http://vep.cs.wisc.edu):
+We have built a number of models on sample corpora curated by the [Visualizing English Print project](http://vep.cs.wisc.edu). Though they have better performance when being run from a local server, rather than using our server, they can be interacted with here:
 
-<!--- - [Early Modern Drama]() ([corpus](http://graphics.cs.wisc.edu/WP/vep/vep-early-modern-drama-collection/))
-- [Early Modern Science]() ([corpus](http://graphics.cs.wisc.edu/WP/vep/vep-early-modern-science-collection/)) --->
-- [Shakespeare's First Folio](http://vep-test.cs.wisc.edu/serendipSlim/model:ShakeINF_ch50/matrix) 
+- [Shakespeare's First Folio](http://vep.cs.wisc.edu/serendipSlim/model:ShakeINF_ch50/matrix) 
+- [Early Modern Drama](http://vep.cs.wisc.edu/serendipSlim/model:EMDrama_50_long_chunked/matrix) ([corpus](http://graphics.cs.wisc.edu/WP/vep/vep-early-modern-drama-collection/))
+- [Early Modern Science](http://vep.cs.wisc.edu/serendipSlim/model:EMScience_50_chunked/matrix) ([corpus](http://graphics.cs.wisc.edu/WP/vep/vep-early-modern-science-collection/))
 
 ##SlimCV
 
@@ -54,7 +54,7 @@ Views for examining metadata and distributions from individual topics and docume
 
 ##SlimTV
 
-SlimTV (originally "TextViewer") is meant to help researchers examine topic modeling data in a lower level of abstraction. By connecting the high level patterns of a topic model down to individual passages, researchs can combine the practices of close and distant reading, helping them build explanations for the trends they observe.
+SlimTV (originally "TextViewer") is meant to help researchers examine topic modeling data in a lower level of abstraction. By connecting the high level patterns of a topic model down to individual passages, researchers can combine the practices of close and distant reading, helping them build explanations for the trends they observe.
 
 SlimTV is centered around a tagged-text view of a single document. Individual words are highlighted with a color corresponding to the topic the model has associated with them (after the topic has been toggled on using one of the buttons in the list on the left).
 
@@ -102,6 +102,9 @@ These files should be structured thus:
     - `endReason` is the event that cut off the token, and can have values of `s` for a space, `c` for a character like punctuation, and `n` for a newline.
     - `topic_X` (replacing `x` for the number of the topic) indicates the topic that this word is tagged with. This value is optional, as not every word will necessarily get tagged (e.g., stopwords will not).
 - **rules.json**: A JSON object telling SlimTV details about the distribution of topic tags in this document. [(example)](Data/Metadata/ShakeINF_ch50/HTML/Hamlet/rules.json)
+
+##Building new models
+Serendip can display a variety of models, so long as they conform to the above format. Sample scripts that build models using [Mallet](http://mallet.cs.umass.edu/topics.php) and [Gensim](https://radimrehurek.com/gensim/) can be found in our [VEP_TMScripts](https://github.com/uwgraphics/VEP_TMScripts) repository. These scripts are provided **AS IS** and may need to be tuned/updated to create models in certain environment on certain documents.
 
 
 ##Updates, requests, and contact:
