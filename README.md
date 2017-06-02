@@ -3,12 +3,12 @@ SerendipSlim is a visualization tool designed to help researchers explore large 
 
 SerendipSlim is a web-app built to run in a web-browser (preferably [Google Chrome](https://www.google.com/chrome/)). Its front-end is written in Javascript, with heavy use of the [D3](https://d3js.org/) and [jQuery](https://jquery.com/) libraries, along with the [Bootstrap](http://getbootstrap.com/) framework. The back-end is written in [Python](https://www.python.org/), running a server implemented using the [Flask](http://flask.pocoo.org/) library.
 
-##Running SerendipSlim
+## Running SerendipSlim
 
-####Required software
+#### Required software
 SerendipSlim's back-end is written in [Python](https://www.python.org/) [version 2.7](https://docs.python.org/2.7/). Python 2.7 must therefore be installed to operate it. We suggest using a Python installation like [Anaconda](https://www.continuum.io/downloads), as this comes with the necessary additional libraries required by our scripts, such as [Flask](http://flask.pocoo.org/) (along with some other useful ones like [Scipy](https://www.scipy.org/) and [NLTK](http://www.nltk.org/)).
 
-####Running the local server
+#### Running the local server
 With Python and Flask installed, SerendipSlim can be run simply by running the `__init__.py` file from within the SerendipSlim directory:
 
 ```
@@ -33,18 +33,18 @@ Running the program with no other arguments will start a local server that will 
 
 To be valid for Serendip, models have to be formatted in a very specific way, described [below]().
 
-####Interacting with SerendipSlim
+#### Interacting with SerendipSlim
 Once the local server is running, researchers can view the corpus-level visualization by navigating to [localhost:5001](localhost:5001) within a web browser. From there, individual models can be selected from the dropdown menu in the top navigation bar, or controlled using the URL.
 
 
-##Example models
+## Example models
 
 We have built a number of models on sample corpora curated by the [Visualizing English Print project](http://vep.cs.wisc.edu). Though they have better performance when being run from a local server, rather than using our server, they can be interacted with here:
 - [Shakespeare's First Folio](http://vep.cs.wisc.edu/serendipSlim/model:Shake_50/matrix) 
 - [Early Modern Drama](http://vep.cs.wisc.edu/serendipSlim/model:EMDrama_50_long_chunked/matrix) ([corpus](http://graphics.cs.wisc.edu/WP/vep/vep-early-modern-drama-collection/))
 - [Early Modern Science](http://vep.cs.wisc.edu/serendipSlim/model:EMScience_50_chunked/matrix) ([corpus](http://graphics.cs.wisc.edu/WP/vep/vep-early-modern-science-collection/))
 
-##SlimCV
+## SlimCV
 
 SlimCV (originally "CorpusViewer") is meant to help researchers explore collections of documents at the corpus level. At its heart is a reorderable matrix plotting topics (along the horizontal axis) against documents (along the horizontal axis). The proportions of individual topics within each document are indicated by the size of circular glyphs located at the vertices.
 
@@ -52,7 +52,7 @@ Controls for (re-)ordering, labeling, selecting, and coloring the topics and doc
 
 Views for examining metadata and distributions from individual topics and documents can be found in the panels on the right.
 
-##SlimTV
+## SlimTV
 
 SlimTV (originally "TextViewer") is meant to help researchers examine topic modeling data in a lower level of abstraction. By connecting the high level patterns of a topic model down to individual passages, researchers can combine the practices of close and distant reading, helping them build explanations for the trends they observe.
 
@@ -60,7 +60,7 @@ SlimTV is centered around a tagged-text view of a single document. Individual wo
 
 On the right, a line graph visualization graphs topic density (along the horizontal axis) against position within the document (along the vertical axis). By looking for peaks and valleys for individual topic lines and clicking on the corresponding places within the visualizations, researchers can navigate directly to relevant passages of text.
 
-##SerendipSlim model format
+## SerendipSlim model format
 
 Serendip requires models to be laid out in a specific directory format:
 
@@ -103,10 +103,10 @@ These files should be structured thus:
     - `topic_X` (replacing `x` for the number of the topic) indicates the topic that this word is tagged with. This value is optional, as not every word will necessarily get tagged (e.g., stopwords will not).
 - **rules.json**: A JSON object telling SlimTV details about the distribution of topic tags in this document. [(example)](Data/Metadata/ShakeINF_ch50/HTML/Hamlet/rules.json)
 
-##Building new models
+## Building new models
 Serendip can display a variety of models, so long as they conform to the above format. Sample scripts that build models using [Mallet](http://mallet.cs.umass.edu/topics.php) and [Gensim](https://radimrehurek.com/gensim/) can be found in our [VEP_TMScripts](https://github.com/uwgraphics/VEP_TMScripts) repository. These scripts are provided **AS IS** and may need to be tuned/updated to create models in certain environment on certain documents.
 
 
-##Updates, requests, and contact:
+## Updates, requests, and contact:
 
 SerendipSlim offers many new features not available in the original Serendip, along with a huge upgrade in speed, scale, and ease of use. However, some rarely used features were dropped. If you have requests for the return of certain features, or suggestions for other features, improvements, or bug fixes, let me know!
