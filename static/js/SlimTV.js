@@ -646,6 +646,9 @@ var get_passage_html = function(roughStartIndex, roughEndIndex, splitIntoLines) 
     } else {
         endIndex = tokens.length;
     }
+    if (startIndex == 0 && endIndex == 0) {
+        endIndex = tokens.length;
+    }
     var subtokens = tokens.slice(startIndex, endIndex);
 
     // Create the string of HTML
