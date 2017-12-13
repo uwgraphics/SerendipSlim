@@ -7,7 +7,7 @@
 var sat;
 
 onmessage = function(e) {
-    if (e.data.task == 'buildSAT') {
+    if (e.data.task === 'buildSAT') {
         var tmp = getSATandTagCounts(e.data.tokens);
         sat = tmp.sat;
         postMessage({
@@ -15,7 +15,7 @@ onmessage = function(e) {
             'message': 'success',
             'tagCounts': tmp.tagCounts
         });
-    } else if (e.data.task == 'getTagLines') {
+    } else if (e.data.task === 'getTagLines') {
         if (typeof(sat) !== 'undefined') {
             var tmpObj = getTagLines(e.data.windowSize);
             tmpObj.task = 'getTagLines';
@@ -46,7 +46,7 @@ var getSATandTagCounts = function(tokens) {
     var lastCopied = false;
     for (var i = 0; i < tokens.length; i++) {
         // If there's a tag for this token, store it in the SAT and count it
-        if (tokens[i].length > 3 && tokens[i][3] != '') {
+        if (tokens[i].length > 3 && tokens[i][3] !== '') {
             tag = tokens[i][3];
             if (tag in currSATline) {
                 currSATline[tag]++;
@@ -61,7 +61,7 @@ var getSATandTagCounts = function(tokens) {
             tagCounts.totalCount++;
         }
         // If we've filled a SATline, deep copy it
-        if ((i + 1) % tokensPerSATline == 0) {
+        if ((i + 1) % tokensPerSATline === 0) {
             //sat[satLineIndex] = jQuery.extend({}, currSATline);
             // http://heyjavascript.com/4-creative-ways-to-clone-objects/
             sat[satLineIndex] = JSON.parse(JSON.stringify(currSATline));
@@ -69,7 +69,7 @@ var getSATandTagCounts = function(tokens) {
         }
     }
     // Copy the last little bit into the last SATline
-    if (i % tokensPerSATline != 0) {
+    if (i % tokensPerSATline !== 0) {
         sat[sat.length - 1] = currSATline;
     }
 
@@ -82,14 +82,14 @@ var getSATandTagCounts = function(tokens) {
 // Function for building a topic line graph from a summed area table
 var getTagLines = function(normalizedWindowSize, numWindows) {
     // First, calculate the window scores ************************
-    if (typeof(numWindows) == "undefined") {
+    if (typeof(numWindows) === "undefined") {
         numWindows = Math.min(sat.length, 500); // TODO: why 500?
     }
-    if (typeof(normalizedWindowSize) == "undefined") {
+    if (typeof(normalizedWindowSize) === "undefined") {
         normalizedWindowSize = 50;
     }
     var windowSize = Math.round(normalizedWindowSize * (sat.length / numWindows));
-    if (windowSize % 2 != 0) {
+    if (windowSize % 2 !== 0) {
         windowSize++;
     }
     var tagNames = Object.keys(sat[sat.length-1]);

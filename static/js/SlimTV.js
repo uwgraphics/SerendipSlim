@@ -12,7 +12,7 @@ function countProperties(obj) {
 }
 
 // http://stackoverflow.com/a/646643/1991086
-if (typeof String.prototype.startsWith != 'function') {
+if (typeof String.prototype.startsWith !== 'function') {
     String.prototype.startsWith = function (str){
         return this.slice(0, str.length) == str;
     };
@@ -31,7 +31,7 @@ var tokensPerPage = 1000;
 var tokenBuffer = 100;
 var currPageStart = 0;
 var currPageEnd = currPageStart + tokensPerPage;
-if (typeof(model_type) == 'undefined') {
+if (typeof(model_type) === 'undefined') {
     model_type = 'singleText';
 }
 var tagRepState;
@@ -88,7 +88,7 @@ var buildLineGraphTV = function() {
 var searchTokensFor = function(phrase) {
     // Tokenize search phrase, and bail if there are no tokens
     var phraseTokens = tokenize(phrase);
-    if (phraseTokens.length == 0) {
+    if (phraseTokens.length === 0) {
         return [];
     }
 
@@ -97,10 +97,10 @@ var searchTokensFor = function(phrase) {
     var i, j, matchSoFar;
     for (i = 0; i < tokens.length; i++) {
         // If we match the first token, loop through the phraseTokens
-        if (tokens[i][1] == phraseTokens[0][1]) {
+        if (tokens[i][1] === phraseTokens[0][1]) {
             matchSoFar = true;
             for (j = 1; j < phraseTokens.length; j++) {
-                if (i + j >= tokens.length || tokens[i+j][1] != phraseTokens[j][1]) {
+                if (i + j >= tokens.length || tokens[i+j][1] !== phraseTokens[j][1]) {
                     matchSoFar = false;
                     break;
                 }
@@ -117,9 +117,9 @@ var searchTokensFor = function(phrase) {
 
 // TODO: fix reference to 'data-key'
 var updateTagNames = function() {
-    if (model_type == 'topic') {
+    if (model_type === 'topic') {
         d3.json($GET_TAG_NAMES_URL, function(json) {
-            if (typeof(json['topicNames']) == 'object' && json['topicNames'].hasOwnProperty('length') && json['topicNames'].length > 0){
+            if (typeof(json['topicNames']) === 'object' && json['topicNames'].hasOwnProperty('length') && json['topicNames'].length > 0){
                 d3.selectAll('.btn-label')
                     .text(function() {
                         var tagNum = parseInt(d3.select(d3.select(this).node().parentNode).attr('data-key').split('_')[1]);
@@ -134,7 +134,7 @@ var storeTagColors = function() {
     var storageStr = '';
     var i = 0;
     for (var tagID in tag_colors) {
-        if (i != 0) {
+        if (i !== 0) {
             storageStr += ';'
         }
         storageStr += tagID + ':' + tag_colors[tagID];
@@ -144,7 +144,7 @@ var storeTagColors = function() {
 };
 
 var retrieveAndApplyTagColors = function(oldRankType) {
-    if (typeof(localStorage[model_name]) == 'undefined') {
+    if (typeof(localStorage[model_name]) === 'undefined') {
         localStorage[model_name] = '';
     }
     var tagColorAssignments = localStorage[model_name].split(';');
@@ -154,7 +154,7 @@ var retrieveAndApplyTagColors = function(oldRankType) {
     var rankTypeToRemove;
     var ramp_index;
     for (var i = 0; i < tagColorAssignments.length; i++) {
-        if (tagColorAssignments[i] != '') {
+        if (tagColorAssignments[i] !== '') {
             tmp = tagColorAssignments[i].split(':');
             tag_name = tmp[0];
             color = tmp[1];
@@ -239,7 +239,7 @@ var retrieveAndApplyTagColors = function(oldRankType) {
 // Vast improvement over the nonsense Joe was doing with ramped classes in retrieveAndApplyTagColors
 var updateTagColorsD3 = function() {
     var tagToken;
-    if (rank_type == 'count') {
+    if (rank_type === 'count') {
         tagToken = d3.selectAll('.tagToken')
             .style('background-color', function() {
                 var data_key_vals = d3.select(this).attr('data-key').split(' ');
@@ -265,7 +265,7 @@ var updateTagColorsD3 = function() {
                     }
                 }
                 var tagBaseColor = tag_colors[tagName];
-                if (typeof(tagBaseColor) == 'undefined') {
+                if (typeof(tagBaseColor) === 'undefined') {
                     return;
                 }
                 return app_colors['baseColorRamps'][tagBaseColor][rank_bin - 1];
@@ -329,7 +329,7 @@ var getNextUnusedColorIndex = function(colors, tag_colors) {
     var index_to_return = colors.length - 1;
     for (var j = 0; j < colors.length - 1; j++) {
         var color = colors[j];
-        if (countProperties(tag_colors) == 0) {
+        if (countProperties(tag_colors) === 0) {
             index_to_return = j;
             break;
         }
@@ -337,7 +337,7 @@ var getNextUnusedColorIndex = function(colors, tag_colors) {
             // Verify that this color is unused.
             var is_unused = true;
             for (var prop in tag_colors) {
-                if (tag_colors.hasOwnProperty(prop) && color == tag_colors[prop]) {
+                if (tag_colors.hasOwnProperty(prop) && color === tag_colors[prop]) {
                     is_unused = false;
                 }
             }
@@ -353,7 +353,7 @@ var getNextUnusedColorIndex = function(colors, tag_colors) {
 // Function for updating tag representation when tagRepState has changed
 var updateTagRep = function() {
     d3.select('#tagRep_name').text(tagRepState.tag_name);
-    wordDistribution = buildTagRep(typeof(model_name) == 'undefined' ? 'undefined' : model_name,
+    wordDistribution = buildTagRep(typeof(model_name) === 'undefined' ? 'undefined' : model_name,
         tagRepState.tag_name,
         tag_colors[tagRepState.tag_name],
         model_type,
@@ -447,8 +447,8 @@ var kickOffLGworker = function(tokens) {
     lgWorker = new Worker($LG_WORKER_URL);
 
     lgWorker.onmessage = function(e) {
-        if (e.data.task == 'buildSAT') {
-            if (e.data.message == 'success') {
+        if (e.data.task === 'buildSAT') {
+            if (e.data.message === 'success') {
                 console.log('SAT successfully built.');
                 lgWorker.postMessage({
                     'task': 'getTagLines',
@@ -461,8 +461,8 @@ var kickOffLGworker = function(tokens) {
             } else {
                 console.log('SAT build FAILED');
             }
-        } else if (e.data.task == 'getTagLines') {
-            if (e.data.message == 'success') {
+        } else if (e.data.task === 'getTagLines') {
+            if (e.data.message === 'success') {
                 console.log('tagLines successfully computed.');
                 lgState.tagLines = e.data.tagLines;
                 lgState.maxWindow = e.data.maxWindow;
@@ -560,7 +560,7 @@ var next_token_buffer = function() {
     var $hf = $('.html_formatter');
     var $mc = $('#main_content');
     var nextBuffer = get_passage_html(currPageEnd, currPageEnd + tokenBuffer);
-    if (nextBuffer != '') {
+    if (nextBuffer !== '') {
         var linesAdded = $(nextBuffer).filter('.line').length;
         var oldHeight = $hf.height();
         $hf.append(nextBuffer);
@@ -580,7 +580,7 @@ var next_token_buffer = function() {
 var prev_token_buffer = function() {
     var $hf = $('.html_formatter');
     var prevBuffer = get_passage_html(currPageStart - tokenBuffer, currPageStart);
-    if (prevBuffer != '') {
+    if (prevBuffer !== '') {
         var linesAdded = $(prevBuffer).filter('.line').length;
         var oldHeight = $hf.height();
         $hf.prepend(prevBuffer);
@@ -623,7 +623,7 @@ var get_passage_html = function(roughStartIndex, roughEndIndex, splitIntoLines) 
         return '';
     } else if (startIndex > 0) {
         // Look backward for a newline rather than forward, so that we include the line with the given token
-        while (startIndex > 0 && tokens[startIndex - 1][2][0] != 'n') {
+        while (startIndex > 0 && tokens[startIndex - 1][2][0] !== 'n') {
             startIndex -= 1;
         }
         /*while (startIndex < tokens.length && tokens[startIndex - 1][2][0] != 'n') {
@@ -637,7 +637,7 @@ var get_passage_html = function(roughStartIndex, roughEndIndex, splitIntoLines) 
         return '';
     } else if (endIndex < tokens.length) {
         // Look backward for a newline rather than forward, so that we include the line with the given token
-        while (endIndex > 0 && tokens[endIndex - 1][2][0] != 'n') {
+        while (endIndex > 0 && tokens[endIndex - 1][2][0] !== 'n') {
             endIndex -= 1;
         }
         /*while (endIndex < tokens.length && tokens[endIndex-1][2][0] != 'n') {
@@ -646,7 +646,7 @@ var get_passage_html = function(roughStartIndex, roughEndIndex, splitIntoLines) 
     } else {
         endIndex = tokens.length;
     }
-    if (startIndex == 0 && endIndex == 0) {
+    if (startIndex === 0 && endIndex === 0) {
         endIndex = tokens.length;
     }
     var subtokens = tokens.slice(startIndex, endIndex);
@@ -661,8 +661,8 @@ var get_passage_html = function(roughStartIndex, roughEndIndex, splitIntoLines) 
     var token, isSearchMatch, isTagged, classStr, dataKeyStr;
     for (var i = 0; i < subtokens.length; i++) {
         token = subtokens[i];
-        isSearchMatch = !(matchIndices.indexOf(i + startIndex) == -1);
-        isTagged = token.length > 3 && token[3] != '';
+        isSearchMatch = !(matchIndices.indexOf(i + startIndex) === -1);
+        isTagged = token.length > 3 && token[3] !== '';
 
         // Build opening span tag if necessary (e.g. searchMatch or tag)
         if (isSearchMatch || isTagged) {
@@ -690,10 +690,10 @@ var get_passage_html = function(roughStartIndex, roughEndIndex, splitIntoLines) 
         }
 
         // Print the joiner
-        if (token[2] == 's') {
+        if (token[2] === 's') {
             htmlStr += ' ';
         //} else if (token[2] == 'n') {
-        } else if (token[2][0] == 'n') {
+        } else if (token[2][0] === 'n') {
             if (splitIntoLines) {
                 htmlStr += '<br /></span><span class="line">'.repeat(token[2].length);
             } else {
@@ -715,7 +715,7 @@ var main = function() {
     });
     d3.json($GET_RANKING_TYPES_URL, function(json) {
         // Remove radio buttons that the current model doesn't support
-        if (json['rankingTypes'].length == 1) {
+        if (json['rankingTypes'].length === 1) {
             $('#text_view_options').remove();
         }
     });
@@ -744,7 +744,7 @@ var main = function() {
     $main_content
         .on("contextmenu", ".tagToken", function(event) {
             event.preventDefault();
-            if (model_type == 'topic') {
+            if (model_type === 'topic') {
                 var word = $.trim($(this).text());
                 // Open word in wordRankings
                 // TODO: implement wordRankings
@@ -772,7 +772,7 @@ var main = function() {
     var scrollText = function() {
         if ($main_content.scrollTop() >= $html_formatter.height() - $main_content.height()) {
             next_token_buffer();
-        } else if ($main_content.scrollTop() == 0) {
+        } else if ($main_content.scrollTop() === 0) {
             prev_token_buffer();
         }
     };
@@ -801,13 +801,13 @@ var main = function() {
         });
 
     // Set functionality for the tag representation buttons
-    if (model_type == 'topic') {
+    if (model_type === 'topic') {
         tagRepState = {
             'repType': 'bar',
             'repScope': 'corpus'
         };
         d3.select('#downloadWordDistBtn').remove(); // TODO: this doesn't work for topic models because of race condition in Representations.js buildTagRep()
-    } else if (model_type == 'singleText') {
+    } else if (model_type === 'singleText') {
         tagRepState = {
             'repType': 'bar',
             'repScope': 'doc'
@@ -872,7 +872,7 @@ var main = function() {
     // Create search functionality
     var conductSearch = function(tmpSearchPhrase) {
         // If we're searching on the same phrase, we'll navigate to the next one
-        if (tmpSearchPhrase == searchPhrase) {
+        if (tmpSearchPhrase === searchPhrase) {
             currMatchIndex = (currMatchIndex + 1) % matchIndices.length;
         }
         // Otherwise, new search. Navigate to the first one.
@@ -951,16 +951,16 @@ var main = function() {
         });
     // Let's override the CTRL-F functionality for searching
     onkeydown = function(e){
-      if(e.ctrlKey && e.keyCode == 'F'.charCodeAt(0)){
+      if(e.ctrlKey && e.keyCode === 'F'.charCodeAt(0)){
         e.preventDefault();
         $('#tokenSearcher input').focus().select();
       }
     };
     
     // Attach cross-tab tag toggling
-    if (typeof(model_name) != 'undefined') {
+    if (typeof(model_name) !== 'undefined') {
         window.addEventListener('storage', function() {
-            if (event.key == model_name) {
+            if (event.key === model_name) {
                 retrieveAndApplyTagColors();
             }
         }, false);
@@ -991,6 +991,6 @@ var main = function() {
     retrieveAndApplyTagColors();
 };
 
-if (typeof(waitToRun) == 'undefined' || !(waitToRun) ) {
+if (typeof(waitToRun) === 'undefined' || !(waitToRun) ) {
     main();
 }

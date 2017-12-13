@@ -36,12 +36,12 @@ var validModelTypes = ['topic', 'singleText'];
 // Returns distribution of words (for output to CSV, for example)
 var buildTagRep = function(model_name, tag_name, tag_color, modelType, repType, repScope, svgContainerID, paramsObj) {
     // Make sure we can build this type
-    if (validRepTypes.indexOf(repType) == -1) {
+    if (validRepTypes.indexOf(repType) === -1) {
         d3.select(svgContainerID).append('div')
             .attr('class', 'alert alert-block')
             .html('Representation type ' + repType + ' nonexistent or not implemented.');
         return;
-    } else if (validModelTypes.indexOf(modelType) == -1) {
+    } else if (validModelTypes.indexOf(modelType) === -1) {
         d3.select(svgContainerID).append('div')
             .attr('class', 'alert alert-block')
             .html('Support for model type ' + modelType + ' nonexistent or not implemented.');
@@ -49,22 +49,22 @@ var buildTagRep = function(model_name, tag_name, tag_color, modelType, repType, 
     }
 
     var wordObjs;
-    if (repScope == 'doc') {
+    if (repScope === 'doc') {
         // I think that we can probably use the same representations for all models within a single document
         if (!paramsObj.hasOwnProperty('tokens')) {
             console.log('Error: trying to create doc-level tag representation without passing tokens.');
         } else {
             wordObjs = getDocTagDist(paramsObj['tokens'], tag_name);
-            if (repType == 'bar') {
+            if (repType === 'bar') {
                 buildBarChart(svgContainerID, wordObjs, tag_color);
-            } else if (repType == 'cloud') {
+            } else if (repType === 'cloud') {
                 buildWordCloud(svgContainerID, wordObjs, tag_color);
             }
         }
-    } else if (repScope == 'corpus') {
-        if (modelType == 'topic') {
+    } else if (repScope === 'corpus') {
+        if (modelType === 'topic') {
             // We don't have a "count" ranking, so get frequency count if that's the ranking type
-            if (paramsObj['ranking_type'] == 'count') {
+            if (paramsObj['ranking_type'] === 'count') {
                 paramsObj['ranking_type'] = 'freq';
             }
             // Get topic_url
@@ -82,9 +82,9 @@ var buildTagRep = function(model_name, tag_name, tag_color, modelType, repType, 
                         .html('Topic data not found.')
                 } else {
                     wordObjs = json.wordObjs;
-                    if (repType == 'bar') {
+                    if (repType === 'bar') {
                         buildBarChart(svgContainerID, wordObjs, tag_color);/*, openWordInRV);*/
-                    } else if (repType == 'cloud') {
+                    } else if (repType === 'cloud') {
                         buildWordCloud(svgContainerID, wordObjs, tag_color, paramsObj['size']);/*, openWordInRV);*/
                     }
                 }
@@ -98,11 +98,11 @@ var buildTagRep = function(model_name, tag_name, tag_color, modelType, repType, 
 
 // Builds a bar chart in a given svg container given word objects
 var buildBarChart = function(svgContainerID, wordObjs, barColor, wordClickFxn) {
-    if (wordObjs.length == 0) {
+    if (wordObjs.length === 0) {
         return;
     }
 
-    if (typeof(barColor) == 'undefined') {
+    if (typeof(barColor) === 'undefined') {
         barColor = tagRepNS.defaultColor;
     }
 
@@ -148,16 +148,16 @@ var buildBarChart = function(svgContainerID, wordObjs, barColor, wordClickFxn) {
 
 // Builds a word cloud tag representation in a given DOM div
 var buildWordCloud = function(svgContainerID, wordObjs, wordColor, cloudSize, wordClickFxn) {
-    if (wordObjs.length == 0) {
+    if (wordObjs.length === 0) {
         return;
     }
 
-    if (typeof(wordColor) == 'undefined') {
+    if (typeof(wordColor) === 'undefined') {
         wordColor = tagRepNS.defaultWordColor;
     }
     // If the provide us with a size, resize the default word size as well
     var maxSize;
-    if (typeof(cloudSize) == 'undefined') {
+    if (typeof(cloudSize) === 'undefined') {
         cloudSize = tagRepNS.size;
         maxSize = tagRepNS.defaultMaxCloudWordSize;
     } else {
@@ -242,7 +242,7 @@ var getDocTagDist = function(tokens, tag_name) {
     var i, word, tagIndex;
     for (i = 0; i < tokens.length; i++) {
         tagIndex = tokens[i].slice(3).indexOf(tag_name);
-        if (tagIndex != -1) {
+        if (tagIndex !== -1) {
             totalCount++;
             word = tokens[i][1];
             if (wordCounts.hasOwnProperty(word)) {
@@ -270,17 +270,17 @@ var getDocTagDist = function(tokens, tag_name) {
 
 // Function building the line graph SVG from tagLines retrieved from worker
 var buildLineGraph = function(tagLines, maxWindow, numWindows, svgContainerID, navigator, interactionFxns, svgW, svgH, tagLineThreshold) {
-    if (typeof(navigator) == 'undefined') {
+    if (typeof(navigator) === 'undefined') {
         navigator = true;
     }
 
     var $svgContainer = $(svgContainerID)
         .html('')
         .addClass("withLoadingIndicator");
-    if (typeof(svgW) == 'undefined') {
+    if (typeof(svgW) === 'undefined') {
         svgW = $svgContainer.width();
     }
-    if (typeof(svgH) == 'undefined') {
+    if (typeof(svgH) === 'undefined') {
         svgH = $svgContainer.height();
     }
 
@@ -301,7 +301,7 @@ var buildLineGraph = function(tagLines, maxWindow, numWindows, svgContainerID, n
         //.interpolate('basis');
 
     // If given the argument, only show tagLines whose max windowSize is above the tagLineThreshold as a proportion of overall maxWindow
-    if (typeof(tagLineThreshold) != 'undefined') {
+    if (typeof(tagLineThreshold) !== 'undefined') {
         var i, tagLineMax;
         for (i = 0; i < tagLines.length; i++) {
             tagLineMax = Math.max.apply(null, tagLines[i].windows);
@@ -348,7 +348,7 @@ var buildLineGraph = function(tagLines, maxWindow, numWindows, svgContainerID, n
             .style('fill-opacity',0)
             .on('click', function() {
                 var h = $(this).height();
-                if (h == 0) {
+                if (h === 0) {
                     h = $(this).parent().height();
                 }
                 go_to_token(tokens.length * (d3.event.offsetY / h));

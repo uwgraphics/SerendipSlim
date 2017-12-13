@@ -1,6 +1,6 @@
 // Function to test for zero values (which Flask doesn't like)
 var zTest = function(val) {
-    return val == 0 ? '0' : val;
+    return val === 0 ? '0' : val;
 };
 
 // This function takes a string and turns it into a (untagged) tokens list
@@ -24,6 +24,7 @@ var tokenize = function(s) {
         // If it has non-whitespace chars, consider it a token.
         if (rawTokens[i].match(/\S/)) {
             // Calculate the proper endreason based on number of newlines and EOF
+            var endReason;
             if (i + 1 < rawTokens.length) {
                 numNewlines = (rawTokens[i+1].match(/\n/g)||[]).length;
                 endReason = numNewlines > 0 ? 'n'.repeat(numNewlines) : 's';
@@ -35,7 +36,7 @@ var tokenize = function(s) {
             if (rawTokens[i].match(punc_re)) {
                 // Check the rules for wordToken -- if it isn't an empty string (e.g. a token that is just punctuation), push it
                 wordToken = rawTokens[i].split(punc_re)[0];
-                if (wordToken != '') {
+                if (wordToken !== '') {
                     tmp = [wordToken, wordToken.toLowerCase(), 'c'];
                     tokens.push(tmp);
                 }
@@ -65,9 +66,9 @@ var tokensToText = function(tokens) {
     var txtStr = '';
     for (var i = 0; i < tokens.length; i++) {
         txtStr += tokens[i][0];
-        if (tokens[i][2] == 's') {
+        if (tokens[i][2] === 's') {
             txtStr += ' ';
-        } else if (typeof tokens[i][2] !== 'undefined' && tokens[i][2][0] == 'n') {
+        } else if (typeof tokens[i][2] !== 'undefined' && tokens[i][2][0] === 'n') {
             txtStr += '\n'.repeat(tokens[i][2].length);
         }
     }
@@ -91,7 +92,7 @@ var objToArray = function(obj, arrayLen) {
 
 // Dot product of two arrays of numbers
 var dot = function(v1, v2) {
-    if (v1.length != v2.length) {
+    if (v1.length !== v2.length) {
         throw "Dot product lengths do not match";
     }
     var sum = 0;
