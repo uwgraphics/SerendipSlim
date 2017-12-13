@@ -53,7 +53,7 @@ var cv_rowView = (function() {
 
         // If they click the rowRepresentationTab, better draw it
         d3.select('#' + htmlIDs['rowRepresentationLI']).on('click', function() {
-            if (typeof(currRow) != 'undefined') {
+            if (typeof(currRow) !== 'undefined') {
                 buildRowRepresentation(currRow);
             }
         });
@@ -62,7 +62,7 @@ var cv_rowView = (function() {
     // Selecting a row will build its representation in rowView
     var selectRow = function(row) {
         // If this row is already selected, shouldn't need to do anything
-        if (row == currRow) {
+        if (row === currRow) {
             return;
         } else {
             currRow = row;
@@ -70,7 +70,7 @@ var cv_rowView = (function() {
 
         // Aggregation specific-behavior
         var aggBy = controller.getAggBy();
-        if (typeof(aggBy) == 'undefined') { // If not aggregating, update label and SlimTV Link
+        if (typeof(aggBy) === 'undefined') { // If not aggregating, update label and SlimTV Link
             // Update the selected row
             d3.select('#' + htmlIDs['selectedRow']).html(row);
 
@@ -166,7 +166,7 @@ var cv_rowView = (function() {
     var buildRowMeta = function(row) {
         var aggBy = controller.getAggBy();
 
-        if (typeof(aggBy) == 'undefined') { // If not aggregating, show meta for this one
+        if (typeof(aggBy) === 'undefined') { // If not aggregating, show meta for this one
             // Get the metadata for this row and create string representation
             var rowMeta = model.getRowMetaAsObj(row);
             var metadataString = '';
@@ -179,11 +179,11 @@ var cv_rowView = (function() {
                 }
             }
             for (field in rowMeta) {
-                if (preferredFields.indexOf(field) == -1) {
+                if (preferredFields.indexOf(field) === -1) {
                     metadataString += '<strong>' + field + ':</strong> ' + rowMeta[field] + '<br />';
                 }
             }
-            if (metadataString == '') {
+            if (metadataString === '') {
                 metadataString = 'No metadata available';
             }
 
@@ -233,7 +233,7 @@ var cv_rowView = (function() {
             'model_name': model_name,
             'text_name': model.getRowFilename(row)
         });
-        if (tokensURL != '') {
+        if (tokensURL !== '') {
             $('#' + htmlIDs['rowRepresentationContainer'])
                 .html('')
                 .addClass('withLoadingIndicator');
@@ -242,8 +242,8 @@ var cv_rowView = (function() {
                     var lgWorker = new Worker($LG_WORKER_URL);
 
                     lgWorker.onmessage = function(e) {
-                        if (e.data.task == 'buildSAT') {
-                            if (e.data.message == 'success') {
+                        if (e.data.task === 'buildSAT') {
+                            if (e.data.message === 'success') {
                                 console.log('SAT successfully built.');
                                 lgWorker.postMessage({
                                     'task': 'getTagLines',
@@ -252,8 +252,8 @@ var cv_rowView = (function() {
                             } else {
                                 console.log('SAT build FAILED');
                             }
-                        } else if (e.data.task == 'getTagLines') {
-                            if (e.data.message == 'success') {
+                        } else if (e.data.task === 'getTagLines') {
+                            if (e.data.message === 'success') {
                                 console.log('tagLines successfully computed.');
                                 //var rsbc = $('#right_sidebar_bottom_content');
                                 var rsbc = $('#' + htmlIDs['parentContainer']);
@@ -292,7 +292,7 @@ var cv_rowView = (function() {
 
     // Implement functionality for when a col is brushed in any view (called by controller)
     var brushCol = function(col) {
-        if (typeof(colCountsSVG) != 'undefined') {
+        if (typeof(colCountsSVG) !== 'undefined') {
             colCountsSVG.selectAll('.colLabel').select(function(d) { return parseInt(d.colNum) == col ? this : null; })
                 .style('font-weight', 'bold');
         }
@@ -301,7 +301,7 @@ var cv_rowView = (function() {
         d3.selectAll('.tag_line_graph g.topic_' + col).classed('active',true);
     };
     var unbrushCol = function(col) {
-        if (typeof(colCountsSVG) != 'undefined') {
+        if (typeof(colCountsSVG) !== 'undefined') {
             colCountsSVG.selectAll('.colLabel').select(function(d) { return parseInt(d.colNum) == col ? this : null; })
                 .style('font-weight', 'normal');
         }
@@ -326,7 +326,7 @@ var cv_rowView = (function() {
     };
 
     var colorBy = function(rowsOrCols) {
-        if (typeof(colCountsSVG) == 'undefined') {
+        if (typeof(colCountsSVG) === 'undefined') {
             return;
         }
 

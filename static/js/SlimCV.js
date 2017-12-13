@@ -96,9 +96,9 @@ var changeDocLabels = function() {
     for (var i = 0; i < state.rowList.length; i++) {
         state.rowList[i] = state.metadata[i][nameField];
     }
-    if (state.aggregatingBy == undefined) {
+    if (typeof(state.aggregatingBy) === 'undefined') {
         d3.selectAll('.rowLabel').text(function(d) {
-            return state.rowList[d] == '' ? '[EMPTY FIELD]' : state.rowList[d];
+            return state.rowList[d] === '' ? '[EMPTY FIELD]' : state.rowList[d];
         });
     }
 };
@@ -117,7 +117,7 @@ var initSettings = function() {
             .property('value', metadataName)
             .property('name', metadataName)
             .text(metadataName);
-        if (metadataType=='cat') {
+        if (metadataType==='cat') {
             d3.select('#anovaOrderSelect').append('option')
                 .property('value', metadataName)
                 .property('name', metadataName)
@@ -136,26 +136,26 @@ var initSettings = function() {
     // Turn on functionality
     $('#rankingTypeRadioGroup').change(function() {
         state.rankingType = $('input[name=rankingType]:checked').attr('id');
-        if (state.selectedCol != undefined) {
+        if (typeof(state.selectedCol) !== 'undefined') {
             renderTopicView(state.selectedCol);
         }
     });
     $('input[name="docLabelsRadios"]').change(function() {
-        if ($(this).attr('id') == 'autoDocLabels') {
+        if ($(this).attr('id') === 'autoDocLabels') {
             docLabelSelect.hide();
             for (i = 0; i < state.rowList.length; i++) {
                 state.rowList[i] = 'Document ' + i;
             }
-        } else if ($(this).attr('id') == 'metadataDocLabels') {
+        } else if ($(this).attr('id') === 'metadataDocLabels') {
             docLabelSelect.show();
             var nameField = docLabelSelect.val();
             for (i = 0; i < state.rowList.length; i++) {
                 state.rowList[i] = state.metadata[i][nameField];
             }
         }
-        if (state.aggregatingBy == undefined) {
+        if (typeof(state.aggregatingBy) === 'undefined') {
             d3.selectAll('.rowLabel').text(function(d) {
-                return state.rowList[d] == '' ? '[EMPTY FIELD]' : state.rowList[d];
+                return state.rowList[d] === '' ? '[EMPTY FIELD]' : state.rowList[d];
             });
         }
         state.docLabelsChanged = true;
@@ -170,7 +170,7 @@ var initSettings = function() {
         var catList = [];
         for (i = 0; i < state.metadata.length; i++) {
             currDoc = state.metadata[i];
-            if (catList.indexOf(currDoc[nameField]) == -1) {
+            if (catList.indexOf(currDoc[nameField]) === -1) {
                 catList.push(currDoc[nameField]);
             }
         }
@@ -227,7 +227,7 @@ var initSettings = function() {
             state.docLabelsChanged = false;
         }
     });
-    if (state.metadataNames.indexOf('filename') != -1) {
+    if (state.metadataNames.indexOf('filename') !== -1) {
         docLabelSelect.val('filename');
         changeDocLabels();
         updateMatrixView();
@@ -325,7 +325,7 @@ var initContextMenus = function() {
     var renameTopic = function() {
         var $newTopicName = $('#newTopicName');
         var newName = $newTopicName.val();
-        if (newName != '') {
+        if (newName !== '') {
             state.colList[state.selectedCol] = newName;
             matrixView.selectAll('.colLabel').text(function(d) { return state.colList[d]; });
             renderTopicView(state.selectedCol);
@@ -349,7 +349,7 @@ var initContextMenus = function() {
             renameTopic();
         });
     $('#newTopicName').keypress(function(e) {
-        if (e.which == 13) {
+        if (e.which === 13) {
             renameTopic();
         }
     });
@@ -393,7 +393,7 @@ var openGroup = function(aggNum) {
             currDoc = state.theta[state.groupRowOrder[i]];
             for (var topicID in currDoc) {
                 topicID = parseInt(topicID);
-                if (state.currColOrder.indexOf(topicID) != -1) {
+                if (state.currColOrder.indexOf(topicID) !== -1) {
                     state.groupData.push({
                         col: topicID,
                         row: state.groupRowOrder[i],
@@ -444,7 +444,7 @@ var initColorPickers = function() {
     d3.select('#topicColorSelection')
         .on('click', function() {
             makeColorSelector('#colColorPickerFloat', colors.topic, function(d) {
-                if (state.selectedCols != undefined && state.selectedCols.length != 0) {
+                if (typeof(state.selectedCols) !== 'undefined' && state.selectedCols.length !== 0) {
                     colorCols(state.selectedCols, d);
                     selectCol(state.selectedCol);
                     exportTopicColors();
@@ -547,14 +547,14 @@ var initSidebarFunctions = function() {
     // "Close" buttons for docView and topicView
     d3.select('#hideSelectedTopic')
         .on('click', function() {
-            if (state.selectedCol != undefined) {
+            if (typeof(state.selectedCol) !== 'undefined') {
                 hideCols([state.selectedCol]);
                 unselectCol();
             }
         });
     d3.select('#hideSelectedDoc')
         .on('click', function() {
-            if (state.selectedRow != undefined) {
+            if (typeof(state.selectedRow) !== 'undefined') {
                 hideRows([state.selectedRow]);
                 unselectRow();
             }
@@ -572,7 +572,7 @@ var initSidebarFunctions = function() {
     }
     topicSortSelect.on('change', function() {
         var fieldName = d3.select(this).property('value');
-        if (state.topicMetadataNames.indexOf(fieldName) == -1) {
+        if (state.topicMetadataNames.indexOf(fieldName) === -1) {
             state.currColOrder.sort(function(a,b) {return a-b;});
             updateMatrixView();
         } else {
@@ -647,7 +647,7 @@ var initSidebarFunctions = function() {
     }
     sortSelect.on('change', function() {
         var fieldName = d3.select(this).property('value');
-        if (state.metadataNames.indexOf(fieldName) == -1) {
+        if (state.metadataNames.indexOf(fieldName) === -1) {
             state.currRowOrder.sort(function(a,b) {return a-b;});
             updateMatrixView();
         } else {
@@ -670,7 +670,7 @@ var initSidebarFunctions = function() {
     for (i = 0; i < state.metadataNames.length; i++) {
         metadataName = state.metadataNames[i];
         metadataType = state.metadataTypes[i];
-        if (metadataType == 'cat') {
+        if (metadataType === 'cat') {
             colorSelect.append('option')
                 .property('value', metadataName)
                 .property('name', metadataName)
@@ -680,7 +680,7 @@ var initSidebarFunctions = function() {
     d3.select('#colorByMetadataSubmit').on('click', function() {
         var metadataField = $('#colorByMetadataSelect').val();
         // If they select None, uncolor all rows
-        if (metadataField == 'None') {
+        if (metadataField === 'None') {
             uncolorRows(state.currRowOrder);
         }
         // Otherwise, give each category its own color (looping as necessary)
@@ -709,7 +709,7 @@ var initSidebarFunctions = function() {
     for (i = 0; i < state.metadataNames.length; i++) {
         metadataName = state.metadataNames[i];
         metadataType = state.metadataTypes[i];
-        if (metadataType != 'str') {
+        if (metadataType !== 'str') {
             aggSelect.append('option')
                 .property('value', metadataName)
                 .property('name', metadataName)
@@ -718,16 +718,16 @@ var initSidebarFunctions = function() {
     }
     // TODO: we need reset the aggregation select field if they cancel
     aggSelect.on('change', function() {
-        if (state.aggregatingBy != undefined) {
+        if (typeof(state.aggregatingBy) !== 'undefined') {
             unaggregate();
         }
         var fieldName = d3.select(this).property('value');
-        if (fieldName == 'None') {
+        if (fieldName === 'None') {
             unaggregate();
         } else {
             var fieldType = state.metadataTypes[state.metadataNames.indexOf(fieldName)];
             // If fieldType is integer, we need to get group threshold
-            if (fieldType == 'int') {
+            if (fieldType === 'int') {
                 state.tempField = fieldName;
                 $('#aggIntModal').modal('show');
             } else {
@@ -847,7 +847,7 @@ var initSidebarFunctions = function() {
     d3.select('#loadGroupSubmit')
         .on('click', function() {
             var groupName = $('#loadGroupSelect').val();
-            if (state.loadingGroupOf == 'docs') {
+            if (state.loadingGroupOf === 'docs') {
                 state.selectedRows = state.docGroups[groupName].slice();
                 updateRowSelectDiv();
             } else {
@@ -868,7 +868,7 @@ var initSidebarFunctions = function() {
         });
     d3.select('#nameGroupSubmit')
         .on('click', function() {
-            if (state.savingGroupOf == 'docs') {
+            if (state.savingGroupOf === 'docs') {
                 nameGroup(state.selectedRows, 'docGroups.csv', state.docGroups);
             } else {
                 nameGroup(state.selectedCols, 'topicGroups.csv', state.topicGroups);
@@ -896,7 +896,7 @@ var initSidebarFunctions = function() {
 };
 
 var nameGroup = function(group, filename, groupsObj) {
-    if (group.length == 0) {
+    if (group.length === 0) {
         return;
     }
     var newName = $('#groupName').val();
@@ -967,12 +967,12 @@ var aggregateBy = function(fieldName, chunkSize, startingFrom) {
     state.docToAgg = new Array(state.rowList.length); // This will later let us match docs to their new agg
     // Categorical aggregation
     var currMeta, docNum;
-    if (chunkSize == undefined) {
+    if (typeof(chunkSize) === 'undefined') {
         var fieldNameIndex;
         for (docNum = 0; docNum < state.metadata.length; docNum++) {
             currMeta = state.metadata[docNum];
             fieldNameIndex = state.aggList.indexOf(currMeta[fieldName]);
-            if (fieldNameIndex == -1) {
+            if (fieldNameIndex === -1) {
                 state.docToAgg[docNum] = state.aggList.length;
                 state.aggList.push(currMeta[fieldName])
                 state.aggregates.push([docNum])
@@ -997,7 +997,7 @@ var aggregateBy = function(fieldName, chunkSize, startingFrom) {
             } else {
                 currMin = currField - ((currField - startingFrom) % chunkSize);
                 chunkIndex = Math.floor((currField - startingFrom) / chunkSize);
-                if (tmpAggs[chunkIndex] == undefined) {
+                if (typeof(tmpAggs[chunkIndex]) === 'undefined') {
                     tmpAggList[chunkIndex] = fieldName + ': ' + currMin + '-' + (currMin + chunkSize - 1);
                     tmpAggs[chunkIndex] = [docNum];
                 } else {
@@ -1011,7 +1011,7 @@ var aggregateBy = function(fieldName, chunkSize, startingFrom) {
             state.aggList.push(fieldName + ': <' + startingFrom);
         }
         for (i = 0; i < tmpAggList.length; i++) {
-            if (tmpAggList[i] != undefined) {
+            if (typeof(tmpAggList[i]) !== 'undefined') {
                 state.aggregates.push(tmpAggs[i]);
                 state.aggList.push(tmpAggList[i]);
             }
@@ -1041,23 +1041,23 @@ var aggregateBy = function(fieldName, chunkSize, startingFrom) {
             currDoc = state.aggregates[aggIndex][i];
             for (topicID in state.theta[currDoc]) {
                 currDocTopicProp = state.theta[currDoc][topicID];
-                if (currTopicProps[topicID] == undefined) {
+                if (typeof(currTopicProps[topicID]) === 'undefined') {
                     currTopicProps[topicID] = currDocTopicProp;
                 } else {
                     currTopicProps[topicID] += currDocTopicProp;
                 }
-                if (state.aggIQRs[aggIndex][topicID] == undefined) {
+                if (typeof(state.aggIQRs[aggIndex][topicID]) === 'undefined') {
                     state.aggIQRs[aggIndex][topicID] = [currDocTopicProp];
                 } else {
                     state.aggIQRs[aggIndex][topicID].push(currDocTopicProp)
                 }
                 currAggPropTotal += currDocTopicProp;
             }
-            if (state.rowsColored.indexOf(currDoc) != -1) {
-                if (state.aggColors[aggIndex] == undefined) {
+            if (state.rowsColored.indexOf(currDoc) !== -1) {
+                if (typeof(state.aggColors[aggIndex]) === 'undefined') {
                     state.aggsColored[aggIndex] = true;
                     state.aggColors[aggIndex] = state.rowColors[currDoc];
-                } else if (state.aggsColored[aggIndex] && state.aggColors[aggIndex] != state.rowColors[currDoc]) {
+                } else if (state.aggsColored[aggIndex] && state.aggColors[aggIndex] !== state.rowColors[currDoc]) {
                     state.aggsColored[aggIndex] = false;
                     state.aggColors[aggIndex] = defaultColor;
                 }
@@ -1067,7 +1067,7 @@ var aggregateBy = function(fieldName, chunkSize, startingFrom) {
         for (topicID in currTopicProps) {
             currProp = currTopicProps[topicID]/currAggPropTotal; //TODO: normalize or no?
             //currProp = currTopicProps[topicID];
-            if (state.currColOrder.indexOf(parseInt(topicID)) != -1) {
+            if (state.currColOrder.indexOf(parseInt(topicID)) !== -1) {
                 state.aggData.push({'col':parseInt(topicID),
                     'row':aggIndex,
                     'prop':currProp});
@@ -1076,7 +1076,7 @@ var aggregateBy = function(fieldName, chunkSize, startingFrom) {
         }
     }
     for (i = 0; i < state.aggColors.length; i++) {
-        if (state.aggColors[i] == undefined) {
+        if (typeof(state.aggColors[i]) === 'undefined') {
             state.aggColors[i] = defaultColor;
         }
     }
@@ -1254,9 +1254,9 @@ var aggregateBy = function(fieldName, chunkSize, startingFrom) {
             nz = l - currPropList.length; // number of zeros, were we to fill out the full array
             currPropList.sort(function(a,b){return a-b;});
             if (l >= 4) {
-                if (l % 2 == 0) {
+                if (l % 2 === 0) {
                     q2 = (getI(l/2 - 1,nz,currPropList) + getI(l/2,nz,currPropList))/2;
-                    if (l % 4 == 0) {
+                    if (l % 4 === 0) {
                         q1 = (getI(l/4 - 1,nz,currPropList) + getI(l/4,nz,currPropList))/2;
                         q3 = (getI(3*l/4 - 1,nz,currPropList) + getI(3*l/4,nz,currPropList))/2;
                     } else {
@@ -1265,7 +1265,7 @@ var aggregateBy = function(fieldName, chunkSize, startingFrom) {
                     }
                 } else {
                     q2 = getI(Math.floor(l/2),nz,currPropList);
-                    if ((l - 1) % 4 == 0) {
+                    if ((l - 1) % 4 === 0) {
                         q1 = (getI((l-1)/4 - 1,nz,currPropList) + getI((l-1)/4,nz,currPropList))/2;
                         q3 = (getI(Math.floor(3*l/4),nz,currPropList) + getI(Math.floor(3*l/4 + 1),nz,currPropList))/2;
                     } else {
@@ -1273,11 +1273,11 @@ var aggregateBy = function(fieldName, chunkSize, startingFrom) {
                         q3 = getI(Math.floor(3*l/4),nz,currPropList);
                     }
                 }
-            } else if (l == 3) {
+            } else if (l === 3) {
                 q1 = getI(0,nz,currPropList);
                 q2 = getI(1,nz,currPropList);
                 q3 = getI(2,nz,currPropList);
-            } else if (l == 2) {
+            } else if (l === 2) {
                 q1 = getI(0,nz,currPropList);
                 q2 = (getI(0,nz,currPropList) + getI(1,nz,currPropList))/2;
                 q3 = getI(1,nz,currPropList);
@@ -1329,11 +1329,11 @@ var aggregateBy = function(fieldName, chunkSize, startingFrom) {
 
 var unaggregate = function(toThisData) {
     // What are we unaggregating to? Default is just currData, but openGroup may pass something else.
-    if (toThisData == undefined) {
+    if (typeof(toThisData) === 'undefined') {
         toThisData = state.currData;
     }
 
-    if (state.lastAgg == undefined) {
+    if (typeof(state.lastAgg) === 'undefined') {
         d3.select('#matrixViewBreadcrumbs').html('Model');
     }
     state.aggregatingBy = undefined;
@@ -1421,7 +1421,7 @@ var unaggregate = function(toThisData) {
 
 var createFilter = function(sel, form) {
     // Init filters list if needed
-    if (state.filters == undefined) {
+    if (typeof(state.filters) === 'undefined') {
         state.filters = {};
         state.filterCount = 0; // This keeps an index for EVERY filter created in a session.
     }
@@ -1462,7 +1462,7 @@ var createFilter = function(sel, form) {
 
 var removeFilter = function(filterIndex) {
     var i;
-    if (state.filters[filterIndex] != undefined) {
+    if (typeof(state.filters[filterIndex]) !== 'undefined') {
         // Remove filter from the state.filters list
         delete state.filters[filterIndex];
         // Find the rows that will be shown as per the current filters
@@ -1473,7 +1473,7 @@ var removeFilter = function(filterIndex) {
         i = 0;
         while (i < rowsToShow.length) {
             for (var filterNum in state.filters) {
-                if (state.filters[filterNum].indexOf(rowsToShow[i]) == -1) {
+                if (state.filters[filterNum].indexOf(rowsToShow[i]) === -1) {
                     rowsToShow.splice(i, 1);
                     i--;
                     break;
@@ -1518,17 +1518,17 @@ var buildMetadataForm = function(formID) {
             .append('div')
             .attr('class', 'accordion-inner');
         accInner = accGrp.select('.accordion-inner');
-        if (currType == 'str') {
+        if (currType === 'str') {
             accInner.html(currName + ' contains ')
                 .append('input')
                 .attr('type', 'text')
                 .attr('class', 'str')
                 .attr('name', currName);
-        } else if (currType == 'int') {
+        } else if (currType === 'int') {
             accInner.html(currName + ' is between <input type="text" class="int input-small" name="min'
                 + currName + '" /> and <input type="text" class="int input-small" name="max'
                 + currName + '" />');
-        } else if (currType == 'cat') {
+        } else if (currType === 'cat') {
             accInner.html(currName + ' is ')
                 .append('select')
                 .attr('id', currName + '_select_' + formID)
@@ -1544,7 +1544,7 @@ var buildMetadataForm = function(formID) {
     for (i = 0; i < state.metadata.length; i++) {
         currDoc = state.metadata[i];
         for (catName in catLists) {
-            if (catLists[catName].indexOf(currDoc[catName]) == -1) {
+            if (catLists[catName].indexOf(currDoc[catName]) === -1) {
                 catLists[catName].push(currDoc[catName]);
             }
         }
@@ -1578,12 +1578,12 @@ var getSelectionFromFormObj = function(formObj) {
         currName = state.metadataNames[i];
         currType = state.metadataTypes[i];
 
-        if (currType == 'str' || currType == 'cat') {
+        if (currType === 'str' || currType === 'cat') {
             if (formObj[currName] == '') {
                 continue;
             }
             sel = selectByStringField(currName, formObj[currName], sel);
-        } else if (currType == 'int') {
+        } else if (currType === 'int') {
             minVal = formObj['min' + currName] == '' ? -Infinity : parseInt(formObj['min' + currName]);
             maxVal = formObj['max' + currName] == '' ? Infinity : parseInt(formObj['max' + currName]);
             if (minVal == '' && maxVal == '') {
@@ -1597,19 +1597,19 @@ var getSelectionFromFormObj = function(formObj) {
 
 var selectByStringField = function(fieldName, fieldValue, currSelection) {
     // If no currSelection provided, default to entire corpus
-    if (currSelection == undefined) {
+    if (typeof(currSelection) === 'undefined') {
         currSelection = state.currRowOrder.slice(0);
     }
 
     // Now filter by fieldValue
     for (var i = 0; i < currSelection.length; i++) {
         // If metadata doesn't exist for this entry, then filter it out.
-        if (currSelection[i] > state.metadata.length - 1 || Object.keys(state.metadata[currSelection[i]]).length == 0) {
+        if (currSelection[i] > state.metadata.length - 1 || Object.keys(state.metadata[currSelection[i]]).length === 0) {
             currSelection.splice(i,1);
             i--;
         } else {
-            if (state.metadata[currSelection[i]][fieldName] == undefined ||
-                state.metadata[currSelection[i]][fieldName].toLowerCase().indexOf(fieldValue.toLowerCase()) == -1) {
+            if (typeof(state.metadata[currSelection[i]][fieldName]) === 'undefined' ||
+                state.metadata[currSelection[i]][fieldName].toLowerCase().indexOf(fieldValue.toLowerCase()) === -1) {
                 currSelection.splice(i,1);
                 i--; // ...since we removed one, move index back 1
             }
@@ -1621,14 +1621,14 @@ var selectByStringField = function(fieldName, fieldValue, currSelection) {
 
 var selectByIntField = function(fieldName, minVal, maxVal, currSelection) {
     // If no currSelection provided, default to entire corpus
-    if (currSelection == undefined) {
+    if (typeof(currSelection) === 'undefined') {
         currSelection = state.currRowOrder.slice(0);
     }
     // Not sure I'll need these year defaults, but doesn't hurt
-    if (maxVal == undefined) {
+    if (typeof(maxVal) === 'undefined') {
         maxVal = Infinity;
     }
-    if (minVal == undefined) {
+    if (typeof(minVal) === 'undefined') {
         minVal = -Infinity;
     }
 
@@ -1636,7 +1636,7 @@ var selectByIntField = function(fieldName, minVal, maxVal, currSelection) {
     var currVal;
     for (var i = 0; i < currSelection.length; i++) {
         // If metadata doesn't exist for this entry, then filter it out.
-        if (currSelection[i] > state.metadata.length - 1 || Object.keys(state.metadata[currSelection[i]]).length == 0) {
+        if (currSelection[i] > state.metadata.length - 1 || Object.keys(state.metadata[currSelection[i]]).length === 0) {
             currSelection.splice(i,1);
             i--;
         } else {
@@ -1655,7 +1655,7 @@ var getObjectFromForm = function(formID) {
     var tempObject = {};
     d3.selectAll('#' + formID + ' input').each(function() {
         var $this = d3.select(this);
-        if ($this.property('type') != 'submit') {
+        if ($this.property('type') !== 'submit') {
             tempObject[$this.property('name')] = $this.property('value');
         }
     });
@@ -1668,25 +1668,25 @@ var getObjectFromForm = function(formID) {
 
 var sortRowsByMetadata = function(fieldName) {
     var fieldNum = state.metadataNames.indexOf(fieldName);
-    if (fieldNum == -1) {
+    if (fieldNum === -1) {
         return;
     }
 
     var fieldType = state.metadataTypes[fieldNum];
-    if (fieldType == 'str' || fieldType == 'cat' || fieldType == 'int') {
+    if (fieldType === 'str' || fieldType === 'cat' || fieldType === 'int') {
         state.currRowOrder.sort(function(d1, d2) {
             if (fieldName in state.metadata[d1] && state.metadata[d1] != '') {
                 if (fieldName in state.metadata[d2] && state.metadata[d2] != '') {
                     var d1Val = state.metadata[d1][fieldName];
                     var d2Val = state.metadata[d2][fieldName];
-                    if (fieldType == 'str' || fieldType == 'cat') {
+                    if (fieldType === 'str' || fieldType === 'cat') {
                         if (d1Val > d2Val) {
                             return state.sortOrderVar;
                         } else if (d2Val > d1Val) {
                             return -1 * state.sortOrderVar;
                         }
                         return 0;
-                    } else if (fieldType == 'int') {
+                    } else if (fieldType === 'int') {
                         return parseInt(d1Val) - parseInt(d2Val);
                     }
                 } else {
@@ -1707,13 +1707,13 @@ var sortRowsByMetadata = function(fieldName) {
 
 var sortColsByMetadata = function(fieldName) {
     var fieldNum = state.topicMetadataNames.indexOf(fieldName);
-    if (fieldNum == -1) {
+    if (fieldNum === -1) {
         return;
     }
     // Sorting in descending order, seems more useful that way
     state.currColOrder.sort(function(t1, t2) {
-        if (state.topicMetadata[t1] != undefined && fieldName in state.topicMetadata[t1] && state.topicMetadata[t1] != '') {
-            if (state.topicMetadata[t2] != undefined && fieldName in state.topicMetadata[t2] && state.topicMetadata[t2] != '') {
+        if (typeof(state.topicMetadata[t1]) !== 'undefined' && fieldName in state.topicMetadata[t1] && state.topicMetadata[t1] != '') {
+            if (typeof(state.topicMetadata[t2]) !== 'undefined' && fieldName in state.topicMetadata[t2] && state.topicMetadata[t2] != '') {
                 var t1Val = state.topicMetadata[t1][fieldName];
                 var t2Val = state.topicMetadata[t2][fieldName];
                 //return parseFloat(t1Val) - parseFloat(t2Val);
@@ -1723,7 +1723,7 @@ var sortColsByMetadata = function(fieldName) {
                 return 1;
             }
         } else {
-            if (state.topicMetadata[t2] != undefined && fieldName in state.topicMetadata[t2] && state.topicMetadata[t2] != '') {
+            if (typeof(state.topicMetadata[t2]) !== 'undefined' && fieldName in state.topicMetadata[t2] && state.topicMetadata[t2] != '') {
                 //return 1;
                 return -1;
             } else {
@@ -1779,7 +1779,7 @@ var hideTooltip = function() {
 
 var moveRowsToTop = function(selection) {
     var i;
-    if (selection != undefined && selection.length != 0) {
+    if (typeof(selection) !== 'undefined' && selection.length !== 0) {
         var indices = new Array(selection.length);
         for (i = 0; i < selection.length; i++) {
             indices[i] = state.currRowOrder.indexOf(selection[i]);
@@ -1795,7 +1795,7 @@ var moveRowsToTop = function(selection) {
 
 var moveColsToLeft = function(selection) {
     var i;
-    if (selection != undefined && selection.length != 0) {
+    if (typeof(selection) !== 'undefined' && selection.length !== 0) {
         var indices = new Array(selection.length);
         for (i = 0; i < selection.length; i++) {
             indices[i] = state.currColOrder.indexOf(selection[i]);
@@ -1812,7 +1812,7 @@ var moveColsToLeft = function(selection) {
 
 // This function sorts the rows by a selection (list) of cols
 var sortRowsBy = function(selection) {
-    if (selection == undefined || selection.length == 0) {
+    if (typeof(selection) === 'undefined' || selection.length === 0) {
         return;
     }
 
@@ -1820,23 +1820,23 @@ var sortRowsBy = function(selection) {
     //var sortOrderVar = d3.select('#ascendingOrderCheckbox').filter(':checked')[0].length == 1 ? 1 : -1;
     var sortOrderVar = 1;
     var listToSort;
-    if (state.groupData == undefined) {
-        listToSort = state.aggregatingBy == undefined ? state.currRowOrder : state.currAggOrder;
+    if (typeof(state.groupData) === 'undefined') {
+        listToSort = typeof(state.aggregatingBy) === 'undefined' ? state.currRowOrder : state.currAggOrder;
     } else {
         listToSort = state.groupRowOrder;
     }
     state.oldRowOrder = listToSort.slice();
-    var thetaToUse = state.aggregatingBy == undefined ? state.theta: state.aggTheta;
+    var thetaToUse = typeof(state.aggregatingBy) === 'undefined' ? state.theta: state.aggTheta;
     listToSort.sort(function(d1,d2) {
         var d1Score = 0;
         var d2Score = 0;
         var t;
         for (var i = 0; i < selection.length; i++) {
             t = selection[i];
-            if (thetaToUse[d1][t] != undefined) {
+            if (typeof(thetaToUse[d1][t]) !== 'undefined') {
                 d1Score += thetaToUse[d1][t];
             }
-            if (thetaToUse[d2][t] != undefined) {
+            if (typeof(thetaToUse[d2][t]) !== 'undefined') {
                 d2Score += thetaToUse[d2][t];
             }
         }
@@ -1861,7 +1861,7 @@ var sortColsByFxn = function(fxn) {
 };
 
 var sortColsBy = function(selection) {
-    if (selection == undefined || selection.length == 0) {
+    if (typeof(selection) === 'undefined' || selection.length === 0) {
         return;
     }
 
@@ -1873,10 +1873,10 @@ var sortColsBy = function(selection) {
         var d;
         for (var i = 0; i < selection.length; i++) {
             d = selection[i];
-            if (state.theta[d][t1] != undefined) {
+            if (typeof(state.theta[d][t1]) !== 'undefined') {
                 t1Score += state.theta[d][t1];
             }
-            if (state.theta[d][t2] != undefined) {
+            if (typeof(state.theta[d][t2]) !== 'undefined') {
                 t2Score += state.theta[d][t2];
             }
         }
@@ -1903,7 +1903,7 @@ var objToArray = function(obj, arrayLen) {
 };
 // Dot product of two arrays of numbers
 var dot = function(v1, v2) {
-    if (v1.length != v2.length) {
+    if (v1.length !== v2.length) {
         throw "Dot product lengths do not match";
     }
     var sum = 0;
@@ -1966,7 +1966,7 @@ var allOutOfScope = function(selection, numTotal) {
 var sortVectorsByDistFrom = function(vectorSelection, listToSort, parallelObjs, vectorLength) {
     // Define a mean vector with which to compare all vectors.
     var meanVecObj;
-    if (vectorSelection.length == 1) {
+    if (vectorSelection.length === 1) {
         meanVecObj = parallelObjs[vectorSelection[0]];
     } else {
         meanVecObj = {};
@@ -1975,7 +1975,7 @@ var sortVectorsByDistFrom = function(vectorSelection, listToSort, parallelObjs, 
         for (var i = 0; i < vectorSelection.length; i++) {
             vecObj = state.theta[vectorSelection[i]];
             for (keyNum in vecObj) {
-                if (meanVecObj[keyNum] == undefined) {
+                if (typeof(meanVecObj[keyNum]) === 'undefined') {
                     meanVecObj[keyNum] = vecObj[keyNum];
                 } else {
                     meanVecObj[keyNum] += vecObj[keyNum];
@@ -2001,7 +2001,7 @@ var sortVectorsByDistFrom = function(vectorSelection, listToSort, parallelObjs, 
     });
 };
 var weightedDot = function(v1, v2, weights) {
-    if (v1.length != v2.length || v1.length != weights.length) {
+    if (v1.length !== v2.length || v1.length !== weights.length) {
         throw "Weighted dot product lengths do not match.";
     }
     var sum = 0;
@@ -2015,7 +2015,7 @@ var sortVectorsByWeightedDistFrom = function(vectorSelection, listToSort, parall
     // Define a mean vector with which to compare all vectors.
     var i;
     var meanVecObj, varVecObj;
-    if (vectorSelection.length == 1) {
+    if (vectorSelection.length === 1) {
         meanVecObj = parallelObjs[vectorSelection[0]];
     } else {
         meanVecObj = {};
@@ -2025,7 +2025,7 @@ var sortVectorsByWeightedDistFrom = function(vectorSelection, listToSort, parall
         for (i = 0; i < vectorSelection.length; i++) {
             vecObj = state.theta[vectorSelection[i]];
             for (keyNum in vecObj) {
-                if (meanVecObj[keyNum] == undefined) {
+                if (typeof(meanVecObj[keyNum]) === 'undefined') {
                     meanVecObj[keyNum] = vecObj[keyNum];
                     varVecObj[parseInt(keyNum)] = [vecObj[keyNum]];
                 } else {
@@ -2092,7 +2092,7 @@ var sortDocsByNth = function(n) {
     repositionLabels();
 };
 var setDocOrder = function(docOrder) {
-    if (docOrder.length != state.rowList.length) {
+    if (docOrder.length !== state.rowList.length) {
         return false;
     }
     for (var i = 0; i < docOrder.length; i++) {
@@ -2105,7 +2105,7 @@ var setDocOrder = function(docOrder) {
     repositionLabels();
 };
 var setTopicOrder = function(topicOrder) {
-    if (topicOrder.length != state.colList.length) {
+    if (topicOrder.length !== state.colList.length) {
         return false;
     }
     for (var i = 0; i < topicOrder.length; i++) {
@@ -2120,10 +2120,10 @@ var setTopicOrder = function(topicOrder) {
 
 var toggleColorBy = function(rowsOrCols) {
     var i;
-    if (rowsOrCols == 'rows') {
+    if (rowsOrCols === 'rows') {
         d3.select('#toggleColorByRowBtn').classed('active', true);
         d3.select('#toggleColorByColBtn').classed('active', false);
-        if (state.colorByRows != true) {
+        if (state.colorByRows !== true) {
             state.colorByRows = true;
             matrixView.selectAll('.innerShape')
                 .style('fill', defaultColor);
@@ -2137,10 +2137,10 @@ var toggleColorBy = function(rowsOrCols) {
                 colorRows([currRow], state.rowColors[currRow]);
             }
         }
-    } else if (rowsOrCols == 'cols') {
+    } else if (rowsOrCols === 'cols') {
         d3.select('#toggleColorByColBtn').classed('active', true);
         d3.select('#toggleColorByRowBtn').classed('active', false);
-        if (state.colorByRows != false) {
+        if (state.colorByRows !== false) {
             state.colorByRows = false;
             matrixView.selectAll('.innerShape')
                 .style('fill', defaultColor);
@@ -2159,19 +2159,19 @@ var toggleColorBy = function(rowsOrCols) {
 
 var colorRows = function(selection, color) {
     var i;
-    if (state.colorByRows == false) {
+    if (state.colorByRows === false) {
         toggleColorBy('rows');
     }
 
-    matrixView.selectAll('.innerShape').select(function(d) { return selection.indexOf(d.row) != -1 ? this : null; })
+    matrixView.selectAll('.innerShape').select(function(d) { return selection.indexOf(d.row) !== -1 ? this : null; })
         .style('fill', color);
-    matrixView.selectAll('.rowHighlightBar').select(function(d) { return selection.indexOf(d) != -1 ? this : null; })
+    matrixView.selectAll('.rowHighlightBar').select(function(d) { return selection.indexOf(d) !== -1 ? this : null; })
         .style('fill', color)
         .style('fill-opacity', mvNS.minFill);
-    if (state.aggregatingBy == undefined) {
+    if (typeof(state.aggregatingBy) === 'undefined') {
         for (i = 0; i < selection.length; i++) {
             state.rowColors[selection[i]] = color;
-            if (state.rowsColored.indexOf(selection[i]) == -1) {
+            if (state.rowsColored.indexOf(selection[i]) === -1) {
                 state.rowsColored.push(selection[i]);
             }
         }
@@ -2182,7 +2182,7 @@ var colorRows = function(selection, color) {
             for (var j = 0; j < state.aggregates[selection[i]].length; j++) {
                 state.rowColors[state.aggregates[selection[i]][j]] = color;
                 state.rowsColored[state.aggregates[selection[i]][j]] = true;
-                if (state.rowsColored.indexOf(selection[i]) != -1) {
+                if (state.rowsColored.indexOf(selection[i]) !== -1) {
                     state.rowsColored.splice(state.rowsColored.indexOf(selection[i]), 1);
                 }
             }
@@ -2192,74 +2192,74 @@ var colorRows = function(selection, color) {
 
 var uncolorRows = function(selection) {
     if (state.colorByRows) {
-        matrixView.selectAll('.innerShape').select(function(d) { return selection.indexOf(d.row) != -1 ? this : null; })
+        matrixView.selectAll('.innerShape').select(function(d) { return selection.indexOf(d.row) !== -1 ? this : null; })
             .style('fill', defaultColor);
-        matrixView.selectAll('.rowHighlightBar').select(function(d) { return selection.indexOf(d) != -1 ? this : null; })
+        matrixView.selectAll('.rowHighlightBar').select(function(d) { return selection.indexOf(d) !== -1 ? this : null; })
             .style('fill', defaultColor)
             .style('fill-opacity', 0);
     }
     for (var i = 0; i < selection.length; i++) {
         state.rowColors[selection[i]] = defaultColor;
-        if (state.rowsColored.indexOf(selection[i]) != -1) {
+        if (state.rowsColored.indexOf(selection[i]) !== -1) {
             state.rowsColored.splice(state.rowsColored.indexOf(selection[i]),1);
         }
     }
 
-    if (selection.indexOf(state.selectedRow) != -1) {
+    if (selection.indexOf(state.selectedRow) !== -1) {
         // Nothing to do in this case
     }
 };
 
 var colorCols = function(selection, color) {
-    if (state.colorByRows == true) {
+    if (state.colorByRows === true) {
         toggleColorBy('cols');
     }
 
-    matrixView.selectAll('.innerShape').select(function(d) { return selection.indexOf(d.col) != -1 ? this : null; })
+    matrixView.selectAll('.innerShape').select(function(d) { return selection.indexOf(d.col) !== -1 ? this : null; })
         .style('fill', color);
-    matrixView.selectAll('.colHighlightBar').select(function(d) { return selection.indexOf(d) != -1 ? this : null; })
+    matrixView.selectAll('.colHighlightBar').select(function(d) { return selection.indexOf(d) !== -1 ? this : null; })
         .style('fill', color)
         .style('fill-opacity', mvNS.minFill);
     for (var i = 0; i < selection.length; i++) {
         state.colColors[selection[i]] = color;
-        if (state.colsColored.indexOf(selection[i]) == -1) {
+        if (state.colsColored.indexOf(selection[i]) === -1) {
             state.colsColored.push(selection[i]);
         }
     }
 
     // Update topicView and docView if needed.
-    if (selection.indexOf(state.selectedCol) != -1) {
+    if (selection.indexOf(state.selectedCol) !== -1) {
         d3.selectAll('.wordBar,.cloudWord')
             .style('fill', color);
     }
     d3.selectAll('.tBar')
-        .filter(function() { return selection.indexOf(parseInt(d3.select(this).attr('topic'))) != -1; })
+        .filter(function() { return selection.indexOf(parseInt(d3.select(this).attr('topic'))) !== -1; })
         .style('fill', color);
 };
 
 var uncolorCols = function(selection) {
-    if (state.colorByRows == false) {
-        matrixView.selectAll('.innerShape').select(function(d) { return selection.indexOf(d.col) != -1 ? this : null; })
+    if (state.colorByRows === false) {
+        matrixView.selectAll('.innerShape').select(function(d) { return selection.indexOf(d.col) !== -1 ? this : null; })
             .style('fill', defaultColor);
-        matrixView.selectAll('.colHighlightBar').select(function(d) { return selection.indexOf(d) != -1 ? this : null; })
+        matrixView.selectAll('.colHighlightBar').select(function(d) { return selection.indexOf(d) !== -1 ? this : null; })
             .style('fill', defaultColor)
             .style('fill-opacity', 0);
     }
     for (var i = 0; i < selection.length; i++) {
         state.colColors[selection[i]] = defaultColor;
-        if (state.colsColored.indexOf(selection[i]) != -1) {
+        if (state.colsColored.indexOf(selection[i]) !== -1) {
             state.colsColored.splice(state.colsColored.indexOf(selection[i]),1);
         }
     }
 
-    if (selection.indexOf(state.selectedCol) != -1) {
+    if (selection.indexOf(state.selectedCol) !== -1) {
         d3.selectAll('.wordBar')
             .style('fill', defaultColor);
         d3.selectAll('.cloudWord')
             .style('fill', defaultCloudWordColor);
     }
     d3.selectAll('.tBar')
-        .filter(function() { return selection.indexOf(parseInt(d3.select(this).attr('topic'))) != -1; })
+        .filter(function() { return selection.indexOf(parseInt(d3.select(this).attr('topic'))) !== -1; })
         .style('fill', defaultColor);
 };
 
@@ -2281,7 +2281,7 @@ var exportTopicColors = function() {
 };
 
 var applyColorEncoding = function(encodingName) {
-    if (encodingName == 'cat' || encodingName == 'div' || encodingName == 'seq') {
+    if (encodingName === 'cat' || encodingName === 'div' || encodingName === 'seq') {
         state.colorEncoding = encodingName;
 
         d3.selectAll('.catColor').style('visibility', 'hidden');
@@ -2295,9 +2295,9 @@ var applyColorEncoding = function(encodingName) {
 };
 
 var getColorFxn = function() {
-    if (state.colorEncoding == 'div') {
+    if (state.colorEncoding === 'div') {
         return getDivColor;
-    } else if (state.colorEncoding == 'seq') {
+    } else if (state.colorEncoding === 'seq') {
         return getSeqColor;
     } else {
         return getCatColor;
@@ -2305,9 +2305,9 @@ var getColorFxn = function() {
 };
 
 var getCatColor = function(d) {
-    if (state.colorByRows == true) {
+    if (state.colorByRows === true) {
         return state.rowColors[d.row];
-    } else if (state.colorByRows == false) {
+    } else if (state.colorByRows === false) {
         return state.colColors[d.col];
     } else {
         return defaultColor;
@@ -2326,8 +2326,8 @@ var getSeqColor = function(d) {
 
 var hideCols = function(selection) {
     var dataToUse;
-    if (state.groupData == undefined) {
-        if (state.aggregatingBy == undefined) {
+    if (typeof(state.groupData) === 'undefined') {
+        if (typeof(state.aggregatingBy) === 'undefined') {
             dataToUse = state.currData;
         } else {
             dataToUse = state.aggData;
@@ -2340,14 +2340,14 @@ var hideCols = function(selection) {
     var i;
     for (var c = 0; c < selection.length; c++) {
         i = state.currColOrder.indexOf(selection[c]);
-        if (i != -1) {
+        if (i !== -1) {
             state.currColOrder.splice(i, 1);
         }
     }
     // Remove selected columns' data from currData
     i = 0;
     while (i < dataToUse.length) {
-        if (selection.indexOf(dataToUse[i].col) != -1) {
+        if (selection.indexOf(dataToUse[i].col) !== -1) {
             dataToUse.splice(i, 1);
             i--;
         }
@@ -2355,7 +2355,7 @@ var hideCols = function(selection) {
     }
     // Remove aggregate glyphs, since not taken care of in updateMatrixView -- TODO: this is a cheap hack
     d3.selectAll('.qShape')
-        .filter(function(d) { return state.currColOrder.indexOf(d.col) == -1; })
+        .filter(function(d) { return state.currColOrder.indexOf(d.col) === -1; })
         .remove();
     // Draw 'em
     updateMatrixView();
@@ -2366,7 +2366,7 @@ var hideColsNotIn = function(selection) {
     var colsToHide = state.currColOrder.slice(0);
     var i = 0;
     while (i < colsToHide.length) {
-        if (selection.indexOf(colsToHide[i]) != -1) {
+        if (selection.indexOf(colsToHide[i]) !== -1) {
             colsToHide.splice(i, 1);
             i--;
         }
@@ -2378,8 +2378,8 @@ var hideColsNotIn = function(selection) {
 var hideEmptyCols = function() {
     // Loop through currData to see which cols are empty. TODO: Should this be data or currData?
     var dataToUse;
-    if (state.groupData == undefined) {
-        if (state.aggregatingBy == undefined) {
+    if (typeof(state.groupData) === 'undefined') {
+        if (typeof(state.aggregatingBy) === 'undefined') {
             dataToUse = state.currData;
         } else {
             dataToUse = state.aggData;
@@ -2390,24 +2390,24 @@ var hideEmptyCols = function() {
     var colsToHide = state.currColOrder.slice(0);
     var currDatumIndex;
     for (var i = 0; i < dataToUse.length; i++) {
-        if (colsToHide.length == 0) {
+        if (colsToHide.length === 0) {
             break;
         }
         currDatumIndex = colsToHide.indexOf(dataToUse[i].col);
-        if (currDatumIndex != -1) {
+        if (currDatumIndex !== -1) {
             colsToHide.splice(currDatumIndex, 1);
         }
     }
 
-    if (colsToHide.length != 0) {
+    if (colsToHide.length !== 0) {
         hideCols(colsToHide);
     }
 };
 
 var hideRows = function(selection) {
     var dataToUse, rowOrder;
-    if (state.groupData == undefined) {
-        if (state.aggregatingBy == undefined) {
+    if (typeof(state.groupData) === 'undefined') {
+        if (typeof(state.aggregatingBy) === 'undefined') {
             dataToUse = state.currData;
             rowOrder = state.currRowOrder;
         } else {
@@ -2423,7 +2423,7 @@ var hideRows = function(selection) {
     var i;
     for (var r = 0; r < selection.length; r++) {
         i = rowOrder.indexOf(selection[r]);
-        if (i != -1) {
+        if (i !== -1) {
             rowOrder.splice(i, 1);
         }
     }
@@ -2431,7 +2431,7 @@ var hideRows = function(selection) {
     i = 0;
     while (i < dataToUse.length) {
         // TODO: this is a hacky fix. Should consolidate this and hideCols somehow.
-        if (selection.indexOf(dataToUse[i].row) != -1 || state.currColOrder.indexOf(dataToUse[i].col) == -1) {
+        if (selection.indexOf(dataToUse[i].row) !== -1 || state.currColOrder.indexOf(dataToUse[i].col) === -1) {
             dataToUse.splice(i, 1);
             i--;
         }
@@ -2440,7 +2440,7 @@ var hideRows = function(selection) {
     // Remove aggregate glyphs, since not taken care of in updateMatrixView -- TODO: this is a cheap hack
     d3.selectAll('.qShape')
         //.filter(function(d) { return state.currRowOrder.indexOf(d.row) == -1; })
-        .filter(function(d) { return selection.indexOf(d.row) != -1; })
+        .filter(function(d) { return selection.indexOf(d.row) !== -1; })
         .remove();
     // Draw 'em
     updateMatrixView();
@@ -2449,8 +2449,8 @@ var hideRows = function(selection) {
 var hideRowsNotIn = function(selection) {
     // Loop through currRowOrder to see which aren't selected.
     var rowsToHide;
-    if (state.groupData == undefined) {
-        if (state.aggregatingBy == undefined) {
+    if (typeof(state.groupData) === 'undefined') {
+        if (typeof(state.aggregatingBy) === 'undefined') {
             rowsToHide = state.currRowOrder.slice(0);
         } else {
             rowsToHide = state.currAggOrder.slice(0);
@@ -2460,7 +2460,7 @@ var hideRowsNotIn = function(selection) {
     }
     var i = 0;
     while (i < rowsToHide.length) {
-        if (selection.indexOf(rowsToHide[i]) != -1) {
+        if (selection.indexOf(rowsToHide[i]) !== -1) {
             rowsToHide.splice(i, 1);
             i--;
         }
@@ -2472,8 +2472,8 @@ var hideRowsNotIn = function(selection) {
 var hideEmptyRows = function() {
     // Loop through currData to see which rows are empty. TODO: Should this be data or currData?
     var dataToUse, rowsToHide;
-    if (state.groupData == undefined) {
-        if (state.aggregatingBy == undefined) {
+    if (typeof(state.groupData) === 'undefined') {
+        if (typeof(state.aggregatingBy) === 'undefined') {
             dataToUse = state.currData;
             rowsToHide = state.currRowOrder.slice(0);
         } else {
@@ -2487,15 +2487,15 @@ var hideEmptyRows = function() {
 
     var currDatumIndex;
     for (var i = 0; i < dataToUse.length; i++) {
-        if (rowsToHide.length == 0) {
+        if (rowsToHide.length === 0) {
             break;
         }
         currDatumIndex = rowsToHide.indexOf(dataToUse[i].row);
-        if (currDatumIndex != -1) {
+        if (currDatumIndex !== -1) {
             rowsToHide.splice(currDatumIndex, 1);
         }
     }
-    if (rowsToHide.length != 0) {
+    if (rowsToHide.length !== 0) {
         hideRows(rowsToHide);
     }
 };
@@ -2503,10 +2503,10 @@ var hideEmptyRows = function() {
 /**************** DATA RETRIEVAL **************************/
 
 var setWidthsHeightsScales = function() {
-    var rowList = state.aggregatingBy == undefined ? state.rowList : state.aggList;
+    var rowList = typeof(state.aggregatingBy) === 'undefined' ? state.rowList : state.aggList;
     var rowOrder;
-    if (state.groupData == undefined) {
-        if (state.aggregatingBy == undefined) {
+    if (typeof(state.groupData) === 'undefined') {
+        if (typeof(state.aggregatingBy) === 'undefined') {
             rowOrder = state.currRowOrder;
         } else {
             rowOrder = state.currAggOrder;
@@ -2515,9 +2515,9 @@ var setWidthsHeightsScales = function() {
         rowOrder = state.groupRowOrder;
     }
 
-    var separation = state.aggregatingBy == undefined ? matrixSeparation : aggSizeFactor*matrixSeparation;
-    mvNS.rowLabelWidth = 8 * Math.max.apply(Math, state.rowList.map(function(e) { return e == undefined ? 0 : e.length; })) + 10;
-    mvNS.colLabelHeight = 7 * Math.max.apply(Math, state.colList.map(function(e) { return e == undefined ? 0 : e.length; })) + 10;
+    var separation = typeof(state.aggregatingBy) === 'undefined' ? matrixSeparation : aggSizeFactor*matrixSeparation;
+    mvNS.rowLabelWidth = 8 * Math.max.apply(Math, state.rowList.map(function(e) { return typeof(e) === 'undefined' ? 0 : e.length; })) + 10;
+    mvNS.colLabelHeight = 7 * Math.max.apply(Math, state.colList.map(function(e) { return typeof(e) === 'undefined' ? 0 : e.length; })) + 10;
     mvNS.w = Math.max(mvNS.minW, state.currColOrder.length * separation + mvNS.rowLabelWidth);
     matrixView.attr('width', mvNS.w);
     mvNS.h = Math.max(mvNS.minH, rowOrder.length * separation + mvNS.colLabelHeight);
@@ -2540,7 +2540,7 @@ var fetchTheta = function() {
         state.docGroups = json.docGroups;
         state.topicGroups = json.topicGroups;
 
-        if (json.rowList == undefined) {
+        if (typeof(json.rowList) === 'undefined') {
             state.rowList = new Array(json.numDocs);
             for (i = 0; i < json.numDocs; i++) {
                 state.rowList[i] = 'Document ' + i;
@@ -2548,7 +2548,7 @@ var fetchTheta = function() {
         } else {
             state.rowList = json.rowList;
         }
-        if (json.colList == undefined) {
+        if (typeof(json.colList) === 'undefined') {
             state.colList = new Array(json.numTopics);
             for (i = 0; i < json.numTopics; i++) {
                 state.colList[i] = 'Topic ' + i;
@@ -2576,7 +2576,7 @@ var buildPhi = function(theta, numCols) {
     var phi = new Array(numCols);
     for (i = 0; i < theta.length; i++) {
         for (var col in theta[i]) {
-            if (phi[col] == undefined) {
+            if (typeof(phi[col]) === 'undefined') {
                 phi[col] = {};
                 phi[col][i] = theta[i][col];
             }
@@ -2586,7 +2586,7 @@ var buildPhi = function(theta, numCols) {
         }
     }
     for (i = 0; i < phi.length; i++) {
-        if (phi[i] == undefined) {
+        if (typeof(phi[i]) === 'undefined') {
             phi[i] = {};
         }
     }
@@ -2597,7 +2597,7 @@ var checkThetaAndPhi = function() {
     areEqual = true;
     for (var row=0; row<state.rowList.length; row++) {
         for (var col=0; col<state.colList.length; col++) {
-            if (state.theta[row][col] != state.phi[col][row]) {
+            if (state.theta[row][col] !== state.phi[col][row]) {
                 console.log(row + ' ' + col + ' ' + state.theta[row][col] + ' ' + state.phi[col][row]);
                 areEqual = false;
             }
@@ -2680,7 +2680,7 @@ var initColors = function() {
 var resetOrders = function() {
     d3.select('#matrixViewBreadcrumbs').html('Model')
     state.groupData = undefined;
-    if (state.aggregatingBy != undefined) {
+    if (typeof(state.aggregatingBy) !== 'undefined') {
         state.aggregatingBy = undefined;
         unaggregate();
     }
@@ -2729,13 +2729,13 @@ var repositionData = function() {
 };
 
 var repositionLabels = function(cameFromSortDropdown, cameFromTopicSortDropdown) {
-    /*if (cameFromSortDropdown == false || cameFromSortDropdown == undefined) {
+    /*if (typeof(cameFromSortDropdown == false || cameFromSortDropdown) === 'undefined') {
         $('#sortSelect').val('');
     }
 
     var orderToUse;
-    if (state.groupData == undefined) {
-        if (state.aggregatingBy == undefined) {
+    if (typeof(state.groupData) === 'undefined') {
+        if (typeof(state.aggregatingBy) === 'undefined') {
             orderToUse = state.currRowOrder;
         } else {
             orderToUse = state.currAggOrder;
@@ -2769,8 +2769,8 @@ var updateMatrixView = function() {
     $main_content = $("#main_content").addClass("withLoadingIndicator");
     // Specify which data to use (aggregate or full)
     var dataToUse, rowOrder, colOrder;
-    if (state.groupData == undefined) {
-        if (state.aggregatingBy == undefined) {
+    if (typeof(state.groupData) === 'undefined') {
+        if (typeof(state.aggregatingBy) === 'undefined') {
             dataToUse = state.currData;
             rowOrder = state.currRowOrder;
         } else {
@@ -2786,7 +2786,7 @@ var updateMatrixView = function() {
     rowOrder = rowOrder.slice(0, MATRIX_Y_LIMIT);
     colOrder = state.currColOrder.slice(0, MATRIX_X_LIMIT);
     dataToUse = dataToUse.filter(function(d) {
-        return (rowOrder.indexOf(d.row) != -1 && colOrder.indexOf(d.col) != -1);
+        return (rowOrder.indexOf(d.row) !== -1 && colOrder.indexOf(d.col) !== -1);
     });
 
     // Update scales
@@ -2881,7 +2881,7 @@ var updateMatrixView = function() {
         .attr('cursor', 'pointer')
         .on('mouseover', function(d) {
             brushRow(d);
-            if (d3.select('#metadataTooltipCheckbox').filter(':checked')[0].length == 1) {
+            if (d3.select('#metadataTooltipCheckbox').filter(':checked')[0].length === 1) {
                 d3.select('#metadataTooltip')
                     .html(getMetadataString(d))
                     .style('visibility', 'visible')
@@ -2959,7 +2959,7 @@ var updateMatrixView = function() {
         .attr('y', function(d) { return state.y(d) - mvNS.highlightBarHeight/2; })
         .attr('height', mvNS.highlightBarHeight)
         .style('fill', function(d) { return state.rowColors[d]; })
-        .style('fill-opacity', function(d) { return state.rowsColored.indexOf(d) != -1 ? mvNS.minFill : 0; })
+        .style('fill-opacity', function(d) { return state.rowsColored.indexOf(d) !== -1 ? mvNS.minFill : 0; })
         .on('mouseover', function(d) {
             brushRow(d);
         })
@@ -2986,7 +2986,7 @@ var updateMatrixView = function() {
         .attr('x', function(d) { return state.x(d) - mvNS.highlightBarHeight/2; })
         .attr('width', mvNS.highlightBarHeight)
         .style('fill', function(d) { return state.colColors[d]; })
-        .style('fill-opacity', function(d) { return state.colsColored.indexOf(d) != -1 ? mvNS.minFill : 0; })
+        .style('fill-opacity', function(d) { return state.colsColored.indexOf(d) !== -1 ? mvNS.minFill : 0; })
         .on('mouseover', function(d) {
             brushCol(d);
         })
@@ -3135,12 +3135,12 @@ var updateMatrixView = function() {
                 var p = d3.mouse(this);
                 var newBox = getNewBox(p);
                 var lowIndex, highIndex;
-                if (selectingRows == true) {
+                if (selectingRows === true) {
                     lowIndex = Math.max(0, Math.ceil(state.y.invert(newBox.y)));
                     highIndex = Math.ceil(state.y.invert(newBox.y + newBox.h));
                     state.selectedRows = state.currRowOrder.slice(lowIndex, highIndex);
                     updateRowSelectDiv();
-                } else if (selectingRows == false) {
+                } else if (selectingRows === false) {
                     lowIndex = Math.max(0, Math.ceil(state.x.invert(newBox.x)));
                     highIndex = Math.ceil(state.x.invert(newBox.x + newBox.w));
                     state.selectedCols = state.currColOrder.slice(lowIndex, highIndex);
@@ -3169,8 +3169,8 @@ var updateMatrixView = function() {
 
 var drawGrid = function() {
     var rowOrder, colOrder;
-    if (state.groupData == undefined) {
-        rowOrder = state.aggregatingBy == undefined ? state.currRowOrder : state.currAggOrder;
+    if (typeof(state.groupData) === 'undefined') {
+        rowOrder = typeof(state.aggregatingBy) === 'undefined' ? state.currRowOrder : state.currAggOrder;
     } else {
         rowOrder = state.groupRowOrder;
     }
@@ -3257,7 +3257,7 @@ var getColIndexByX = function(xPos) {
 // TODO: does this break with openGroup?
 var getRowIndexByY = function(yPos) {
     var index = Math.round(state.y.invert(yPos));
-    if (state.aggregatingBy == undefined) {
+    if (typeof(state.aggregatingBy) === 'undefined') {
         return index < 0 ? 0 : (index >= state.rowList.length ? state.rowList.length - 1 : index);
     } else {
         return index < 0 ? 0 : (index >= state.aggList.length ? state.aggList.length - 1 : index);
@@ -3266,7 +3266,7 @@ var getRowIndexByY = function(yPos) {
 
 var getR = function(datum) {
     var baseR = Math.sqrt(mvNS.areaScale(Math.abs(datum.prop)));
-    return state.aggregatingBy == undefined ? baseR : aggSizeFactor*baseR;
+    return typeof(state.aggregatingBy) === 'undefined' ? baseR : aggSizeFactor*baseR;
 };
 
 var getCircleX = function(datum) {
@@ -3274,8 +3274,8 @@ var getCircleX = function(datum) {
 };
 
 var getCircleY = function(datum) {
-    if (state.groupData == undefined) {
-        if (state.aggregatingBy == undefined) {
+    if (typeof(state.groupData) === 'undefined') {
+        if (typeof(state.aggregatingBy) === 'undefined') {
             return state.y(state.currRowOrder.indexOf(datum.row));
         } else {
             return state.y(state.currAggOrder.indexOf(datum.row));
@@ -3328,7 +3328,7 @@ var unbrushRow = function(rowNum) {
 var toggleColSelect = function(colNum) {
     selectCol(colNum);
     var colIndex = state.selectedCols.indexOf(colNum);
-    if (colIndex == -1) {
+    if (colIndex === -1) {
         state.selectedCols.push(colNum);
     } else {
         state.selectedCols.splice(colIndex, 1);
@@ -3337,10 +3337,10 @@ var toggleColSelect = function(colNum) {
 };
 
 var updateColSelectDiv = function() {
-    if (state.selectedCols == undefined) {
+    if (typeof(state.selectedCols) === 'undefined') {
         state.selectedCols = [];
     }
-    if (state.selectedCols.length == 0) {
+    if (state.selectedCols.length === 0) {
         d3.select('#selectedCols').html('No topics selected');
     } else {
         state.selectedCols.sort();
@@ -3359,7 +3359,7 @@ var updateColSelectDiv = function() {
             });
     }
     d3.selectAll('.colLabel')
-        .style('fill', function(d) { return state.selectedCols.indexOf(d) == -1 ? 'black' : 'red'; });
+        .style('fill', function(d) { return state.selectedCols.indexOf(d) === -1 ? 'black' : 'red'; });
 };
 
 var selectCol = function(colNum) {
@@ -3380,7 +3380,7 @@ var unselectCol = function() {
 var toggleRowSelect = function(rowNum) {
     selectRow(rowNum);
     var rowIndex = state.selectedRows.indexOf(rowNum);
-    if (rowIndex == -1) {
+    if (rowIndex === -1) {
         state.selectedRows.push(rowNum);
     } else {
         state.selectedRows.splice(rowIndex, 1);
@@ -3389,10 +3389,10 @@ var toggleRowSelect = function(rowNum) {
 };
 
 var updateRowSelectDiv = function() {
-    if (state.selectedRows == undefined) {
+    if (typeof(state.selectedRows) === 'undefined') {
         state.selectedRows = [];
     }
-    if (state.selectedRows.length == 0) {
+    if (state.selectedRows.length === 0) {
         d3.select('#selectedRows').html('No documents selected');
     } else {
         state.selectedRows.sort();
@@ -3411,11 +3411,11 @@ var updateRowSelectDiv = function() {
             });
     }
     d3.selectAll('.rowLabel')
-        .style('fill', function(d) { return state.selectedRows.indexOf(d) == -1 ? 'black' : 'red'; });
+        .style('fill', function(d) { return state.selectedRows.indexOf(d) === -1 ? 'black' : 'red'; });
 };
 
 var selectRow = function(rowNum) {
-    if (state.selectedRow != rowNum) {
+    if (state.selectedRow !== rowNum) {
         state.selectedRow = rowNum;
         renderDocView(rowNum);
     }
@@ -3461,7 +3461,7 @@ var renderTopicView = function(topicNum) {
     buildTagRep(
         model_name,
         'topic_' + topicNum, 
-        state.colsColored.indexOf(topicNum) == -1 ? undefined : state.colColors[topicNum],
+        state.colsColored.indexOf(topicNum) === -1 ? undefined : state.colColors[topicNum],
         'topic',
         'bar',
         'corpus',
@@ -3473,7 +3473,7 @@ var renderTopicView = function(topicNum) {
     buildTagRep(
         model_name,
         'topic_' + topicNum,
-        state.colsColored.indexOf(topicNum) == -1 ? undefined : state.colColors[topicNum],
+        state.colsColored.indexOf(topicNum) === -1 ? undefined : state.colColors[topicNum],
         'topic',
         'cloud',
         'corpus',
@@ -3487,7 +3487,7 @@ var renderTopicView = function(topicNum) {
 
 var renderDocView = function(docNum) {
     var i;
-    if (docNum != undefined) {
+    if (typeof(docNum) !== 'undefined') {
         d3.select('#selectedDocNum').html(docNum);
 
         d3.select('#docViewTitle')
@@ -3501,7 +3501,7 @@ var renderDocView = function(docNum) {
             .css('cursor','default')
             .css('user-select','none');
 
-        var thetaD = state.aggregatingBy == undefined ? state.theta[docNum] : state.aggTheta[docNum];
+        var thetaD = typeof(state.aggregatingBy) === 'undefined' ? state.theta[docNum] : state.aggTheta[docNum];
         var thetaDtopics = new Array(thetaD.length);
         var thetaDpercs = new Array(thetaD.length);
         i = 0;
@@ -3584,7 +3584,7 @@ var renderDocView = function(docNum) {
             .attr('text-anchor', 'middle');
 
         // If we're aggregating, do aggregateListTab and make the label open group
-        if (state.aggregatingBy != undefined) {
+        if (typeof(state.aggregatingBy) !== 'undefined') {
             d3.select('#docViewTitle')
                 .on('dblclick', function() {
                     openGroup(docNum);
@@ -3622,7 +3622,7 @@ var renderDocView = function(docNum) {
                 'model_name': model_name,
                 'text_name': getFilename(docNum)
             });
-            if (tokensURL != '') {
+            if (tokensURL !== '') {
                 $("#docTopicLayoutTab")
                     .html('')
                     .addClass("withLoadingIndicator");
@@ -3631,8 +3631,8 @@ var renderDocView = function(docNum) {
                     var lgWorker = new Worker($LG_WORKER_URL);
 
                     lgWorker.onmessage = function(e) {
-                        if (e.data.task == 'buildSAT') {
-                            if (e.data.message == 'success') {
+                        if (e.data.task === 'buildSAT') {
+                            if (e.data.message === 'success') {
                                 console.log('SAT successfully built.');
                                 lgWorker.postMessage({
                                     'task': 'getTagLines',
@@ -3641,8 +3641,8 @@ var renderDocView = function(docNum) {
                             } else {
                                 console.log('SAT build FAILED');
                             }
-                        } else if (e.data.task == 'getTagLines') {
-                            if (e.data.message == 'success') {
+                        } else if (e.data.task === 'getTagLines') {
+                            if (e.data.message === 'success') {
                                 console.log('tagLines successfully computed.');
                                 var rsbc = $('#right_sidebar_bottom_content');
                                 buildLineGraph(
@@ -3690,7 +3690,7 @@ var getMetadataString = function(docNum) {
         s += 'Genre: ' + m['Genre'] + '<br />';
     }
     for (var field in m) {
-        if (field != 'Author' && field != 'Title' && field != 'Genre') {
+        if (field !== 'Author' && field !== 'Title' && field !== 'Genre') {
             s += field + ': ' + m[field] + '<br />';
         }
     }
@@ -3699,7 +3699,7 @@ var getMetadataString = function(docNum) {
 
 var getFilename = function(docNum) {
     var textName = state.metadata[docNum].filename.split('/').pop();
-    if (textName.indexOf('.txt') != -1) {
+    if (textName.indexOf('.txt') !== -1) {
         textName = textName.substring(0, textName.indexOf('.txt'));
     }
     return textName;
@@ -3734,7 +3734,7 @@ localStorage[model_name] = "";
 window.addEventListener('storage', function() {
     updateLineGraphCSS();
     var i, topic;
-    if (event.key == model_name) {
+    if (event.key === model_name) {
         var oldTopicAssignments = event.oldValue.split(';');
         var oldTopicColorObj = {};
         var temp;
@@ -3759,11 +3759,11 @@ window.addEventListener('storage', function() {
             }
         }
         for (topic in newTopicColorObj) {
-            if (! (topic in oldTopicColorObj) || newTopicColorObj[topic] != oldTopicColorObj[topic]) {
+            if (! (topic in oldTopicColorObj) || newTopicColorObj[topic] !== oldTopicColorObj[topic]) {
                 colorCols([parseInt(topic)], newTopicColorObj[topic]);
             }
         }
-    } else if (event.key == model_name + '_topic') {
+    } else if (event.key === model_name + '_topic') {
         var topicNum = parseInt(event.newValue);
         if (topicNum >= 0 && topicNum < state.colList.length) {
             selectCol(topicNum);

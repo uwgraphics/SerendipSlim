@@ -19,7 +19,7 @@ var cv_colView = (function() {
     
     var selectCol = function(col, forceRedraw) {
         // If this col is already selected, shouldn't need to do anything
-        if (col == currCol && !forceRedraw) {
+        if (col === currCol && !forceRedraw) {
             return;
         } else {
             currCol = col;
@@ -102,7 +102,7 @@ var cv_colView = (function() {
 
     // If ranking type is changed, and there is a selected column, redraw the view
     var updateRankingType = function() {
-        if (typeof(currCol) != 'undefined') {
+        if (typeof(currCol) !== 'undefined') {
             selectCol(currCol, true);
         }
     };

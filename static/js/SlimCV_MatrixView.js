@@ -118,7 +118,7 @@ var cv_matrixView = (function() {
     // After data in the model has changed, this fxn will redraw things as necessary
     var update = function(forceSnapshot) {
         // forceSnapshot gives us a chance to enforce curr and old orders being the same (e.g., when scrolling)
-        if (typeof(forceSnapshot) == 'undefined') {
+        if (typeof(forceSnapshot) === 'undefined') {
             forceSnapshot = false;
         }
 
@@ -205,7 +205,7 @@ var cv_matrixView = (function() {
             for (i = 0; i < rowOrderRange.length; i++) {
                 rowNum = rowOrderRange[i];
                 rowColor = controller.getRowColor(rowNum);
-                if (typeof(rowColor) != 'undefined') {
+                if (typeof(rowColor) !== 'undefined') {
                     data.push({
                         'rowNum': rowNum,
                         'rowColor': rowColor
@@ -245,7 +245,7 @@ var cv_matrixView = (function() {
             for (i = 0; i < colOrderRange.length; i++) {
                 colNum = colOrderRange[i];
                 colColor = controller.getColColor(colNum);
-                if (typeof(colColor) != 'undefined') {
+                if (typeof(colColor) !== 'undefined') {
                     data.push({
                         'colNum': colNum,
                         'colColor': colColor
@@ -287,11 +287,11 @@ var cv_matrixView = (function() {
         rowLabel.enter().append('svg:text')
             .attr('class', 'rowLabel')
             .text(function(d) {
-                if (typeof(labelRowBy) == 'undefined' || typeof(controller.getAggBy()) != 'undefined') {
+                if (typeof(labelRowBy) === 'undefined' || typeof(controller.getAggBy()) !== 'undefined') {
                     return model.getRowName(d);
                 }
                 var name = model.getRowMetaAsObj(d)[labelRowBy];
-                return name == '' ? '[EMPTY FIELD]' : name;
+                return name === '' ? '[EMPTY FIELD]' : name;
             })
             .attr('x', rowLabelWidth)
             .attr('y', function(d) { return fullYscale(model.getOldRowIndex(d)); })
@@ -401,9 +401,9 @@ var cv_matrixView = (function() {
         return Math.max(0, Math.min(model.getNumCols() - 1, index));
     };
     var changeRowLabels = function(fieldName) {
-        if (typeof(fieldName) == 'undefined') {
+        if (typeof(fieldName) === 'undefined') {
             labelRowBy = undefined;
-        } else if (model.getRowMetaNames().indexOf(fieldName) == -1) {
+        } else if (model.getRowMetaNames().indexOf(fieldName) === -1) {
             return;
         } else {
             labelRowBy = fieldName;
@@ -412,11 +412,11 @@ var cv_matrixView = (function() {
         // Change the labels
         matrixSVG.selectAll('.rowLabel')
             .text(function(d) {
-                if (typeof(labelRowBy) == 'undefined') {
+                if (typeof(labelRowBy) === 'undefined') {
                     return model.getRowName(d);
                 }
                 var name = model.getRowMetaAsObj(d)[labelRowBy];
-                return name == '' ? '[EMPTY FIELD]' : name;
+                return name === '' ? '[EMPTY FIELD]' : name;
             });
 
         // Re-calculate sizes and scales and move everything around
@@ -450,7 +450,7 @@ var cv_matrixView = (function() {
         innerShape
             .style('fill', function(d) {
                 var glyphColor = controller.getGlyphColor(d.row, d.col);
-                return typeof(glyphColor) == 'undefined' ? defaultGlyphColor : glyphColor;
+                return typeof(glyphColor) === 'undefined' ? defaultGlyphColor : glyphColor;
             });
         innerShape.transition()
             .duration(transdur)
@@ -470,7 +470,7 @@ var cv_matrixView = (function() {
         var tmp = $('#' + htmlIDs['matrixContainer']).parent();
         var minW = tmp.width()-25;
         var numCols = model.getNumCols();
-        if (typeof(labelRowBy) == 'undefined' || typeof(controller.getAggBy()) != 'undefined') {
+        if (typeof(labelRowBy) === 'undefined' || typeof(controller.getAggBy()) !== 'undefined') {
             rowLabelWidth = 8 * model.getMaxRowLabelLength() + 10;
         } else {
             rowLabelWidth = 8 * model.getMaxRowMetaLength(labelRowBy) + 10;
@@ -531,13 +531,13 @@ var cv_matrixView = (function() {
         var newWindow = false;
 
         // If we've scrolled past threshold, add new buffer
-        if ((newRowMin <= window_rowMin + window_rowBuffer/2 && window_rowMin != 0) ||
+        if ((newRowMin <= window_rowMin + window_rowBuffer/2 && window_rowMin !== 0) ||
             (newRowMin + window_rowsPerScreen > window_rowMax - window_rowBuffer/2)) {
             window_rowMin = Math.max(0, newRowMin - window_rowBuffer);
             window_rowMax = window_rowMin + window_numRows;
             newWindow = true;
         }
-        if ((newColMin <= window_colMin + window_colBuffer/2 && window_colMin != 0) ||
+        if ((newColMin <= window_colMin + window_colBuffer/2 && window_colMin !== 0) ||
             (newColMin + window_colsPerScreen > window_colMax - window_colBuffer/2)) {
             window_colMin = Math.max(0, newColMin - window_colBuffer);
             window_colMax = window_colMin + window_numCols;
@@ -552,27 +552,27 @@ var cv_matrixView = (function() {
 
     // Define behavior for when cols and rows are brushed within any view. Called by controller.
     var brushCol = function(col) {
-        matrixSVG.selectAll('.innerShape').select(function (d) { return d.col == col ? this : null; })
+        matrixSVG.selectAll('.innerShape').select(function (d) { return d.col === col ? this : null; })
             .style('stroke-width', 2);
-        matrixSVG.selectAll('.colLabel').select(function (d) { return d == col ? this : null; })
+        matrixSVG.selectAll('.colLabel').select(function (d) { return d === col ? this : null; })
             .style('font-weight', 'bold');
     };
     var unbrushCol = function(col) {
-        matrixSVG.selectAll('.innerShape').select(function (d) { return d.col == col ? this : null; })
+        matrixSVG.selectAll('.innerShape').select(function (d) { return d.col === col ? this : null; })
             .style('stroke-width', 1);
-        matrixSVG.selectAll('.colLabel').select(function (d) { return d == col ? this : null; })
+        matrixSVG.selectAll('.colLabel').select(function (d) { return d === col ? this : null; })
             .style('font-weight', 'normal');
     };
     var brushRow = function(row) {
-        matrixSVG.selectAll('.innerShape').select(function (d) { return d.row == row ? this : null; })
+        matrixSVG.selectAll('.innerShape').select(function (d) { return d.row === row ? this : null; })
             .style('stroke-width', 2);
-        matrixSVG.selectAll('.rowLabel').select(function (d) { return d == row ? this : null; })
+        matrixSVG.selectAll('.rowLabel').select(function (d) { return d === row ? this : null; })
             .style('font-weight', 'bold');
     };
     var unbrushRow = function(row) {
-        matrixSVG.selectAll('.innerShape').select(function (d) { return d.row == row ? this : null; })
+        matrixSVG.selectAll('.innerShape').select(function (d) { return d.row === row ? this : null; })
             .style('stroke-width', 1);
-        matrixSVG.selectAll('.rowLabel').select(function (d) { return d == row ? this : null; })
+        matrixSVG.selectAll('.rowLabel').select(function (d) { return d === row ? this : null; })
             .style('font-weight', 'normal');
     };
 
@@ -639,11 +639,11 @@ var cv_matrixView = (function() {
                     var p = d3.mouse(this);
                     var newBox = getNewDragSelectBox(p);
                     var lowIndex, highIndex;
-                    if (selectingRows == true) {
+                    if (selectingRows === true) {
                         lowIndex = Math.max(0, Math.ceil(fullYscale.invert(newBox.y)));
                         highIndex = Math.ceil(fullYscale.invert(newBox.y + newBox.h));
                         controller.newRowSelection(model.getRowOrderRange(lowIndex, highIndex));
-                    } else if (selectingRows == false) {
+                    } else if (selectingRows === false) {
                         lowIndex = Math.max(0, Math.ceil(fullXscale.invert(newBox.x)));
                         highIndex = Math.ceil(fullXscale.invert(newBox.x + newBox.w));
                         controller.newColSelection(model.getColOrderRange(lowIndex, highIndex));
@@ -679,11 +679,11 @@ var cv_matrixView = (function() {
     // If the row or col selections change (either from UI fxns or from drag select, controller will call these
     var updateRowSelection = function(rows) {
         matrixSVG.selectAll('.rowLabel')
-            .style('fill', function(d) { return rows.indexOf(d) == -1 ? 'black' : 'red'; });
+            .style('fill', function(d) { return rows.indexOf(d) === -1 ? 'black' : 'red'; });
     };
     var updateColSelection = function(cols) {
         matrixSVG.selectAll('.colLabel')
-            .style('fill', function(d) { return cols.indexOf(d) == -1 ? 'black' : 'red'; });
+            .style('fill', function(d) { return cols.indexOf(d) === -1 ? 'black' : 'red'; });
     };
 
     var colorBy = function(rowsOrCols) {
@@ -780,15 +780,15 @@ var cv_matrixView = (function() {
         var renameCol = function() {
             var $newNameInputField = $('#newTopicName');
             var newName = $newNameInputField.val();
-            if (newName != '') {
+            if (newName !== '') {
                 model.renameCol(cm_currCol, newName, update);
             }
             $('#renameTopicModal').modal('hide');
             $newNameInputField.val('');
         };
-        d3.select('#renameTopicSubmit').on('click', renameCol)
+        d3.select('#renameTopicSubmit').on('click', renameCol);
         $('#newTopicName').keypress(function(e) {
-            if (e.which == 13) {
+            if (e.which === 13) {
                 renameCol();
             }
         });
@@ -819,6 +819,7 @@ var cv_matrixView = (function() {
     };
 
     // Aggregate rows by given metadata field
+    // noinspection JSUnusedLocalSymbols
     var aggregateRowsBy = function(fieldName) {
         // First, remove all the non-agg svg elements
         d3.selectAll('.innerShape').remove();

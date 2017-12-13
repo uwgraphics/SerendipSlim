@@ -34,7 +34,7 @@ var cv_model = (function() {
             colMetaNames = json.topicMetadataFields;
 
             // Populate name lists
-            if (json.rowList == undefined) {
+            if (typeof json.rowList === 'undefined') {
                 rowNames = new Array(json.numDocs);
                 for (i = 0; i < json.numDocs; i++) {
                     rowNames[i] = 'Document ' + i;
@@ -42,7 +42,7 @@ var cv_model = (function() {
             } else {
                 rowNames = json.rowList;
             }
-            if (json.colList == undefined) {
+            if (typeof json.colList === 'undefined') {
                 colNames = new Array(json.numTopics);
                 for (i = 0; i < json.numTopics; i++) {
                     colNames[i] = 'Topic ' + i;
@@ -78,7 +78,7 @@ var cv_model = (function() {
             }
 
             // Run the callback fxn after everything else has gone
-            if (typeof(callbackFxn) == 'function') {
+            if (typeof(callbackFxn) === 'function') {
                 callbackFxn();
             }
         });
@@ -92,7 +92,7 @@ var cv_model = (function() {
             rowMetadata = json.metadata;
 
             // Run the callback fxn after everything else has run
-            if (typeof(callbackFxn) == 'function') {
+            if (typeof(callbackFxn) === 'function') {
                 callbackFxn();
             }
         });
@@ -104,7 +104,7 @@ var cv_model = (function() {
         var phi = new Array(numCols);
         for (i = 0; i < theta.length; i++) {
             for (var col in theta[i]) {
-                if (phi[col] == undefined) {
+                if (typeof phi[col] === 'undefined') {
                     phi[col] = {};
                     phi[col][i] = theta[i][col];
                 }
@@ -114,18 +114,19 @@ var cv_model = (function() {
             }
         }
         for (i = 0; i < phi.length; i++) {
-            if (phi[i] == undefined) {
+            if (typeof phi[i] === 'undefined') {
                 phi[i] = {};
             }
         }
         return phi;
     };
 
+    // TODO: implement numerical aggregation
     var aggregateRowsBy = function(fieldName, chunkSize, startingFrom) {
         // First, loop through metadata to find aggregate groups
         var aggNames = [];
         aggLists = {};
-        if (typeof(chunkSize) == 'undefined') { // Categorical or String metadata has no chunkSize
+        if (typeof(chunkSize) === 'undefined') { // Categorical or String metadata has no chunkSize
             var rowNum, rowVal;
             for (rowNum = 0; rowNum < rowMetadata.length; rowNum++) {
                 rowVal = rowMetadata[rowNum][fieldName];
@@ -222,7 +223,7 @@ var cv_model = (function() {
     // Fxn that sorts rows by a selection of cols
     // TODO: add aggregation support
     var sortRowsBy = function(selection, callbackFxn) {
-        if (selection == undefined || selection.length == 0) {
+        if (typeof selection === 'undefined' || selection.length === 0) {
             return;
         }
 
@@ -235,24 +236,24 @@ var cv_model = (function() {
             var c;
             for (var i = 0; i < selection.length; i++) {
                 c = selection[i];
-                if (typeof(theta[r1][c]) != 'undefined') {
+                if (typeof(theta[r1][c]) !== 'undefined') {
                     r1Score += theta[r1][c];
                 }
-                if (typeof(theta[r2][c]) != 'undefined') {
+                if (typeof(theta[r2][c]) !== 'undefined') {
                     r2Score += theta[r2][c];
                 }
             }
             return r2Score - r1Score;
         });
 
-        if (typeof(callbackFxn) != 'undefined') {
+        if (typeof(callbackFxn) !== 'undefined') {
             callbackFxn();
         }
     };
     
     // Fxn that sorts cols by a selection of rows
     var sortColsBy = function(selection, callbackFxn) {
-        if (selection == undefined || selection.length == 0) {
+        if (typeof(selection) === 'undefined' || selection.length === 0) {
             return;
         }
 
@@ -265,24 +266,24 @@ var cv_model = (function() {
             var r;
             for (var i = 0; i < selection.length; i++) {
                 r = selection[i];
-                if (typeof(theta[r][c1]) != 'undefined') {
+                if (typeof(theta[r][c1]) !== 'undefined') {
                     c1Score += theta[r][c1];
                 }
-                if (typeof(theta[r][c2]) != 'undefined') {
+                if (typeof(theta[r][c2]) !== 'undefined') {
                     c2Score += theta[r][c2];
                 }
             }
             return c2Score - c1Score;
         });
 
-        if (typeof(callbackFxn) != 'undefined') {
+        if (typeof(callbackFxn) !== 'undefined') {
             callbackFxn();
         }
     };
 
     // Sort rows by their distance from the MEAN vector of the given selection of rows
     var sortRowsByDistanceFrom = function(selection, callbackFxn) {
-        if (selection == undefined || selection.length == 0) {
+        if (typeof(selection) === 'undefined' || selection.length === 0) {
             return;
         }
 
@@ -291,14 +292,14 @@ var cv_model = (function() {
         var tmpSelection = selection.slice(); // Going to be messing with the selection, don't want to break other refs to it
         sortVectorsByDistFrom(tmpSelection, rowOrder, theta, colOrder.length);
 
-        if (typeof(callbackFxn) != 'undefined') {
+        if (typeof(callbackFxn) !== 'undefined') {
             callbackFxn();
         }
     };
 
     // Sort cols by their distance from the MEAN vector of the given selection of cols
     var sortColsByDistanceFrom = function(selection, callbackFxn) {
-        if (selection == undefined || selection.length == 0) {
+        if (typeof(selection) === 'undefined' || selection.length === 0) {
             return;
         }
 
@@ -307,7 +308,7 @@ var cv_model = (function() {
         var tmpSelection = selection.slice(); // Going to be messing with the selection, don't want to break other refs to it
         sortVectorsByDistFrom(tmpSelection, colOrder, phi, rowOrder.length);
 
-        if (typeof(callbackFxn) != 'undefined') {
+        if (typeof(callbackFxn) !== 'undefined') {
             callbackFxn();
         }
     };
@@ -316,7 +317,7 @@ var cv_model = (function() {
     var sortVectorsByDistFrom = function(vectorSelection, listToSort, parallelObjs, vectorLength) {
         // Define a mean vector with which to compare all vectors.
         var meanVecObj;
-        if (vectorSelection.length == 1) {
+        if (vectorSelection.length === 1) {
             meanVecObj = parallelObjs[vectorSelection[0]];
         } else {
             meanVecObj = {};
@@ -325,7 +326,7 @@ var cv_model = (function() {
             for (var i = 0; i < vectorSelection.length; i++) {
                 vecObj = theta[vectorSelection[i]];
                 for (keyNum in vecObj) {
-                    if (typeof(meanVecObj[keyNum]) == 'undefined') {
+                    if (typeof(meanVecObj[keyNum]) === 'undefined') {
                         meanVecObj[keyNum] = vecObj[keyNum];
                     } else {
                         meanVecObj[keyNum] += vecObj[keyNum];
@@ -361,7 +362,7 @@ var cv_model = (function() {
             return nthVals[b] - nthVals[a];
         });
 
-        if (typeof(callbackFxn) == 'function') {
+        if (typeof(callbackFxn) === 'function') {
             callbackFxn();
         }
     };
@@ -391,7 +392,7 @@ var cv_model = (function() {
             rowOrder.splice(oldI, 1);
         }
 
-        if (typeof(callbackFxn) == 'function') {
+        if (typeof(callbackFxn) === 'function') {
             callbackFxn();
         }
     };
@@ -408,7 +409,7 @@ var cv_model = (function() {
             colOrder.splice(oldI, 1);
         }
 
-        if (typeof(callbackFxn) == 'function') {
+        if (typeof(callbackFxn) === 'function') {
             callbackFxn();
         }
     };
@@ -419,7 +420,7 @@ var cv_model = (function() {
 
         moveSelectionToFront(selection, rowOrder);
 
-        if (typeof(callbackFxn) == 'function') {
+        if (typeof(callbackFxn) === 'function') {
             callbackFxn();
         }
     };
@@ -430,14 +431,14 @@ var cv_model = (function() {
 
         moveSelectionToFront(selection, colOrder);
 
-        if (typeof(callbackFxn) == 'function') {
+        if (typeof(callbackFxn) === 'function') {
             callbackFxn();
         }
     };
 
     // Helper fxn for moveRowsToTop and moveColsToLeft
     var moveSelectionToFront = function(selection, order) {
-        if (typeof(selection) != 'undefined' && selection.length != 0) {
+        if (typeof(selection) !== 'undefined' && selection.length !== 0) {
             var indices = new Array(selection.length);
             var i;
             for (i = 0; i < selection.length; i++) {
@@ -454,7 +455,7 @@ var cv_model = (function() {
     var sortRowsByMeta = function(fieldName, callbackFxn) {
         // Make sure this fieldName exists
         var fieldNum = rowMetaNames.indexOf(fieldName);
-        if (fieldNum == -1) {
+        if (fieldNum === -1) {
             return;
         }
 
@@ -462,13 +463,13 @@ var cv_model = (function() {
 
         var fieldType = rowMetaTypes[fieldNum];
         // Only sort if we actually know HOW to for this fieldType
-        if (validMetaTypes.indexOf(fieldType) == -1) {
+        if (validMetaTypes.indexOf(fieldType) === -1) {
             return;
         }
 
         // Pick a comparing fxn based on the data type of the metadata field
         var fieldComparer;
-        if (fieldType == 'str' || fieldType == 'cat') {
+        if (fieldType === 'str' || fieldType === 'cat') {
             fieldComparer = function(s1, s2) {
                 s1 = s1.toLowerCase();
                 s2 = s2.toLowerCase();
@@ -479,11 +480,11 @@ var cv_model = (function() {
                 }
                 return 0;
             }
-        } else if (fieldType == 'int') {
+        } else if (fieldType === 'int') {
             fieldComparer = function(n1, n2) {
                 return parseInt(n1) - parseInt(n2);
             }
-        } else if (fieldType == 'float') {
+        } else if (fieldType === 'float') {
             fieldComparer = function(n1, n2) {
                 return parseFloat(n1) - parseFloat(n2);
             }
@@ -491,14 +492,14 @@ var cv_model = (function() {
 
         // Sort with the appropriate comparing fxn
         rowOrder.sort(function(r1, r2) {
-            if (fieldName in rowMetadata[r1] && rowMetadata[r1][fieldName] != '') {
-                if (fieldName in rowMetadata[r2] && rowMetadata[r2][fieldName] != '') {
+            if (rowMetadata[r1].hasOwnProperty(fieldName) && rowMetadata[r1][fieldName] !== '') {
+                if (rowMetadata[r2].hasOwnProperty(fieldName) && rowMetadata[r2][fieldName] !== '') {
                     return fieldComparer(rowMetadata[r1][fieldName], rowMetadata[r2][fieldName])
                 } else {
                     return -1;
                 }
             } else {
-                if (fieldName in rowMetadata[r2] && rowMetadata[r2][fieldName] != '') {
+                if (rowMetadata[r2].hasOwnProperty(fieldName) && rowMetadata[r2][fieldName] !== '') {
                     return 1;
                 } else {
                     return 0;
@@ -506,7 +507,7 @@ var cv_model = (function() {
             }
         });
 
-        if (typeof(callbackFxn) == 'function') {
+        if (typeof(callbackFxn) === 'function') {
             callbackFxn();
         }
     };
@@ -515,7 +516,7 @@ var cv_model = (function() {
     var sortColsByMeta = function(fieldName, callbackFxn) {
         // Make sure this fieldName exists
         var fieldNum = colMetaNames.indexOf(fieldName);
-        if (fieldNum == -1) {
+        if (fieldNum === -1) {
             return;
         }
 
@@ -523,14 +524,14 @@ var cv_model = (function() {
 
         // Sort in descending order, making sure the cols have values for the field
         colOrder.sort(function(c1, c2) {
-            if (typeof(colMetadata[c1]) != 'undefined' && fieldName in colMetadata[c1] && colMetadata[c1] != '') {
-                if (typeof(colMetadata[c2]) != 'undefined' && fieldName in colMetadata[c2] && colMetadata[c2] != '') {
+            if (typeof(colMetadata[c1]) !== 'undefined' && colMetadata[c1].hasOwnProperty(fieldName) && colMetadata[c1][fieldName] !== '') {
+                if (typeof(colMetadata[c2]) !== 'undefined' && colMetadata[c2].hasOwnProperty(fieldName) && colMetadata[c2][fieldName] !== '') {
                     return parseFloat(colMetadata[c2][fieldName]) - parseFloat(colMetadata[c1][fieldName]);
                 } else {
                     return 1;
                 }
             } else {
-                if (typeof(colMetadata[c2]) != 'undefined' && fieldName in colMetadata[c2] && colMetadata[c2] != '') {
+                if (typeof(colMetadata[c2]) !== 'undefined' && colMetadata[c2].hasOwnProperty(fieldName) && colMetadata[c2][fieldName] !== '') {
                     return -1;
                 } else {
                     return 0;
@@ -538,7 +539,7 @@ var cv_model = (function() {
             }
         });
 
-        if (typeof(callbackFxn) == 'function') {
+        if (typeof(callbackFxn) === 'function') {
             callbackFxn();
         }
     };
@@ -546,14 +547,14 @@ var cv_model = (function() {
     // Change rowOrder to match specific order provided (usually by user)
     var setRowOrder = function(order, callbackFxn) {
         // First, check to make sure the provided order is valid
-        if (order.length != rowOrder.length) {
+        if (order.length !== rowOrder.length) {
             alert('Invalid row order. Length does not match.');
             return;
         }
         var testOrder = order.slice();
         testOrder.sort(function(a, b) { return a - b; });
         for (var i = 0; i < testOrder.length; i++) {
-            if (testOrder[i] != i) {
+            if (testOrder[i] !== i) {
                 alert('Invalid row order. Row ' + i + ' not present.');
                 return;
             }
@@ -563,7 +564,7 @@ var cv_model = (function() {
         oldOrderSnapshot();
         rowOrder = order;
 
-        if (typeof(callbackFxn) == 'function') {
+        if (typeof(callbackFxn) === 'function') {
             callbackFxn();
         }
     };
@@ -571,14 +572,14 @@ var cv_model = (function() {
     // Change colOrder to match specific order provided (usually by user)
     var setColOrder = function(order, callbackFxn) {
         // First, check to make sure the provided order is valid
-        if (order.length != colOrder.length) {
+        if (order.length !== colOrder.length) {
             alert('Invalid col order. Length does not match.');
             return;
         }
         var testOrder = order.slice();
         testOrder.sort(function(a, b) { return a - b; });
         for (var i = 0; i < testOrder.length; i++) {
-            if (testOrder[i] != i) {
+            if (testOrder[i] !== i) {
                 alert('Invalid row order. Col ' + i + ' not present.');
                 return;
             }
@@ -588,7 +589,7 @@ var cv_model = (function() {
         oldOrderSnapshot();
         colOrder = order;
 
-        if (typeof(callbackFxn) == 'function') {
+        if (typeof(callbackFxn) === 'function') {
             callbackFxn();
         }
     };
@@ -602,7 +603,7 @@ var cv_model = (function() {
             rowOrder[i] = i;
         }
 
-        if (typeof(callbackFxn) == 'function') {
+        if (typeof(callbackFxn) === 'function') {
             callbackFxn();
         }
     };
@@ -616,7 +617,7 @@ var cv_model = (function() {
             colOrder[i] = i;
         }
 
-        if (typeof(callbackFxn) == 'function') {
+        if (typeof(callbackFxn) === 'function') {
             callbackFxn();
         }
     };
@@ -635,7 +636,7 @@ var cv_model = (function() {
             colOrder[i] = i;
         }
 
-        if (typeof(callbackFxn) == 'function') {
+        if (typeof(callbackFxn) === 'function') {
             callbackFxn();
         }
     };
@@ -650,12 +651,12 @@ var cv_model = (function() {
             num_topics: colOrder.length
         });
         d3.json($SET_COL_NAME_URL, function(json) {
-            if (json['topicNames'].length == colOrder.length) {
+            if (json['topicNames'].length === colOrder.length) {
                 colNames = json['topicNames'];
 
                 console.log('Renaming success!');
 
-                if (typeof(callbackFxn) == 'function') {
+                if (typeof(callbackFxn) === 'function') {
                     callbackFxn();
                 }
             } else {
@@ -679,8 +680,8 @@ var cv_model = (function() {
         returnObj.rowOrder = rowOrder.slice(rowMin, rowMax);
         returnObj.colOrder = colOrder.slice(colMin, colMax);
         returnObj.data = data.filter(function(d) {
-            return (returnObj.rowOrder.indexOf(d.row) != -1 &&
-                    returnObj.colOrder.indexOf(d.col) != -1 &&
+            return (returnObj.rowOrder.indexOf(d.row) !== -1 &&
+                    returnObj.colOrder.indexOf(d.col) !== -1 &&
                     d.prop > dataThreshold);
         });
 
@@ -689,7 +690,7 @@ var cv_model = (function() {
 
     var getRowFilename = function(row) {
         var filename = rowMetadata[row]['filename'].split('/').pop();
-        if (filename.indexOf('.txt') != -1) {
+        if (filename.indexOf('.txt') !== -1) {
             filename = filename.substring(0, filename.indexOf('.txt'));
         }
         return filename;
@@ -697,6 +698,7 @@ var cv_model = (function() {
     
     /***************** END GETTING FXNS ********************/
     
+    // noinspection JSUnusedGlobalSymbols
     return {
         load: loadModel,
         sortRowsBy: sortRowsBy,
@@ -719,15 +721,15 @@ var cv_model = (function() {
         getRowFilename: getRowFilename,
         getNumRows: function() { return rowOrder.length; },
         getNumCols: function() { return colOrder.length; },
-        getRowName: function(row) { return rowNames[row] == '' ? '[EMPTY]' : rowNames[row]; },
-        getColName: function(col) { return colNames[col] == '' ? '[EMPTY]' : colNames[col]; },
-        getMaxRowLabelLength: function() { return Math.max.apply(Math, rowNames.map(function(e) { return e == undefined ? 0 : e.length; })) },
-        getMaxColLabelLength: function() { return Math.max.apply(Math, colNames.map(function(e) { return e == undefined ? 0 : e.length; })) },
+        getRowName: function(row) { return rowNames[row] === '' ? '[EMPTY]' : rowNames[row]; },
+        getColName: function(col) { return colNames[col] === '' ? '[EMPTY]' : colNames[col]; },
+        getMaxRowLabelLength: function() { return Math.max.apply(Math, rowNames.map(function(e) { return typeof(e) === 'undefined' ? 0 : e.length; })) },
+        getMaxColLabelLength: function() { return Math.max.apply(Math, colNames.map(function(e) { return typeof(e) === 'undefined' ? 0 : e.length; })) },
         getMaxRowMetaLength: function(fieldName) {
-            return Math.max.apply(Math, rowMetadata.map(function(e) { return typeof(e[fieldName]) == 'undefined' ? 0 : e[fieldName].length; }))
+            return Math.max.apply(Math, rowMetadata.map(function(e) { return typeof(e[fieldName]) === 'undefined' ? 0 : e[fieldName].length; }))
         }, // TODO: Use this function to get the proper rowLabelWidth for updating the matrixView when we label rows with metadata (8/26/2016)
         getMaxColMetaLength: function(fieldName) {
-            return Math.max.apply(Math, colMetadata.map(function(e) { return typeof(e[fieldName]) == 'undefined' ? 0 : e[fieldName].length; }))
+            return Math.max.apply(Math, colMetadata.map(function(e) { return typeof(e[fieldName]) === 'undefined' ? 0 : e[fieldName].length; }))
         },
         getRowOrderRange: function(start, end) { return rowOrder.slice(start, end); },
         getColOrderRange: function(start, end) { return colOrder.slice(start, end); },
@@ -740,12 +742,12 @@ var cv_model = (function() {
         getRowMetaAsObj: function(row) { return rowMetadata[row]; },
         getColMetaAsObj: function(col) { return colMetadata[col]; },
         getRowMetaNames: function(metaTypes) { // Return all rowMetaNames, or only those of specified types
-            if (typeof(metaTypes) == 'undefined') {
+            if (typeof(metaTypes) === 'undefined') {
                 return rowMetaNames.slice();
             } else {
                 var namesToReturn = [];
                 for (var i = 0; i < rowMetaTypes.length; i++) {
-                    if (metaTypes.indexOf(rowMetaTypes[i]) != -1) {
+                    if (metaTypes.indexOf(rowMetaTypes[i]) !== -1) {
                         namesToReturn.push(rowMetaNames[i]);
                     }
                 }

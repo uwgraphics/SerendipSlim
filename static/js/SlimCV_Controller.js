@@ -67,14 +67,14 @@ var cv_controller = (function() {
 
     // Fxns responsible for actually selecting rows and columns
     var selectRow = function(row) {
-        if (selectedRows.indexOf(row) == -1) {
+        if (selectedRows.indexOf(row) === -1) {
             selectedRows.push(row);
             updateRowSelection();
         }
         runForAllViews('selectRow', row);
     };
     var selectCol = function(col) {
-        if (selectedCols.indexOf(col) == -1) {
+        if (selectedCols.indexOf(col) === -1) {
             selectedCols.push(col);
             updateColSelection();
         }
@@ -82,27 +82,27 @@ var cv_controller = (function() {
     };
     var unselectRow = function(row) {
         var indexOfRow = selectedRows.indexOf(row);
-        if (indexOfRow != -1) {
+        if (indexOfRow !== -1) {
             selectedRows.splice(indexOfRow, 1);
         }
         runForAllViews('unselectRow', row);
     };
     var unselectCol = function(col) {
         var indexOfCol = selectedCols.indexOf(col);
-        if (indexOfCol != -1) {
+        if (indexOfCol !== -1) {
             selectedCols.splice(indexOfCol, 1);
         }
         runForAllViews('unselectCol', col);
     };
     var toggleRowSelect = function(row) {
-        if (selectedRows.indexOf(row) == -1) {
+        if (selectedRows.indexOf(row) === -1) {
             selectRow(row);
         } else {
             unselectRow(row);
         }
     };
     var toggleColSelect = function(col) {
-        if (selectedCols.indexOf(col) == -1) {
+        if (selectedCols.indexOf(col) === -1) {
             selectCol(col);
         } else {
             unselectCol(col);
@@ -118,7 +118,7 @@ var cv_controller = (function() {
     };
     var updateRowSelection = function() {
         // First, update depiction of the row selection in the UI controls
-        if (selectedRows.length == 0) {
+        if (selectedRows.length === 0) {
             d3.select('#selectedRows').html('No rows selected');
         } else {
             selectedRows.sort(function(a, b) { return a - b; });
@@ -142,7 +142,7 @@ var cv_controller = (function() {
     };
     var updateColSelection = function() {
         // First, update depiction of the col selection in the UI controls
-        if (selectedCols.length == 0) {
+        if (selectedCols.length === 0) {
             d3.select('#selectedCols').html('No columns selected');
         } else {
             selectedCols.sort(function(a, b) { return a - b; });
@@ -222,7 +222,7 @@ var cv_controller = (function() {
         var colSortSelect = d3.select('#topicSortSelect');
         populateMetaDropdown(colSortSelect, model.getColMetaNames(), function() {
             var fieldName = d3.select(this).property('value');
-            if (model.getColMetaNames().indexOf(fieldName) == -1) {
+            if (model.getColMetaNames().indexOf(fieldName) === -1) {
                 model.resetColOrder(updateViews);
             } else {
                 model.sortColsByMeta(fieldName, updateViews);
@@ -300,7 +300,7 @@ var cv_controller = (function() {
         var rowSortSelect = d3.select('#sortSelect');
         populateMetaDropdown(rowSortSelect, model.getRowMetaNames(), function() {
             var fieldName = d3.select(this).property('value');
-            if (model.getRowMetaNames().indexOf(fieldName) == -1) {
+            if (model.getRowMetaNames().indexOf(fieldName) === -1) {
                 model.resetRowOrder(updateViews);
             } else {
                 model.sortRowsByMeta(fieldName, updateViews);
@@ -337,7 +337,7 @@ var cv_controller = (function() {
         var rowAggSelect = d3.select('#aggregateSelect');
         populateMetaDropdown(rowAggSelect, model.getRowMetaNames(), function() {
             var fieldName = d3.select(this).property('value');
-            if (model.getRowMetaNames().indexOf(fieldName) == -1) {
+            if (model.getRowMetaNames().indexOf(fieldName) === -1) {
                 unaggregateRows();
             } else {
                 aggregateRowsBy(fieldName); // TODO: numerical aggregation?
@@ -393,7 +393,7 @@ var cv_controller = (function() {
         d3.select('#colorByMetadataSelect').on('change', function() {
             var metadataField = $('#colorByMetadataSelect').val();
             // If they select None, uncolor all rows
-            if (metadataField == 'None') {
+            if (metadataField === 'None') {
                 rowColors = {};
                 coloringByRows ? colorBy('rows') : colorBy('cols');
             }
@@ -446,17 +446,17 @@ var cv_controller = (function() {
                 .append('div')
                 .attr('class', 'accordion-inner');
             accInner = accGrp.select('.accordion-inner');
-            if (currType == 'str') {
+            if (currType === 'str') {
                 accInner.html(currName + ' contains ')
                     .append('input')
                     .attr('type', 'text')
                     .attr('class', 'str')
                     .attr('name', currName);
-            } else if (currType == 'int') {
+            } else if (currType === 'int') {
                 accInner.html(currName + ' is between <input type="text" class="int input-small" name="min'
                     + currName + '" /> and <input type="text" class="int input-small" name="max'
                     + currName + '" />');
-            } else if (currType == 'cat') {
+            } else if (currType === 'cat') {
                 accInner.html(currName + ' is ')
                     .append('select')
                     .attr('id', currName + '_select_' + formID)
@@ -472,7 +472,7 @@ var cv_controller = (function() {
         for (var rowNum = 0; rowNum < model.getNumRows(); rowNum++) {
             currDocMeta = model.getRowMetaAsObj(rowNum);
             for (catName in catLists) {
-                if (catLists[catName].indexOf(currDocMeta[catName]) == -1) {
+                if (catLists[catName].indexOf(currDocMeta[catName]) === -1) {
                     catLists[catName].push(currDocMeta[catName]);
                 }
             }
@@ -497,7 +497,7 @@ var cv_controller = (function() {
                 var formID = 'advancedSelectBody';
                 d3.selectAll('#' + formID + ' input').each(function() {
                     var $this = d3.select(this);
-                    if ($this.property('type') != 'submit') {
+                    if ($this.property('type') !== 'submit') {
                         formObj[$this.property('name')] = $this.property('value');
                     }
                 });
@@ -531,15 +531,15 @@ var cv_controller = (function() {
             currName = metadataNames[i];
             currType = metadataTypes[i];
 
-            if (currType == 'str' || currType == 'cat') {
-                if (formObj[currName] == '') {
+            if (currType === 'str' || currType === 'cat') {
+                if (formObj[currName] === '') {
                     continue;
                 }
                 sel = selectByStringField(currName, formObj[currName], sel);
-            } else if (currType == 'int') {
-                minVal = formObj['min' + currName] == '' ? -Infinity : parseInt(formObj['min' + currName]);
-                maxVal = formObj['max' + currName] == '' ? Infinity : parseInt(formObj['max' + currName]);
-                if (minVal == '' && maxVal == '') {
+            } else if (currType === 'int') {
+                minVal = formObj['min' + currName] === '' ? -Infinity : parseInt(formObj['min' + currName]);
+                maxVal = formObj['max' + currName] === '' ? Infinity : parseInt(formObj['max' + currName]);
+                if (minVal === '' && maxVal === '') {
                     continue;
                 }
                 sel = selectByIntField(currName, minVal, maxVal, sel);
@@ -554,8 +554,8 @@ var cv_controller = (function() {
         for (var i = 0; i < currSelection.length; i++) {
             rowNum = currSelection[i];
             currRowMeta = model.getRowMetaAsObj(rowNum);
-            if (!currRowMeta.hasOwnProperty(fieldName) || currRowMeta[fieldName] == ''
-                || currRowMeta[fieldName].toLowerCase().indexOf(fieldValue.toLowerCase()) == -1) {
+            if (!currRowMeta.hasOwnProperty(fieldName) || currRowMeta[fieldName] === ''
+                || currRowMeta[fieldName].toLowerCase().indexOf(fieldValue.toLowerCase()) === -1) {
                 currSelection.splice(i,1);
                 i--; // Since we removed one, move index back 1
             }
@@ -569,7 +569,7 @@ var cv_controller = (function() {
         for (var i = 0; i < currSelection.length; i++) {
             rowNum = currSelection[i];
             currRowMeta = model.getRowMetaAsObj(rowNum);
-            if (!currRowMeta.hasOwnProperty(fieldName) || currRowMeta[fieldName] == ''
+            if (!currRowMeta.hasOwnProperty(fieldName) || currRowMeta[fieldName] === ''
                 || currRowMeta[fieldName] < minVal || currRowMeta[fieldName] > maxVal) {
                 currSelection.splice(i,1);
                 i--; // Since we removed one, move index back 1
@@ -628,11 +628,11 @@ var cv_controller = (function() {
 
     // Toggle coloring state to color by given value (rows or cols).
     var colorBy = function(rowsOrCols) {
-        if (rowsOrCols == 'rows' && !coloringByRows) {
+        if (rowsOrCols === 'rows' && !coloringByRows) {
             coloringByRows = true;
             d3.select('#toggleColorByRowBtn').classed('active', true);
             d3.select('#toggleColorByColBtn').classed('active', false);
-        } else if (rowsOrCols == 'cols' && coloringByRows) {
+        } else if (rowsOrCols === 'cols' && coloringByRows) {
             coloringByRows = false;
             d3.select('#toggleColorByColBtn').classed('active', true);
             d3.select('#toggleColorByRowBtn').classed('active', false);
@@ -663,11 +663,11 @@ var cv_controller = (function() {
         });
         d3.json($GET_RANKING_TYPES_URL, function(json) {
             // Remove radio buttons that the current model doesn't support
-            if (json['rankingTypes'].length == 1) {
+            if (json['rankingTypes'].length === 1) {
                 $('#ranking_type_radio_div').hide()
             } else {
                 for (var i = 0; i < validRankingTypes; i++) {
-                    if (json['rankingTypes'].indexOf(validRankingTypes[i]) == -1) {
+                    if (json['rankingTypes'].indexOf(validRankingTypes[i]) === -1) {
                         $('#' + json['rankingTypes']).parent().hide()
                     }
                 }
@@ -675,8 +675,8 @@ var cv_controller = (function() {
 
             // Make sure that currently enabled ranking type is supported, otherwise update it
             var currRankingType = $('input[name=rankingType]:checked').attr('id');
-            if (json['rankingTypes'].indexOf(currRankingType) == -1) {
-                rankingType = json['rankingTypes'][0]
+            if (json['rankingTypes'].indexOf(currRankingType) === -1) {
+                rankingType = json['rankingTypes'][0];
                 runForAllViews('updateRankingType');
             }
         });
@@ -777,7 +777,7 @@ var cv_controller = (function() {
         // Reset orders
         d3.select('#resetOrders').on('click', function() {
             // If we're already aggregated, should unaggregate first
-            if (typeof(aggregatingBy) != 'undefined') {
+            if (typeof(aggregatingBy) !== 'undefined') {
                 unaggregateRows();
             }
             // Then reset the docOrders
@@ -793,13 +793,13 @@ var cv_controller = (function() {
         // Next, listen for changes made to localStorage
         window.addEventListener('storage', function() {
             // updateLineGraphCSS() // TODO: need this anymore?
-            if (event.key == model_name) {
+            if (event.key === model_name) {
                 // Get all the old topic color assignments in an object
                 var oldTopicAssignments = event.oldValue.split(';');
                 var oldTopicColorObj = {};
                 var temp, i;
                 for (i = 0; i < oldTopicAssignments.length; i++) {
-                    if (oldTopicAssignments[i] != '') {
+                    if (oldTopicAssignments[i] !== '') {
                         temp = oldTopicAssignments[i].split(':');
                         oldTopicColorObj[parseInt(temp[0].split('_')[1])] = temp[1];
                     }
@@ -809,7 +809,7 @@ var cv_controller = (function() {
                 var newTopicAssignments = event.newValue.split(';');
                 var newTopicColorObj = {};
                 for (i = 0; i < newTopicAssignments.length; i++) {
-                    if (newTopicAssignments[i] != '') {
+                    if (newTopicAssignments[i] !== '') {
                         temp = newTopicAssignments[i].split(':');
                         newTopicColorObj[parseInt(temp[0].split('_')[1])] = temp[1];
                     }
@@ -825,7 +825,7 @@ var cv_controller = (function() {
 
                 // Color the new topic assignments
                 for (topic in newTopicColorObj) {
-                    if (!(topic in oldTopicColorObj) || newTopicColorObj[topic] != oldTopicColorObj[topic]) {
+                    if (!(topic in oldTopicColorObj) || newTopicColorObj[topic] !== oldTopicColorObj[topic]) {
                         colorCols([parseInt(topic)], newTopicColorObj[topic]);
                     }
                 }
@@ -836,7 +836,7 @@ var cv_controller = (function() {
     // Aggregate rows by a given metadata field
     var aggregateRowsBy = function(fieldName) {
         // If we're already aggregated, should unaggregate first
-        if (typeof(aggregatingBy) != 'undefined') {
+        if (typeof(aggregatingBy) !== 'undefined') {
             unaggregateRows();
         }
 
@@ -896,8 +896,8 @@ var cv_controller = (function() {
         toggleColSelect: toggleColSelect,
         newRowSelection: newRowSelection,
         newColSelection: newColSelection,
-        rowIsSelected: function(row) { return selectedRows.indexOf(row) != -1; },
-        colIsSelected: function(col) { return selectedCols.indexOf(col) != -1; },
+        rowIsSelected: function(row) { return selectedRows.indexOf(row) !== -1; },
+        colIsSelected: function(col) { return selectedCols.indexOf(col) !== -1; },
         colorRows: colorRows,
         colorCols: colorCols,
         uncolorRows: uncolorRows,
