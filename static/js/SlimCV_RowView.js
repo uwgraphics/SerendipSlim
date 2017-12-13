@@ -76,7 +76,8 @@ var cv_rowView = (function() {
 
             // Set SlimTV link to this row
             d3.select('#' + htmlIDs['titleDiv'])
-                .on('dblclick', function() {
+                .style('cursor', 'pointer')
+                .on('click', function() {
                     controller.openRowInTV(row);
                 });
         } else { // If we're aggregating, label/double-click differently

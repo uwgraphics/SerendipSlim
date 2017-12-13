@@ -734,14 +734,14 @@ var cv_controller = (function() {
         d3.select('#hideAllButSelection').attr('title','Hide all but selected documents');
 
         // topicView
-        //d3.select('#topicViewTitle').attr('title','Double-click to rename topic');
+        d3.select('#topicViewTitle').attr('title','Click to rename topic');
         d3.select('#hideSelectedTopic').attr('title','Hide this topic in matrix');
         d3.select('#topicMetadataTabBtn').attr('title', 'View statistical topic data');
         d3.select('#topicViewBtn').attr('title', 'View topic distribution as bar chart');
         d3.select('#topicCloudViewBtn').attr('title', 'View topic distribution as word cloud');
 
         // docView
-        d3.select('#docViewTitle').attr('title','Double-click to open in TextViewer');
+        d3.select('#docViewTitle').attr('title','Click to open selected document in TextViewer');
         d3.select('#hideSelectedDoc').attr('title','Hide this document in matrix');
         d3.select('#docMetadataBtn').attr('title', 'View document metadata');
         d3.select('#aggregateListBtn').attr('title', 'List of documents in aggregate group');

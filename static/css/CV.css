@@ -7,3 +7,11 @@
     fill-opacity: .2;
     stroke: DimGrey;
 }
+
+#docViewTitle {
+    cursor: not-allowed;
+}
+
+#topicViewTitle {
+    cursor: not-allowed;
+}

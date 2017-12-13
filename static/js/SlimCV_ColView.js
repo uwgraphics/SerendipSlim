@@ -30,9 +30,9 @@ var cv_colView = (function() {
         
         // Update title functionality
         d3.select('#' + htmlIDs['titleDiv'])
-            .style('cursor', 'default')
+            .style('cursor', 'pointer')
             .style('user-select', 'none')
-            .on('dblclick', function() {
+            .on('click', function() {
                 $('#' + htmlIDs['renameModal']).modal();
                 $('#' + htmlIDs['renameInput']).focus();
             })
